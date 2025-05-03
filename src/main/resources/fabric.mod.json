@@ -7,14 +7,10 @@
   "authors": [],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/summonmounts/icon.png",
   "environment": "server",
   "entrypoints": {
-    "fabric-datagen": [
-      "net.brodino.summonmounts.client.SummonmountsDataGenerator"
-    ],
     "main": [
-      "net.brodino.summonmounts.Summonmounts"
+      "net.brodino.summonmounts.SummonMounts"
     ]
   },
   "mixins": [

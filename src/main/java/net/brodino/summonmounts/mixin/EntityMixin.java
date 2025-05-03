@@ -1,7 +1,7 @@
 package net.brodino.summonmounts.mixin;
 
 import net.brodino.summonmounts.MountManager;
-import net.brodino.summonmounts.Summonmounts;
+import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +28,7 @@ public class EntityMixin {
             if (!player.world.isClient) {
                 // The actual disconnect handling is in MountManager
                 // This is just a backup in case the event doesn't fire
-                if (Summonmounts.SERVER != null) {
+                if (SummonMounts.SERVER != null) {
                     MountManager.playerDisconnected((net.minecraft.server.network.ServerPlayerEntity)player);
                 }
             }

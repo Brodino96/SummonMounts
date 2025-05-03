@@ -43,7 +43,7 @@ public class MountManager {
 
         String mountId = Registry.ENTITY_TYPE.getId(mount.getType()).toString();
         boolean isAllowed = false;
-        for (String allowedType : Summonmounts.CONFIG.allowedSummons()) {
+        for (String allowedType : SummonMounts.CONFIG.allowedSummons()) {
             if (allowedType.equals(mountId)) {
                 isAllowed = true;
                 break;
@@ -114,28 +114,30 @@ public class MountManager {
         return mount;
     }
 
-    public static boolean dismissMount(PlayerEntity player) {
+    public static ItemStack dismissMount(PlayerEntity player) {
         UUID playerUUID = player.getUuid();
 
         if (!playerMounts.containsKey(playerUUID)) {
-            return false;
+            return ItemStack.EMPTY;
         }
 
         UUID mountUUID = playerMounts.get(playerUUID);
 
         Entity mount = player.getServer().getOverworld().getEntity(mountUUID);
         if (mount != null && mount.isAlive()) {
-            NBTHelper.saveMountData(player, mount, playerItems.get(playerUUID));
+            ItemStack output = NBTHelper.saveMountData(player, mount, playerItems.get(playerUUID));
 
             mount.discard();
             player.sendMessage(Text.literal("La tua cavalcatura è stata richiamata"), true);
+
+
+            playerMounts.remove(playerUUID);
+            mountTimers.remove(mountUUID);
+            playerItems.remove(playerUUID);
+
+            return output;
         }
-
-        playerMounts.remove(playerUUID);
-        mountTimers.remove(mountUUID);
-        playerItems.remove(playerUUID);
-
-        return true;
+        return ItemStack.EMPTY;
     }
 
     public static void tickMounts() {
@@ -147,7 +149,7 @@ public class MountManager {
 
             /*
             ServerPlayerEntity anyPlayer = null;
-            for (ServerPlayerEntity player: Summonmounts.SERVER.getPlayerManager().getPlayerList()) {
+            for (ServerPlayerEntity player: SummonMounts.SERVER.getPlayerManager().getPlayerList()) {
                 anyPlayer = player;
                 break;
             }
@@ -157,7 +159,7 @@ public class MountManager {
             Entity mount = anyPlayer.getServer().getOverworld().getEntity(mountUUID);
              */
 
-            Entity mount = Summonmounts.SERVER.getOverworld().getEntity(mountUUID);
+            Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
             if (mount == null || !mount.isAlive()) {
                 playerMounts.remove(playerUUID);
                 mountTimers.remove(mountUUID);
@@ -172,7 +174,7 @@ public class MountManager {
                 timer--;
 
                 if (timer <= 0) {
-                    ServerPlayerEntity owner = Summonmounts.SERVER.getPlayerManager().getPlayer(playerUUID);
+                    ServerPlayerEntity owner = SummonMounts.SERVER.getPlayerManager().getPlayer(playerUUID);
                     // ServerPlayerEntity owner = anyPlayer.getServer().getPlayerManager().getPlayer(playerUUID);
                     if (owner != null) {
                         NBTHelper.saveMountData(owner, mount, playerItems.get(playerUUID));
@@ -217,9 +219,9 @@ public class MountManager {
 
         UUID mountUUID = playerMounts.get(playerUUID);
 
-        if (Summonmounts.SERVER == null) return false;
+        if (SummonMounts.SERVER == null) return false;
 
-        Entity mount = Summonmounts.SERVER.getOverworld().getEntity(mountUUID);
+        Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
         if (mount == null || !mount.isAlive()) {
             playerMounts.remove(playerUUID);
             playerItems.remove(playerUUID);
