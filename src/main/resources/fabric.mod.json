@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "summonmounts",
+  "version": "${version}",
+  "name": "SummonMounts",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/summonmounts/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.brodino.summonmounts.client.SummonmountsDataGenerator"
+    ],
+    "main": [
+      "net.brodino.summonmounts.Summonmounts"
+    ]
+  },
+  "mixins": [
+    "summonmounts.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
