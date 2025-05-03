@@ -10,11 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.brodino.summonmounts.commands.SpawnRandomHorseCommand;
 
-public class Summonmounts implements ModInitializer {
+public class SummonMounts implements ModInitializer {
 
     public static final String MOD_ID = "summonmounts";
-    public static final Logger LOGGER = LoggerFactory.getLogger(Summonmounts.MOD_ID);
-    public static Config CONFIG = Config.createAndLoad();
+    public static final Logger LOGGER = LoggerFactory.getLogger(SummonMounts.MOD_ID);
+    public static net.brodino.summonmounts.Config CONFIG = net.brodino.summonmounts.Config.createAndLoad();
     public static MinecraftServer SERVER;
 
     @Override
@@ -42,6 +42,6 @@ public class Summonmounts implements ModInitializer {
 
     public void onReload() {
         LOGGER.info("Reloading SummonMounts config");
-        Summonmounts.CONFIG = Config.createAndLoad();
+        SummonMounts.CONFIG = net.brodino.summonmounts.Config.createAndLoad();
     }
 }

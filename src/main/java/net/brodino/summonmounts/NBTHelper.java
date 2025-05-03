@@ -5,6 +5,7 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -34,7 +35,6 @@ public class NBTHelper {
         UUID mountItemId = UUID.randomUUID();
         nbt.putUuid("mount.id", mountItemId);
         nbt.put("mount.data", mountData);
-        Summonmounts.LOGGER.info(mountData.toString());
         nbt.putString("mount.type", entityId);
         nbt.putUuid("mount.owner", player.getUuid());
 
@@ -45,25 +45,26 @@ public class NBTHelper {
         nbt.putString("mount.name", name);
 
         // Save equipment data
-        saveEquipmentData((AbstractHorseEntity) mount, nbt);
+        stack.setNbt(saveEquipmentData((AbstractHorseEntity) mount, nbt));
 
         return stack;
     }
 
     /**
      * Saves equipment data to the NBT compound
+     *
      * @param horse The horse entity
-     * @param nbt The NBT compound to save to
+     * @param nbt   The NBT compound to save to
+     * @return
      */
-    private static void saveEquipmentData(AbstractHorseEntity horse, NbtCompound nbt) {
+    private static NbtCompound saveEquipmentData(AbstractHorseEntity horse, NbtCompound nbt) {
         NbtCompound equipmentData = new NbtCompound();
         
         // Save saddle state
         equipmentData.putBoolean("equipment.saddle", horse.isSaddled());
         
         // Save armor for regular horses
-        if (horse instanceof HorseEntity) {
-            HorseEntity regularHorse = (HorseEntity) horse;
+        if (horse instanceof HorseEntity regularHorse) {
             ItemStack armorStack = regularHorse.getEquippedStack(EquipmentSlot.CHEST);
             
             if (!armorStack.isEmpty()) {
@@ -74,6 +75,7 @@ public class NBTHelper {
         }
         
         nbt.put("mount.equipment", equipmentData);
+        return nbt;
     }
 
     /**
@@ -89,7 +91,6 @@ public class NBTHelper {
 
         // Load basic mount data
         NbtCompound mountData = nbt.getCompound("mount.data");
-        Summonmounts.LOGGER.info(mountData.toString());
         mount.readNbt(mountData);
 
         // Set custom name if present
@@ -99,7 +100,7 @@ public class NBTHelper {
 
         // Load equipment data
         if (nbt.contains("mount.equipment")) {
-            loadEquipmentData((AbstractHorseEntity) mount, nbt);
+            return loadEquipmentData((AbstractHorseEntity) mount, nbt);
         }
 
         return mount;
@@ -110,20 +111,22 @@ public class NBTHelper {
      * @param horse The horse entity to load equipment into
      * @param nbt The NBT compound containing the equipment data
      */
-    private static void loadEquipmentData(AbstractHorseEntity horse, NbtCompound nbt) {
+    private static AbstractHorseEntity loadEquipmentData(AbstractHorseEntity horse, NbtCompound nbt) {
         NbtCompound equipmentData = nbt.getCompound("mount.equipment");
         
         // Load saddle state
-        if (equipmentData.contains("equipment.saddle")) {
+        if (equipmentData.contains("equipment.saddle") && equipmentData.getBoolean("equipment.saddle")) {
             horse.saddle(null);
+            horse.onInventoryChanged(new SimpleInventory());
         }
         
         // Load armor for regular horses
-        if (horse instanceof HorseEntity && equipmentData.contains("equipment.armor")) {
-            HorseEntity regularHorse = (HorseEntity) horse;
+        if (horse instanceof HorseEntity regularHorse && equipmentData.contains("equipment.armor")) {
             NbtCompound armorNbt = equipmentData.getCompound("equipment.armor");
             ItemStack armorStack = ItemStack.fromNbt(armorNbt);
             regularHorse.equipStack(EquipmentSlot.CHEST, armorStack);
+            return regularHorse;
         }
+        return horse;
     }
 }

@@ -29,7 +29,7 @@ public class EventHandlers {
 
         // Register server start event to store server instance
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            Summonmounts.SERVER = server;
+            SummonMounts.SERVER = server;
         });
 
         // Register server tick event for mount timer handling
@@ -62,7 +62,7 @@ public class EventHandlers {
             return;
         }
 
-        ServerPlayerEntity owner = Summonmounts.SERVER.getPlayerManager().getPlayer(ownerUUID);
+        ServerPlayerEntity owner = SummonMounts.SERVER.getPlayerManager().getPlayer(ownerUUID);
         if (owner == null) {
             return;
         }
@@ -94,7 +94,7 @@ public class EventHandlers {
             return TypedActionResult.pass(stack);
         }
 
-        Item summonItem = Registry.ITEM.get(new Identifier(Summonmounts.CONFIG.summonItem()));
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
 
         if (stack.getItem() != summonItem) {
             return TypedActionResult.pass(stack);
@@ -124,7 +124,7 @@ public class EventHandlers {
             return TypedActionResult.pass(stack);
         }
 
-        Item summonItem = Registry.ITEM.get(new Identifier(Summonmounts.CONFIG.summonItem()));
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
 
         if (stack.getItem() != summonItem) {
             return TypedActionResult.pass(stack);
@@ -134,7 +134,9 @@ public class EventHandlers {
             UUID playerUUID = player.getUuid();
 
             if (MountManager.hasActiveMount(playerUUID, stack)) {
-                if (MountManager.dismissMount(player)) {
+                ItemStack out=MountManager.dismissMount(player);
+                if (!out.equals(ItemStack.EMPTY)) {
+                    player.setStackInHand(hand, out);
                     return TypedActionResult.success(stack);
                 }
             } else {
