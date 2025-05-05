@@ -21,7 +21,7 @@ public class MountManager {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
     private static final Map<UUID, Integer> mountTimers = new HashMap<>();
     public static final Map<UUID, ItemStack> playerItems = new HashMap<>();
-    private static final int DESPAWN_TIMER = 20 * 20;
+    private static final int DESPAWN_TIMER = SummonMounts.CONFIG.despawnTime() * 20;
 
     public static boolean bindMountToItem(PlayerEntity player, Entity entity, ItemStack stack) {
         if (!(entity instanceof AbstractHorseEntity)) {
@@ -55,7 +55,7 @@ public class MountManager {
             return false;
         }
 
-        stack = NBTHelper.saveMountData(player, mount, stack);
+        stack = NBTHelper.saveMountData(mount, stack);
 
         mount.discard();
 
@@ -75,20 +75,9 @@ public class MountManager {
         }
 
         UUID playerUuid = player.getUuid();
-        if (playerMounts.containsKey(playerUuid)) {
-            UUID existingMountUUID = playerMounts.get(playerUuid);
-            Entity existingMount = player.getServer().getOverworld().getEntity(existingMountUUID);
-
-            if (existingMount != null && existingMount.isAlive()) {
-                existingMount.discard();
-                player.sendMessage(Text.literal("La tua cavalcatura precedente è stata richiamata"), true);
-            }
-
-            playerMounts.remove(playerUuid);
-        }
 
         String mountTypeId = nbt.getString("mount.type");
-        World world = player.getWorld();
+        World world = SummonMounts.SERVER.getOverworld();
         EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(mountTypeId));
         if (entityType == null) {
             player.sendMessage(Text.literal("Invalid mount type!"), true);
@@ -101,7 +90,7 @@ public class MountManager {
             return null;
         }
 
-        NBTHelper.loadMountData(mount, nbt);
+        mount = NBTHelper.loadMountData((AbstractHorseEntity) mount, nbt);
 
         mount.setPosition(player.getX(), player.getY(), player.getZ());
         world.spawnEntity(mount);
@@ -123,9 +112,9 @@ public class MountManager {
 
         UUID mountUUID = playerMounts.get(playerUUID);
 
-        Entity mount = player.getServer().getOverworld().getEntity(mountUUID);
+        Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
         if (mount != null && mount.isAlive()) {
-            ItemStack output = NBTHelper.saveMountData(player, mount, playerItems.get(playerUUID));
+            ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID));
 
             mount.discard();
             player.sendMessage(Text.literal("La tua cavalcatura è stata richiamata"), true);
@@ -147,18 +136,6 @@ public class MountManager {
             UUID playerUUID = entry.getKey();
             UUID mountUUID = entry.getValue();
 
-            /*
-            ServerPlayerEntity anyPlayer = null;
-            for (ServerPlayerEntity player: SummonMounts.SERVER.getPlayerManager().getPlayerList()) {
-                anyPlayer = player;
-                break;
-            }
-
-            if (anyPlayer == null) continue;
-
-            Entity mount = anyPlayer.getServer().getOverworld().getEntity(mountUUID);
-             */
-
             Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
             if (mount == null || !mount.isAlive()) {
                 playerMounts.remove(playerUUID);
@@ -174,17 +151,13 @@ public class MountManager {
                 timer--;
 
                 if (timer <= 0) {
+
                     ServerPlayerEntity owner = SummonMounts.SERVER.getPlayerManager().getPlayer(playerUUID);
-                    // ServerPlayerEntity owner = anyPlayer.getServer().getPlayerManager().getPlayer(playerUUID);
+
                     if (owner != null) {
-                        NBTHelper.saveMountData(owner, mount, playerItems.get(playerUUID));
-                        owner.sendMessage(Text.literal("La tua cavalcatura è stata richiamata"), true);
+                        MountManager.dismissMount(owner);
                     }
 
-                    mount.discard();
-                    playerMounts.remove(playerUUID);
-                    playerItems.remove(playerUUID);
-                    mountTimers.remove(mountUUID);
                 } else {
                     mountTimers.put(mountUUID, timer);
                 }
@@ -200,16 +173,11 @@ public class MountManager {
         }
 
         UUID mountUUID = playerMounts.get(playerUUID);
-        Entity mount = player.getServer().getOverworld().getEntity(mountUUID);
+        Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
 
         if (mount != null && mount.isAlive()) {
-            NBTHelper.saveMountData(player, mount, playerItems.get(playerUUID));
-            mount.discard();
+            MountManager.dismissMount(player);
         }
-
-        playerMounts.remove(playerUUID);
-        playerItems.remove(playerUUID);
-        mountTimers.remove(mountUUID);
     }
 
     public static boolean hasActiveMount(UUID playerUUID, ItemStack stack) {

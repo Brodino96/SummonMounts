@@ -7,9 +7,11 @@ public class ConfigHelper {
 
     public String summonItem;
     public String[] allowedSummons;
+    public Integer despawnTime;
 
     public ConfigHelper() {
         this.summonItem = "minecraft:dragon_egg";
         this.allowedSummons = new String[]{"minecraft:horse", "minecraft:mule", "minecraft:donkey"};
+        this.despawnTime = 5;
     }
 }

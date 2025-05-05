@@ -1,6 +1,7 @@
 package net.brodino.summonmounts;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -29,19 +30,15 @@ public class SummonMounts implements ModInitializer {
             SpawnRandomHorseCommand.register(dispatcher);
         });
         
-        // Register item use callbacks
+        // Register item use on entity callbacks
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             EventHandlers.itemUsedOnAnEntity(player, world, hand, entity, hitResult);
             return ActionResult.PASS;
         });
-        
+
+        // Register item use callbacks
         UseItemCallback.EVENT.register((player, world, hand) -> {
             return EventHandlers.onItemUse(player, world, hand);
         });
-    }
-
-    public void onReload() {
-        LOGGER.info("Reloading SummonMounts config");
-        SummonMounts.CONFIG = net.brodino.summonmounts.Config.createAndLoad();
     }
 }

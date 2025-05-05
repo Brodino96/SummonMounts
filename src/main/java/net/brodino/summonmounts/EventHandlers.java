@@ -67,7 +67,7 @@ public class EventHandlers {
             return;
         }
 
-        NBTHelper.saveMountData(owner, mount, MountManager.playerItems.get(ownerUUID));
+        NBTHelper.saveMountData(mount, MountManager.playerItems.get(ownerUUID));
     }
     
     /**
@@ -100,7 +100,7 @@ public class EventHandlers {
             return TypedActionResult.pass(stack);
         }
 
-        if (!stack.hasNbt() || !stack.getNbt().contains("mount.data")) {
+        if (!stack.hasNbt() || !stack.getNbt().contains("mount.genericData")) {
             if (MountManager.bindMountToItem(player, target, stack)) {
                 return TypedActionResult.success(stack);
             }
@@ -127,14 +127,15 @@ public class EventHandlers {
         Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
 
         if (stack.getItem() != summonItem) {
+            SummonMounts.LOGGER.info("Item is not the summon item");
             return TypedActionResult.pass(stack);
         }
 
-        if (stack.hasNbt() && stack.getNbt().contains("mount.data")) {
+        if (stack.hasNbt() && stack.getNbt().contains("mount.genericData")) {
             UUID playerUUID = player.getUuid();
 
             if (MountManager.hasActiveMount(playerUUID, stack)) {
-                ItemStack out=MountManager.dismissMount(player);
+                ItemStack out = MountManager.dismissMount(player);
                 if (!out.equals(ItemStack.EMPTY)) {
                     player.setStackInHand(hand, out);
                     return TypedActionResult.success(stack);
