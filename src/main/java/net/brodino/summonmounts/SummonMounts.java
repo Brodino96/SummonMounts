@@ -1,7 +1,6 @@
 package net.brodino.summonmounts;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
