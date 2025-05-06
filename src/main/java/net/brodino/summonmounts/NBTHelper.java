@@ -49,6 +49,7 @@ public class NBTHelper {
         }
 
         stackNbt.putUuid("mount.owner", ((AbstractHorseEntity) mount).getOwnerUuid());
+        stackNbt.putUuid("mount.uuid", mount.getUuid());
 
         stackNbt.putString("mount.type", Registry.ENTITY_TYPE.getId(mount.getType()).toString());
         stackNbt.put("mount.genericData", mountNbt);
@@ -89,6 +90,8 @@ public class NBTHelper {
             mountNbt.put("SaddleItem", saddleData);
         }
 
+        mount.setUuid(nbt.getUuid("mount.uuid"));
+        
         SummonMounts.LOGGER.info("Loading the data inside the mount");
         mount.readNbt(mountNbt);
         return mount;

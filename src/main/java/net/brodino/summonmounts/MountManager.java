@@ -196,7 +196,8 @@ public class MountManager {
                             Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
                             for (int i = 0; i < owner.getInventory().size(); i++) {
                                 ItemStack stack = owner.getInventory().getStack(i);
-                                if (stack.getItem() == summonItem && stack.getEnchantments().contains(Enchantments.LOYALTY)) {
+                                if (stack.getItem() == summonItem && stack.getNbt().getUuid("mount.uuid").equals(mount.getUuid())) {
+                                    SummonMounts.LOGGER.info("dnwoadoiwando naid aowidan wndpan wdona");
                                     owner.getInventory().setStack(i, updatedItem);
                                     break;
                                 }
@@ -235,7 +236,8 @@ public class MountManager {
                 Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
                 for (int i = 0; i < player.getInventory().size(); i++) {
                     ItemStack stack = player.getInventory().getStack(i);
-                    if (stack.getItem() == summonItem && stack.getEnchantments().contains(Enchantments.LOYALTY)) {
+                    if (stack.getItem() == summonItem && stack.getNbt().getUuid("mount.uuid").equals(mount.getUuid())) {
+                        SummonMounts.LOGGER.info("dnwoadoiwando naid aowidan wndpan wdona");
                         player.getInventory().setStack(i, updatedItem);
                         break;
                     }
@@ -294,7 +296,8 @@ public class MountManager {
             Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
             for (int i = 0; i < owner.getInventory().size(); i++) {
                 ItemStack stack = owner.getInventory().getStack(i);
-                if (stack.getItem() == summonItem && stack.getEnchantments().contains(Enchantments.LOYALTY)) {
+                if (stack.getItem() == summonItem && stack.getNbt().getUuid("mount.uuid").equals(mount.getUuid())) {
+                    SummonMounts.LOGGER.info("dnwoadoiwando naid aowidan wndpan wdona");
                     owner.getInventory().setStack(i, updatedItem);
                     break;
                 }
