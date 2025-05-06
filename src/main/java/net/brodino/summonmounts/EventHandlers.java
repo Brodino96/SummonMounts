@@ -90,10 +90,6 @@ public class EventHandlers {
 
         ItemStack stack = player.getStackInHand(hand);
 
-        if (world.isClient) {
-            return TypedActionResult.pass(stack);
-        }
-
         Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
 
         if (stack.getItem() != summonItem) {
@@ -119,10 +115,6 @@ public class EventHandlers {
     public static TypedActionResult<ItemStack> onItemUse(PlayerEntity player, World world, Hand hand) {
 
         ItemStack stack = player.getStackInHand(hand);
-
-        if (world.isClient) {
-            return TypedActionResult.pass(stack);
-        }
 
         Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
 
