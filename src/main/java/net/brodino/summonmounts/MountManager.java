@@ -189,7 +189,19 @@ public class MountManager {
 
                     if (owner != null) {
                         SummonMounts.LOGGER.info("Automatically dismissing mount for player: {}", owner.getName().toString());
-                        MountManager.dismissMount(owner);
+                        ItemStack updatedItem = MountManager.dismissMount(owner);
+                        
+                        // Find the summon item in player's inventory and replace it with the updated one
+                        if (!updatedItem.isEmpty()) {
+                            Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+                            for (int i = 0; i < owner.getInventory().size(); i++) {
+                                ItemStack stack = owner.getInventory().getStack(i);
+                                if (stack.getItem() == summonItem && stack.hasEnchantment(Enchantments.LOYALTY)) {
+                                    owner.getInventory().setStack(i, updatedItem);
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                 } else {
@@ -216,7 +228,19 @@ public class MountManager {
         Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
 
         if (mount != null && mount.isAlive()) {
-            MountManager.dismissMount(player);
+            ItemStack updatedItem = MountManager.dismissMount(player);
+            
+            // Save the updated item to player's inventory for when they reconnect
+            if (!updatedItem.isEmpty()) {
+                Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    ItemStack stack = player.getInventory().getStack(i);
+                    if (stack.getItem() == summonItem && stack.hasEnchantment(Enchantments.LOYALTY)) {
+                        player.getInventory().setStack(i, updatedItem);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -263,7 +287,24 @@ public class MountManager {
         }
         SummonMounts.LOGGER.info("Player: [{}] mount died", owner.getDisplayName());
 
-        NBTHelper.saveMountData(mount, MountManager.playerItems.get(ownerUUID));
+        ItemStack updatedItem = NBTHelper.saveMountData(mount, MountManager.playerItems.get(ownerUUID));
+        
+        // Find the summon item in player's inventory and replace it with the updated one
+        if (!updatedItem.isEmpty()) {
+            Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+            for (int i = 0; i < owner.getInventory().size(); i++) {
+                ItemStack stack = owner.getInventory().getStack(i);
+                if (stack.getItem() == summonItem && stack.hasEnchantment(Enchantments.LOYALTY)) {
+                    owner.getInventory().setStack(i, updatedItem);
+                    break;
+                }
+            }
+        }
+        
+        // Clean up the maps
+        playerMounts.remove(ownerUUID);
+        mountTimers.remove(entity.getUuid());
+        playerItems.remove(ownerUUID);}
     }
 
     /**
