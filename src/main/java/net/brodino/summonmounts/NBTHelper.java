@@ -6,37 +6,46 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 
 public class NBTHelper {
 
+    /**
+     * Saves the mount data inside the ItemStack
+     * @param entity The mount
+     * @param stack The ItemStack where to save data
+     * @return The ItemStack
+     */
     public static ItemStack saveMountData(Entity entity, ItemStack stack) {
         if (!(entity instanceof AbstractHorseEntity mount)) {
-            SummonMounts.LOGGER.info("Entity is not a Horse derivative");
+            SummonMounts.LOGGER.warn("Entity is not a Horse derivative");
             return stack;
         }
-
-        SummonMounts.LOGGER.info("Item nbt's before doing anything: {}", stack.getNbt().toString());
 
         NbtCompound stackNbt = new NbtCompound();
         NbtCompound mountNbt = new NbtCompound();
         mount.writeNbt(mountNbt);
-        SummonMounts.LOGGER.info("Created nbts");
+        SummonMounts.LOGGER.info("NBTs generated");
 
         if (mountNbt.contains("ArmorItems")) {
-            SummonMounts.LOGGER.info("Mount armor is: {}", mountNbt.get("ArmorItems").toString());
-            stackNbt.put("mount.armor", mountNbt.get("ArmorItems"));
+            NbtElement armorData = mountNbt.get("ArmorItems");
+            SummonMounts.LOGGER.info("Mount armor is: {}", armorData.toString());
+            stackNbt.put("mount.armor", armorData);
             mountNbt.remove("ArmorItems");
         }
 
         if (mountNbt.contains("SaddleItem")) {
-            SummonMounts.LOGGER.info("Mount saddle is: {}", mountNbt.get("SaddleItem").toString());
-            stackNbt.put("mount.saddle", mountNbt.getCompound("SaddleItem"));
+            NbtElement saddleData = mountNbt.get("SaddleItem");
+            SummonMounts.LOGGER.info("Mount saddle is: {}", saddleData.toString());
+            stackNbt.put("mount.saddle", saddleData);
             mountNbt.remove("SaddleItem");
         }
 
         if (mount.getCustomName() != null) {
-            stackNbt.putString("mount.name", mount.getCustomName().toString());
+            String customName = mount.getCustomName().toString();
+            SummonMounts.LOGGER.info(customName);
+            stackNbt.putString("mount.name", customName);
         }
 
         stackNbt.putUuid("mount.owner", ((AbstractHorseEntity) mount).getOwnerUuid());
@@ -47,28 +56,40 @@ public class NBTHelper {
         stack.setNbt(stackNbt);
         stack.addEnchantment(Enchantments.LOYALTY, 1);
 
-        SummonMounts.LOGGER.info("Item nbt's after doing everything: {}", stack.getNbt().toString());
-
         return stack;
 
     }
 
+    /**
+     * Loading the mount data from the item NBTs
+     * @param mount The mount
+     * @param nbt Data
+     * @return The mount
+     */
     public static Entity loadMountData(AbstractHorseEntity mount, NbtCompound nbt) {
 
+        SummonMounts.LOGGER.info("Starting to load mount data");
+
         if (!nbt.contains("mount.genericData")) {
+            SummonMounts.LOGGER.warn("Item didn't have the correct data");
             return mount;
         }
 
         NbtCompound mountNbt = nbt.getCompound("mount.genericData");
 
         if (nbt.contains("mount.armor")) {
-            mountNbt.put("ArmorItems", nbt.getCompound("mount.armor"));
+            NbtElement armorData = nbt.get("mount.armor");
+            SummonMounts.LOGGER.info("Item has this armor saved: {}", armorData.toString());
+            mountNbt.put("ArmorItems", armorData);
         }
 
         if (nbt.contains("mount.saddle")) {
-            mountNbt.put("SaddleItem", nbt.getCompound("mount.saddle"));
+            NbtElement saddleData = nbt.get("mount.saddle");
+            SummonMounts.LOGGER.info("Item has this saddle saved: {}", saddleData.toString());
+            mountNbt.put("SaddleItem", saddleData);
         }
 
+        SummonMounts.LOGGER.info("Loading the data inside the mount");
         mount.readNbt(mountNbt);
         return mount;
     }
