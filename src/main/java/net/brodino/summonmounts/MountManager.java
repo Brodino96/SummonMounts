@@ -107,26 +107,31 @@ public class MountManager {
         UUID playerUUID = player.getUuid();
 
         if (!playerMounts.containsKey(playerUUID)) {
+            SummonMounts.LOGGER.info("Player had no mounts");
             return ItemStack.EMPTY;
         }
 
         UUID mountUUID = playerMounts.get(playerUUID);
 
         Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
-        if (mount != null && mount.isAlive()) {
-            ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID));
-
-            mount.discard();
-            player.sendMessage(Text.literal("La tua cavalcatura è stata richiamata"), true);
-
-
-            playerMounts.remove(playerUUID);
-            mountTimers.remove(mountUUID);
-            playerItems.remove(playerUUID);
-
-            return output;
+        if (mount == null || !mount.isAlive()) {
+            SummonMounts.LOGGER.error("Mount doesn't exists or is dead");
+            return ItemStack.EMPTY;
         }
-        return ItemStack.EMPTY;
+
+        SummonMounts.LOGGER.info("Trying to save mount data");
+        ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID));
+
+        SummonMounts.LOGGER.info("Removing the mount from the world");
+        mount.discard();
+        player.sendMessage(Text.literal("La tua cavalcatura è stata richiamata"), true);
+
+
+        playerMounts.remove(playerUUID);
+        mountTimers.remove(mountUUID);
+        playerItems.remove(playerUUID);
+
+        return output;
     }
 
     public static void tickMounts() {
@@ -155,6 +160,7 @@ public class MountManager {
                     ServerPlayerEntity owner = SummonMounts.SERVER.getPlayerManager().getPlayer(playerUUID);
 
                     if (owner != null) {
+                        SummonMounts.LOGGER.info("Automatically dismissing mount for player: {}", owner.getName().toString());
                         MountManager.dismissMount(owner);
                     }
 
