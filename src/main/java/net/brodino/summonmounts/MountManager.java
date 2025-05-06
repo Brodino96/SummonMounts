@@ -196,7 +196,7 @@ public class MountManager {
                             Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
                             for (int i = 0; i < owner.getInventory().size(); i++) {
                                 ItemStack stack = owner.getInventory().getStack(i);
-                                if (stack.getItem() == summonItem && stack.hasEnchantment(Enchantments.LOYALTY)) {
+                                if (stack.getItem() == summonItem && stack.getEnchantments().contains(Enchantments.LOYALTY)) {
                                     owner.getInventory().setStack(i, updatedItem);
                                     break;
                                 }
@@ -235,7 +235,7 @@ public class MountManager {
                 Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
                 for (int i = 0; i < player.getInventory().size(); i++) {
                     ItemStack stack = player.getInventory().getStack(i);
-                    if (stack.getItem() == summonItem && stack.hasEnchantment(Enchantments.LOYALTY)) {
+                    if (stack.getItem() == summonItem && stack.getEnchantments().contains(Enchantments.LOYALTY)) {
                         player.getInventory().setStack(i, updatedItem);
                         break;
                     }
@@ -294,7 +294,7 @@ public class MountManager {
             Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
             for (int i = 0; i < owner.getInventory().size(); i++) {
                 ItemStack stack = owner.getInventory().getStack(i);
-                if (stack.getItem() == summonItem && stack.hasEnchantment(Enchantments.LOYALTY)) {
+                if (stack.getItem() == summonItem && stack.getEnchantments().contains(Enchantments.LOYALTY)) {
                     owner.getInventory().setStack(i, updatedItem);
                     break;
                 }
@@ -304,7 +304,7 @@ public class MountManager {
         // Clean up the maps
         playerMounts.remove(ownerUUID);
         mountTimers.remove(entity.getUuid());
-        playerItems.remove(ownerUUID);}
+        playerItems.remove(ownerUUID);
     }
 
     /**
