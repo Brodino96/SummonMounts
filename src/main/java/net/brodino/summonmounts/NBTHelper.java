@@ -6,6 +6,7 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.registry.Registry;
 
 public class NBTHelper {
@@ -16,7 +17,7 @@ public class NBTHelper {
      * @param stack The ItemStack where to save data
      * @return The ItemStack
      */
-    public static ItemStack saveMountData(Entity entity, ItemStack stack) {
+    public static ItemStack saveMountData(Entity entity, ItemStack stack, boolean dead) {
         if (!(entity instanceof AbstractHorseEntity mount)) {
             SummonMounts.LOGGER.warn("Entity is not a Horse derivative");
             return stack;
@@ -27,18 +28,33 @@ public class NBTHelper {
         mount.writeNbt(mountNbt);
         SummonMounts.LOGGER.info("NBTs generated");
 
+        if (dead) {
+            mountNbt.remove("Health");
+
+            mountNbt.remove("SaddleItem");
+            mountNbt.remove("ArmorItems");
+            mountNbt.remove("ArmorItem");
+
+            SummonMounts.LOGGER.warn(mountNbt.toString());
+            SummonMounts.LOGGER.info("Removed all items and reset health");
+        }
+
         if (mountNbt.contains("ArmorItems")) {
             NbtElement armorData = mountNbt.get("ArmorItems");
-            SummonMounts.LOGGER.info("Mount armor is: {}", armorData.toString());
-            stackNbt.put("mount.armor", armorData);
-            mountNbt.remove("ArmorItems");
+            if (armorData != null) {
+                SummonMounts.LOGGER.info("Mount armor is: {}", armorData.toString());
+                stackNbt.put("mount.armor", armorData);
+                mountNbt.remove("ArmorItems");
+            }
         }
 
         if (mountNbt.contains("SaddleItem")) {
             NbtElement saddleData = mountNbt.get("SaddleItem");
-            SummonMounts.LOGGER.info("Mount saddle is: {}", saddleData.toString());
-            stackNbt.put("mount.saddle", saddleData);
-            mountNbt.remove("SaddleItem");
+            if (saddleData != null) {
+                SummonMounts.LOGGER.info("Mount saddle is: {}", saddleData.toString());
+                stackNbt.put("mount.saddle", saddleData);
+                mountNbt.remove("SaddleItem");
+            }
         }
 
         if (mount.getCustomName() != null) {
@@ -47,7 +63,7 @@ public class NBTHelper {
             stackNbt.putString("mount.name", customName);
         }
 
-        stackNbt.putUuid("mount.owner", ((AbstractHorseEntity) mount).getOwnerUuid());
+        stackNbt.putUuid("mount.owner", mount.getOwnerUuid());
         stackNbt.putUuid("mount.uuid", mount.getUuid());
 
         stackNbt.putString("mount.type", Registry.ENTITY_TYPE.getId(mount.getType()).toString());
