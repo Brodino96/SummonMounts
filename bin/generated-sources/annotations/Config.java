@@ -11,8 +11,9 @@ import java.util.function.Consumer;
 public class Config extends ConfigWrapper<net.brodino.summonmounts.ConfigHelper> {
 
     private final Option<java.lang.String> summonItem = this.optionForKey(new Option.Key("summonItem"));
-    private final Option<java.lang.String[]> allowedSummons = this.optionForKey(new Option.Key("allowedSummons"));
+    private final Option<java.util.ArrayList<java.lang.String>> allowedSummons = this.optionForKey(new Option.Key("allowedSummons"));
     private final Option<java.lang.Integer> despawnTime = this.optionForKey(new Option.Key("despawnTime"));
+    private final Option<java.util.ArrayList<java.lang.String>> allowedDimensions = this.optionForKey(new Option.Key("allowedDimensions"));
 
     private Config() {
         super(net.brodino.summonmounts.ConfigHelper.class);
@@ -32,11 +33,11 @@ public class Config extends ConfigWrapper<net.brodino.summonmounts.ConfigHelper>
         summonItem.set(value);
     }
 
-    public java.lang.String[] allowedSummons() {
+    public java.util.ArrayList<java.lang.String> allowedSummons() {
         return allowedSummons.value();
     }
 
-    public void allowedSummons(java.lang.String[] value) {
+    public void allowedSummons(java.util.ArrayList<java.lang.String> value) {
         allowedSummons.set(value);
     }
 
@@ -46,6 +47,14 @@ public class Config extends ConfigWrapper<net.brodino.summonmounts.ConfigHelper>
 
     public void despawnTime(java.lang.Integer value) {
         despawnTime.set(value);
+    }
+
+    public java.util.ArrayList<java.lang.String> allowedDimensions() {
+        return allowedDimensions.value();
+    }
+
+    public void allowedDimensions(java.util.ArrayList<java.lang.String> value) {
+        allowedDimensions.set(value);
     }
 
 
