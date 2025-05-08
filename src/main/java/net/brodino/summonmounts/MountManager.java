@@ -14,11 +14,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class MountManager {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
@@ -74,7 +76,7 @@ public class MountManager {
             return false;
         }
 
-        NBTHelper.saveMountData(mount, stack);
+        NBTHelper.saveMountData(mount, stack, false);
         mount.discard();
 
         SummonMounts.LOGGER.info("Player: [{}] successfully bound a mount", playerName);
@@ -120,7 +122,7 @@ public class MountManager {
         world.spawnEntity(mount);
 
         playerMounts.put(playerUuid, mount.getUuid());
-        playerItems.put(playerUuid, stack.copy());
+        playerItems.put(playerUuid, stack);
 
         SummonMounts.LOGGER.info("Player: [{}] successfully summoned his mount", playerName);
         player.sendMessage(Text.literal("Cavalcatura evocata"), true);
@@ -147,12 +149,11 @@ public class MountManager {
             return ItemStack.EMPTY;
         }
 
-        ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID));
+        ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID), false);
 
         mount.discard();
         SummonMounts.LOGGER.info("Player: [{}] mount got removed from the world", playerName);
         player.sendMessage(Text.literal("La tua cavalcatura è stata richiamata"), true);
-
 
         playerMounts.remove(playerUUID);
         mountTimers.remove(mountUUID);
@@ -188,20 +189,7 @@ public class MountManager {
 
                     if (owner != null) {
                         SummonMounts.LOGGER.info("Automatically dismissing mount for player: {}", owner.getName().toString());
-                        ItemStack updatedItem = MountManager.dismissMount(owner);
-                        
-                        // Find the summon item in player's inventory and replace it with the updated one
-                        if (!updatedItem.isEmpty()) {
-                            Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
-                            for (int i = 0; i < owner.getInventory().size(); i++) {
-                                ItemStack stack = owner.getInventory().getStack(i);
-                                if (stack.getItem() == summonItem && stack.getNbt().getUuid("mount.uuid").equals(mount.getUuid())) {
-                                    SummonMounts.LOGGER.info("dnwoadoiwando naid aowidan wndpan wdona");
-                                    owner.getInventory().setStack(i, updatedItem);
-                                    break;
-                                }
-                            }
-                        }
+                        MountManager.dismissMount(owner);
                     }
 
                 } else {
@@ -228,20 +216,7 @@ public class MountManager {
         Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
 
         if (mount != null && mount.isAlive()) {
-            ItemStack updatedItem = MountManager.dismissMount(player);
-            
-            // Save the updated item to player's inventory for when they reconnect
-            if (!updatedItem.isEmpty()) {
-                Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
-                for (int i = 0; i < player.getInventory().size(); i++) {
-                    ItemStack stack = player.getInventory().getStack(i);
-                    if (stack.getItem() == summonItem && stack.getNbt().getUuid("mount.uuid").equals(mount.getUuid())) {
-                        SummonMounts.LOGGER.info("dnwoadoiwando naid aowidan wndpan wdona");
-                        player.getInventory().setStack(i, updatedItem);
-                        break;
-                    }
-                }
-            }
+            MountManager.dismissMount(player);
         }
     }
 
@@ -274,7 +249,6 @@ public class MountManager {
             return;
         }
 
-
         AbstractHorseEntity mount = (AbstractHorseEntity) entity;
         UUID ownerUUID = mount.getOwnerUuid();
 
@@ -288,20 +262,7 @@ public class MountManager {
         }
         SummonMounts.LOGGER.info("Player: [{}] mount died", owner.getDisplayName());
 
-        ItemStack updatedItem = NBTHelper.saveMountData(mount, MountManager.playerItems.get(ownerUUID));
-        
-        // Find the summon item in player's inventory and replace it with the updated one
-        if (!updatedItem.isEmpty()) {
-            Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
-            for (int i = 0; i < owner.getInventory().size(); i++) {
-                ItemStack stack = owner.getInventory().getStack(i);
-                if (stack.getItem() == summonItem && stack.getNbt().getUuid("mount.uuid").equals(mount.getUuid())) {
-                    SummonMounts.LOGGER.info("dnwoadoiwando naid aowidan wndpan wdona");
-                    owner.getInventory().setStack(i, updatedItem);
-                    break;
-                }
-            }
-        }
+        NBTHelper.saveMountData(mount, MountManager.playerItems.get(ownerUUID), true);
         
         // Clean up the maps
         playerMounts.remove(ownerUUID);
@@ -350,20 +311,39 @@ public class MountManager {
             return TypedActionResult.pass(stack);
         }
 
-        if (stack.hasNbt() && stack.getNbt().contains("mount.genericData")) {
-            UUID playerUUID = player.getUuid();
+        if (!SummonMounts.CONFIG.allowedDimensions().contains(player.getWorld().getRegistryKey().getValue().toString())) {
+            player.sendMessage(Text.literal("Non puoi farlo sir"), true);
+            return TypedActionResult.pass(stack);
+        }
 
-            if (MountManager.hasActiveMount(playerUUID, stack)) {
-                ItemStack out = MountManager.dismissMount(player);
-                if (!out.equals(ItemStack.EMPTY)) {
-                    player.setStackInHand(hand, out);
-                    return TypedActionResult.success(stack);
-                }
-            } else {
-                Entity mount = MountManager.summonMount(player, stack);
-                if (mount != null) {
-                    return TypedActionResult.success(stack);
-                }
+        if (!stack.hasNbt()) {
+            player.sendMessage(Text.literal("Questo oggetto non è legato ad alcuna cavalcatura"), true);
+        }
+
+        NbtCompound nbt = stack.getNbt();
+        if (!nbt.contains("mount.genericData") || !nbt.contains("mount.uuid")) {
+            player.sendMessage(Text.literal("Questo oggetto non è legato ad alcuna cavalcatura"), true);
+            return TypedActionResult.pass(stack);
+        }
+
+        UUID playerUUID = player.getUuid();
+
+        if (!MountManager.hasActiveMount(playerUUID, stack)) {
+            Entity mount = MountManager.summonMount(player, stack);
+            if (mount != null) {
+                return TypedActionResult.success(stack);
+            }
+        } else {
+
+            if (!playerMounts.get(playerUUID).equals(nbt.getUuid("mount.uuid"))) {
+                player.sendMessage(Text.of("Questo oggetto non è legato alla cavalcatura che hai evocato"), true);
+                return TypedActionResult.pass(stack);
+            }
+
+            ItemStack out = MountManager.dismissMount(player);
+            if (!out.equals(ItemStack.EMPTY)) {
+                player.setStackInHand(hand, out);
+                return TypedActionResult.success(stack);
             }
         }
 
