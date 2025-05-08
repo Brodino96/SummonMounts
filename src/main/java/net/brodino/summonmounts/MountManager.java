@@ -14,13 +14,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class MountManager {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
@@ -28,6 +26,16 @@ public class MountManager {
     private static final Map<UUID, Integer> mountTimers = new HashMap<>();
     private static final int DESPAWN_TIMER = SummonMounts.CONFIG.despawnTime() * 20;
 
+
+    public static void contractUse(PlayerEntity source, PlayerEntity target, AbstractHorseEntity mount) {
+        ItemStack stack = dismissMount(source);
+        source.getInventory().removeOne(stack);
+        boolean inserted = target.getInventory().insertStack(stack);
+
+        if (!inserted && !stack.isEmpty()) {
+            target.dropItem(stack, false);
+        }
+    }
 
     /**
      * Method to associate a clean mount to an item
