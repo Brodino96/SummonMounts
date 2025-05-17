@@ -17,15 +17,14 @@ public class NBTHelper {
      * @return The ItemStack
      */
     public static ItemStack saveMountData(Entity entity, ItemStack stack, boolean dead) {
+
         if (!(entity instanceof AbstractHorseEntity mount)) {
-            SummonMounts.LOGGER.warn("Entity is not a Horse derivative");
             return stack;
         }
 
         NbtCompound stackNbt = new NbtCompound();
         NbtCompound mountNbt = new NbtCompound();
         mount.writeNbt(mountNbt);
-        SummonMounts.LOGGER.info("NBTs generated");
 
         if (dead) {
             mountNbt.remove("Health");
@@ -33,15 +32,11 @@ public class NBTHelper {
             mountNbt.remove("SaddleItem");
             mountNbt.remove("ArmorItems");
             mountNbt.remove("ArmorItem");
-
-            SummonMounts.LOGGER.warn(mountNbt.toString());
-            SummonMounts.LOGGER.info("Removed all items and reset health");
         }
 
         if (mountNbt.contains("ArmorItems")) {
             NbtElement armorData = mountNbt.get("ArmorItems");
             if (armorData != null) {
-                SummonMounts.LOGGER.info("Mount armor is: {}", armorData.toString());
                 stackNbt.put("mount.armor", armorData);
                 mountNbt.remove("ArmorItems");
             }
@@ -50,7 +45,6 @@ public class NBTHelper {
         if (mountNbt.contains("SaddleItem")) {
             NbtElement saddleData = mountNbt.get("SaddleItem");
             if (saddleData != null) {
-                SummonMounts.LOGGER.info("Mount saddle is: {}", saddleData.toString());
                 stackNbt.put("mount.saddle", saddleData);
                 mountNbt.remove("SaddleItem");
             }
@@ -58,7 +52,6 @@ public class NBTHelper {
 
         if (mount.getCustomName() != null) {
             String customName = mount.getCustomName().toString();
-            SummonMounts.LOGGER.info(customName);
             stackNbt.putString("mount.name", customName);
         }
 
@@ -83,10 +76,7 @@ public class NBTHelper {
      */
     public static Entity loadMountData(AbstractHorseEntity mount, NbtCompound nbt) {
 
-        SummonMounts.LOGGER.info("Starting to load mount data");
-
         if (!nbt.contains("mount.genericData")) {
-            SummonMounts.LOGGER.warn("Item didn't have the correct data");
             return mount;
         }
 
@@ -94,19 +84,16 @@ public class NBTHelper {
 
         if (nbt.contains("mount.armor")) {
             NbtElement armorData = nbt.get("mount.armor");
-            SummonMounts.LOGGER.info("Item has this armor saved: {}", armorData.toString());
             mountNbt.put("ArmorItems", armorData);
         }
 
         if (nbt.contains("mount.saddle")) {
             NbtElement saddleData = nbt.get("mount.saddle");
-            SummonMounts.LOGGER.info("Item has this saddle saved: {}", saddleData.toString());
             mountNbt.put("SaddleItem", saddleData);
         }
 
         mount.setUuid(nbt.getUuid("mount.uuid"));
-        
-        SummonMounts.LOGGER.info("Loading the data inside the mount");
+
         mount.readNbt(mountNbt);
         return mount;
     }

@@ -38,7 +38,6 @@ public class DropItemMixin {
 
         UUID playerUUID = player.getUuid();
         if (MountManager.hasActiveMount(playerUUID, stack)) {
-            player.sendMessage(Text.literal("You cannot drop this item while your mount is summoned. Unsummon your mount first."), true);
             cir.setReturnValue(false);
             cir.cancel();
             player.networkHandler.sendPacket(new InventoryS2CPacket(player.currentScreenHandler.syncId, player.currentScreenHandler.getRevision(), player.currentScreenHandler.getStacks(), player.currentScreenHandler.getCursorStack()));

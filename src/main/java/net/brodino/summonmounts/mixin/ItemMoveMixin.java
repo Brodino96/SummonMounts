@@ -45,7 +45,6 @@ public class ItemMoveMixin {
 
         UUID playerUUID = player.getUuid();
         if (MountManager.hasActiveMount(playerUUID, stack) && !(screenHandler instanceof PlayerScreenHandler)) {
-            player.sendMessage(Text.literal("Non puoi abbandonare l'anima della tua cavalcatura"), true);
             ci.cancel();
         }
 
