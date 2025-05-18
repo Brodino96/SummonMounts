@@ -287,15 +287,15 @@ public class MountManager {
         ItemStack stack = player.getStackInHand(hand);
         Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
 
+        if (stack.getItem() != summonItem) {
+            return TypedActionResult.pass(stack);
+        }
+
         if (player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             return TypedActionResult.fail(stack);
         }
 
         player.getItemCooldownManager().set(stack.getItem(), SummonMounts.CONFIG.itemCooldown() * 20);
-
-        if (stack.getItem() != summonItem) {
-            return TypedActionResult.pass(stack);
-        }
 
         if (!SummonMounts.CONFIG.allowedDimensions().contains(player.getWorld().getRegistryKey().getValue().toString())) {
             player.sendMessage(Text.literal( SummonMounts.CONFIG.locales().itemUse.wrongDimension), true);
