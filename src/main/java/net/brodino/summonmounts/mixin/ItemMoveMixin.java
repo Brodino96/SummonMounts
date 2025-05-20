@@ -44,7 +44,7 @@ public class ItemMoveMixin {
         }
 
         UUID playerUUID = player.getUuid();
-        if (MountManager.hasActiveMount(playerUUID, stack) && !(screenHandler instanceof PlayerScreenHandler)) {
+        if (MountManager.hasActiveMount(playerUUID, stack)) {
             ci.cancel();
         }
 
