@@ -5,10 +5,8 @@ import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,6 +43,7 @@ public class ItemMoveMixin {
 
         UUID playerUUID = player.getUuid();
         if (MountManager.hasActiveMount(playerUUID, stack)) {
+            SummonMounts.LOGGER.info("{} tried to move a bound item in his inventory", player.getDisplayName().getString());
             ci.cancel();
         }
 

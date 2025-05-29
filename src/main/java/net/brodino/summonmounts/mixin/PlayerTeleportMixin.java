@@ -1,11 +1,10 @@
 package net.brodino.summonmounts.mixin;
 
 import net.brodino.summonmounts.MountManager;
+import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
-import net.minecraft.server.command.TeleportCommand;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,6 +27,8 @@ public class PlayerTeleportMixin {
         if (distance < 10) {
             return;
         }
+
+        SummonMounts.LOGGER.info("{} teleported more than 10 blocks", this.player.getDisplayName().getString());
         MountManager.playerDisconnected(this.player);
     }
 }

@@ -27,7 +27,7 @@ public class TameEntityMixin {
     private void bondWithPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
 
         String playerName = player.getDisplayName().getString();
-        SummonMounts.LOGGER.info("{} has bond with a mount", playerName);
+        SummonMounts.LOGGER.info("{} has tamed a mount", playerName);
 
         AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
         

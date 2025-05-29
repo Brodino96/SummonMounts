@@ -19,6 +19,7 @@ public class DimensionChangeMixin {
 
     @Inject(method = "removePlayer", at = @At("HEAD"))
     private void removePlayer(ServerPlayerEntity player, Entity.RemovalReason reason, CallbackInfo ci) {
+        SummonMounts.LOGGER.info("{} changed dimension", player.getDisplayName().getString());
         MountManager.playerDisconnected(player);
     }
 }

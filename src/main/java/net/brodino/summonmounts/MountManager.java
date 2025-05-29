@@ -37,8 +37,6 @@ public class MountManager {
 
         String playerName = player.getDisplayName().getString();
 
-        SummonMounts.LOGGER.info("{} is trying to bind a mount to an item", playerName);
-
         if (!(entity instanceof AbstractHorseEntity)) {
             return false;
         }
@@ -84,8 +82,6 @@ public class MountManager {
 
         String playerName = player.getDisplayName().getString();
 
-        SummonMounts.LOGGER.info("{} is trying to spawn a mount", playerName);
-
         NbtCompound nbt = stack.getNbt();
         if (nbt == null || !nbt.contains("mount.type")) {
             player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().spawn.noSavedData), true);
@@ -121,7 +117,6 @@ public class MountManager {
     public static ItemStack dismissMount(PlayerEntity player) {
 
         String playerName = player.getDisplayName().getString();
-        SummonMounts.LOGGER.info("Dismissing {}'s mount", playerName);
 
         UUID playerUUID = player.getUuid();
 
