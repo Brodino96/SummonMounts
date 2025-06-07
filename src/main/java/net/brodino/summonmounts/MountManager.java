@@ -9,9 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -270,6 +272,24 @@ public class MountManager {
 
     }
 
+    public static ActionResult itemUsedOnABlock(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
+
+        ItemStack stack = player.getStackInHand(hand);
+
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+
+        if (!stack.getItem().equals(summonItem)) {
+            return ActionResult.PASS;
+        }
+
+        if (hasActiveMount(player.getUuid(), stack)) {
+            player.sendMessage(Text.literal("Non puoi farlo"), true);
+            return ActionResult.FAIL;
+        }
+
+        return ActionResult.PASS;
+    }
+
     /**
      * Handles item use (summoning or dismissing mounts)
      * @param player The player using the item
@@ -312,7 +332,7 @@ public class MountManager {
         if (!MountManager.hasActiveMount(playerUUID, stack)) {
             Entity mount = MountManager.summonMount(player, stack);
             if (mount != null) {
-                return TypedActionResult.success(stack);
+                return TypedActionResult.pass(stack);
             }
         } else {
 
@@ -324,7 +344,7 @@ public class MountManager {
             ItemStack out = MountManager.dismissMount(player);
             if (!out.equals(ItemStack.EMPTY)) {
                 player.setStackInHand(hand, out);
-                return TypedActionResult.success(stack);
+                return TypedActionResult.pass(stack);
             }
         }
 
