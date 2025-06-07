@@ -3,6 +3,7 @@ package net.brodino.summonmounts;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -53,6 +54,9 @@ public class EventHandlers {
         // Register item use callbacks
         SummonMounts.LOGGER.info("Registering item use event");
         UseItemCallback.EVENT.register(MountManager::onItemUse);
+
+        SummonMounts.LOGGER.info("Registering item use on a block event");
+        UseBlockCallback.EVENT.register(MountManager::itemUsedOnABlock);
     }
     
     /**
