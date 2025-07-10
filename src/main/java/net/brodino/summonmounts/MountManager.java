@@ -105,6 +105,8 @@ public class MountManager {
         Entity mount = NBTHelper.loadMountData((AbstractHorseEntity) entity, nbt);
 
         mount.setPosition(player.getX(), player.getY(), player.getZ());
+        mount.setVelocity(0,0,0);
+        mount.fallDistance = 0;
         world.spawnEntity(mount);
 
         playerMounts.put(playerUuid, mount.getUuid());
