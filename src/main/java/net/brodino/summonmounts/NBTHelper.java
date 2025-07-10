@@ -22,6 +22,10 @@ public class NBTHelper {
             return stack;
         }
 
+        if (stack == null) {
+            return null;
+        }
+
         NbtCompound stackNbt = new NbtCompound();
         NbtCompound mountNbt = new NbtCompound();
         mount.writeNbt(mountNbt);
