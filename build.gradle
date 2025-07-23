@@ -19,6 +19,17 @@ fabricApi {
 
 repositories {
     maven { url 'https://maven.wispforest.io' }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 loom {
@@ -33,6 +44,9 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
+
+    modImplementation "maven.modrinth:adventurez:V4ZECTUP"
+    modImplementation "maven.modrinth:cloth-config:EXrxCjl6"
 }
 
 processResources {

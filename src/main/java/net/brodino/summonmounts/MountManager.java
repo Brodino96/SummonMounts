@@ -1,5 +1,7 @@
 package net.brodino.summonmounts;
 
+import net.adventurez.AdventureMain;
+import net.adventurez.init.SoundInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -7,7 +9,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.command.ExecuteCommand;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -330,6 +334,8 @@ public class MountManager {
         }
 
         UUID playerUUID = player.getUuid();
+
+        player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.FLUTE_CALL_EVENT, SoundCategory.AMBIENT, 1f, 1f);
 
         if (!MountManager.hasActiveMount(playerUUID, stack)) {
             Entity mount = MountManager.summonMount(player, stack);
