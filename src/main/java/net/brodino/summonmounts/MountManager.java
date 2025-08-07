@@ -1,5 +1,7 @@
 package net.brodino.summonmounts;
 
+import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
+import fabric.me.toastymop.combatlog.util.TagData;
 import net.adventurez.AdventureMain;
 import net.adventurez.init.SoundInit;
 import net.minecraft.entity.Entity;
@@ -310,6 +312,10 @@ public class MountManager {
 
         if (stack.getItem() != summonItem) {
             return TypedActionResult.pass(stack);
+        }
+
+        if (TagData.getCombat((IEntityDataSaver) player)) {
+            return TypedActionResult.fail(stack);
         }
 
         if (player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
