@@ -30,6 +30,7 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+    maven { url "https://cursemaven.com" }
 }
 
 loom {
@@ -47,6 +48,8 @@ dependencies {
 
     modImplementation "maven.modrinth:adventurez:V4ZECTUP"
     modImplementation "maven.modrinth:cloth-config:EXrxCjl6"
+
+    modImplementation("curse.maven:combatlog-665758:${project.combat_log_version}")
 }
 
 processResources {
