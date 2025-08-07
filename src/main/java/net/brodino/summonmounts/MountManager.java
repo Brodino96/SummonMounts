@@ -315,6 +315,7 @@ public class MountManager {
         }
 
         if (TagData.getCombat((IEntityDataSaver) player)) {
+            player.sendMessage(Text.literal( SummonMounts.CONFIG.locales().itemUse.inCombat), true);
             return TypedActionResult.fail(stack);
         }
 

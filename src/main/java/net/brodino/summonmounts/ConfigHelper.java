@@ -51,6 +51,7 @@ public class ConfigHelper {
             public String wrongDimension = "La tua cavalcatura si rifiuta di essere evocata";
             public String notBounded = "Questo oggetto non è legato ad alcuna cavalcatura";
             public String wrongItem = "Questo oggetto non è legato alla cavalcatura che hai evocato";
+            public String inCombat = "Non puoi evocare una cavalcatura durante un combattimento";
         }
     }
 }
