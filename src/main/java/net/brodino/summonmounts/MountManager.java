@@ -2,7 +2,6 @@ package net.brodino.summonmounts;
 
 import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
 import fabric.me.toastymop.combatlog.util.TagData;
-import net.adventurez.AdventureMain;
 import net.adventurez.init.SoundInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -11,7 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.command.ExecuteCommand;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
@@ -77,7 +75,7 @@ public class MountManager {
         }
 
         NBTHelper.saveMountData(mount, stack, false);
-        NBTHelper.setCustomLore(stack, "Contiene: " + mount.getEntityName());
+        NBTHelper.setCustomLore(stack, "Contiene: " + mount.getDisplayName().getString());
         mount.discard();
 
         player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.success), true);
