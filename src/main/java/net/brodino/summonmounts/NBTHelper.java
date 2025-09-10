@@ -15,7 +15,9 @@ public class NBTHelper {
 
     public static void setCustomLore(ItemStack stack, String description) {
 
-        if (stack == null || description == null) return stack;
+        if (stack == null || description == null) {
+            return;
+        }
 
         NbtList loreList = new NbtList();
 
