@@ -13,7 +13,7 @@ import net.minecraft.util.registry.Registry;
 
 public class NBTHelper {
 
-    public static ItemStack setCustomLore(ItemStack stack, String description) {
+    public static void setCustomLore(ItemStack stack, String description) {
 
         if (stack == null || description == null) return stack;
 
@@ -24,8 +24,6 @@ public class NBTHelper {
 
         // Attach the lore to the "display" tag
         stack.getOrCreateSubNbt("display").put("Lore", loreList);
-
-        return stack;
     }
 
     /**
