@@ -77,6 +77,7 @@ public class MountManager {
         }
 
         NBTHelper.saveMountData(mount, stack, false);
+        NBTHelper.setCustomLore(stack, "Contiene: " + mount.getEntityName());
         mount.discard();
 
         player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.success), true);
