@@ -6,9 +6,25 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
+import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 
 public class NBTHelper {
+
+    public static void setCustomLore(ItemStack stack, String description) {
+
+        if (stack == null || description == null) {
+            return;
+        }
+
+        NbtList loreList = new NbtList();
+
+        loreList.add(NbtString.of(Text.Serializer.toJson(Text.of(description))));
+
+        stack.getOrCreateSubNbt("display").put("Lore", loreList);
+    }
 
     /**
      * Saves the mount data inside the ItemStack
