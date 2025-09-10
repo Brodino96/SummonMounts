@@ -17,12 +17,10 @@ public class NBTHelper {
 
         if (stack == null || description == null) return stack;
 
-        // Create a lore list
         NbtList loreList = new NbtList();
-        // Lore entries must be JSON-serialized Text components
+
         loreList.add(NbtString.of(Text.Serializer.toJson(Text.of(description))));
 
-        // Attach the lore to the "display" tag
         stack.getOrCreateSubNbt("display").put("Lore", loreList);
     }
 
