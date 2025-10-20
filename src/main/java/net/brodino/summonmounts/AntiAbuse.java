@@ -40,7 +40,7 @@ public class AntiAbuse {
     }
 
 
-    private static boolean canHeDoThat(PlayerEntity player, ItemStack stack) {
+    public static boolean canHeDoThat(PlayerEntity player, ItemStack stack) {
         if (!player.hasVehicle()) {
             return true;
         }
@@ -63,7 +63,7 @@ public class AntiAbuse {
         return true;
     }
 
-    private static void notifyPlayer(PlayerEntity player) {
+    public static void notifyPlayer(PlayerEntity player) {
         player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().itemUse.whileRiding), true);
     }
 }

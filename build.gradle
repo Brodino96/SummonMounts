@@ -67,6 +67,8 @@ dependencies {
     implementation "com.electronwill.night-config:toml:3.6.4"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
     modImplementation "maven.modrinth:combatlog:${project.combat_log_version}"
+
+    //modImplementation("maven.modrinth:spell-engine:${project.spell_engine_version}")
 }
 
 processResources {
