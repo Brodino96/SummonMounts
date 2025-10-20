@@ -19,7 +19,9 @@ public class SummonMounts implements ModInitializer {
         LOGGER.info("Initializing SummonMounts");
         
         // Register event handlers
-        EventHandlers.register();
+        EventHandlers.initialize();
+
+        AntiAbuse.initialize();
         
         // Register commands
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

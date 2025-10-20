@@ -18,7 +18,10 @@ fabricApi {
 }
 
 repositories {
+    // Owolib
     maven { url 'https://maven.wispforest.io' }
+
+    // Modrinth
     exclusiveContent {
         forRepository {
             maven {
@@ -30,7 +33,16 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+
+    // CurseForge
     maven { url "https://cursemaven.com" }
+
+    // Cardinal components api
+    maven {
+        name = "Ladysnake Mods"
+        url = 'https://maven.ladysnake.org/releases'
+    }
+    mavenCentral()
 }
 
 loom {
@@ -44,12 +56,17 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
     annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
 
-    modImplementation "maven.modrinth:adventurez:V4ZECTUP"
-    modImplementation "maven.modrinth:cloth-config:EXrxCjl6"
+    modImplementation "maven.modrinth:cloth-config:${project.cloth_config_version}"
+    modImplementation "maven.modrinth:adventurez:${project.adventurez_version}"
 
-    modImplementation("curse.maven:combatlog-665758:${project.combat_log_version}")
+    //modImplementation "maven.modrinth:cardinal-components-api:${project.cardinal_components_api_version}"
+    implementation "com.electronwill.night-config:core:3.6.4"
+    implementation "com.electronwill.night-config:toml:3.6.4"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
+    modImplementation "maven.modrinth:combatlog:${project.combat_log_version}"
 }
 
 processResources {
