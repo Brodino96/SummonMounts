@@ -13,6 +13,8 @@ public class ConfigHelper {
     public ArrayList<String> allowedDimensions = new ArrayList<>();
     public int despawnTime =  30;
 
+    public ArrayList<String> blockedItems = new ArrayList<>();
+
     public Locales locales = new Locales();
 
     public ConfigHelper() {
@@ -21,6 +23,9 @@ public class ConfigHelper {
         this.allowedSummons.add("minecraft:donkey");
 
         this.allowedDimensions.add("minecraft:overworld");
+
+        this.blockedItems.add("minecraft:diamond_sword");
+        this.blockedItems.add("minecraft:golden_apple");
     }
 
     public static class Locales {
@@ -52,6 +57,7 @@ public class ConfigHelper {
             public String notBounded = "Questo oggetto non è legato ad alcuna cavalcatura";
             public String wrongItem = "Questo oggetto non è legato alla cavalcatura che hai evocato";
             public String inCombat = "Non puoi evocare una cavalcatura durante un combattimento";
+            public String whileRiding = "Non puoi usare questo oggetto mentre sei su una cavalcatura";
         }
     }
 }

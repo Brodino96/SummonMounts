@@ -3,6 +3,7 @@ package net.brodino.summonmounts;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -10,6 +11,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
@@ -57,6 +59,29 @@ public class EventHandlers {
 
         SummonMounts.LOGGER.info("Registering item use on a block event");
         UseBlockCallback.EVENT.register(MountManager::itemUsedOnABlock);
+
+        // Abuse prevention
+        UseItemCallback.EVENT.register(((playerEntity, world, hand) -> {
+            SummonMounts.LOGGER.error("USE");
+            ItemStack stack = playerEntity.getStackInHand(hand);
+            if (Abuse.canHeDoThat(playerEntity, stack)) {
+                return TypedActionResult.pass(stack);
+            } else {
+                playerEntity.sendMessage(Text.literal(SummonMounts.CONFIG.locales().itemUse.whileRiding), true);
+                return TypedActionResult.fail(stack);
+            }
+        }));
+
+        AttackEntityCallback.EVENT.register(((playerEntity, world, hand, entity, entityHitResult) -> {
+            SummonMounts.LOGGER.error("ATTACK");
+            ItemStack stack = playerEntity.getStackInHand(hand);
+            if (Abuse.canHeDoThat(playerEntity, stack)) {
+                return ActionResult.PASS;
+            } else {
+                playerEntity.sendMessage(Text.literal(SummonMounts.CONFIG.locales().itemUse.whileRiding), true);
+                return ActionResult.FAIL;
+            }
+        }));
     }
     
     /**
