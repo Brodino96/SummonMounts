@@ -22,7 +22,7 @@ public class EventHandlers {
     /**
      * Registers all event handlers for the mod
      */
-    public static void register() {
+    public static void initialize() {
 
         // Register server start event to store server instance
         SummonMounts.LOGGER.info("Storing the server inside the mod");
