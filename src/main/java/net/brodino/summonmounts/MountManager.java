@@ -75,7 +75,7 @@ public class MountManager {
         }
 
         NBTHelper.saveMountData(mount, stack, false);
-        NBTHelper.setCustomLore(stack, "Contiene: " + mount.getDisplayName().getString());
+        NBTHelper.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
         mount.discard();
 
         player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.success), true);
@@ -141,6 +141,7 @@ public class MountManager {
         }
 
         ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID), false);
+        NBTHelper.setCustomLore(output, "Contains: " + mount.getDisplayName().getString());
 
         mount.discard();
         player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().dismiss.success), true);
@@ -247,7 +248,9 @@ public class MountManager {
             return;
         }
 
-        NBTHelper.saveMountData(mount, MountManager.playerItems.get(ownerUUID), true);
+        ItemStack stack = MountManager.playerItems.get(ownerUUID);
+        NBTHelper.saveMountData(mount, stack, true);
+        NBTHelper.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
         
         // Clean up the maps
         playerMounts.remove(ownerUUID);
