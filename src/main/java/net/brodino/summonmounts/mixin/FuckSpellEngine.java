@@ -20,8 +20,6 @@ public class FuckSpellEngine {
         ServerPlayNetworkHandler handler = (ServerPlayNetworkHandler) (Object) this;
         ServerPlayerEntity player = handler.player;
 
-        SummonMounts.LOGGER.info("Player is using an item");
-
         ItemStack stack = player.getStackInHand(packet.getHand());
 
         if (!AntiAbuse.canHeDoThat(player, stack)) {
