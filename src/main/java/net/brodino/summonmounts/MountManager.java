@@ -10,7 +10,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -19,6 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -109,6 +112,11 @@ public class MountManager {
 
         Entity mount = NBTHelper.loadMountData((AbstractHorseEntity) entity, nbt);
 
+        //PARTICLE EFFECT
+        ParticleHelper.drawConicalSpiralParticle(mount.getPos(),mount.getBoundingBox().getAverageSideLength(),mount.getHeight(), 2,20,player.world,ParticleTypes.WITCH);
+        //
+
+
         mount.setPosition(player.getX(), player.getY(), player.getZ());
         mount.setVelocity(0,0,0);
         mount.fallDistance = 0;
@@ -142,6 +150,16 @@ public class MountManager {
 
         ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID), false);
         NBTHelper.setCustomLore(output, "Contains: " + mount.getDisplayName().getString());
+
+        //PARTICLE EFFECT
+        Vec3d mountPos = mount.getPos();
+        double mountHeight = mount.getHeight();
+        double mountRadius = mount.getBoundingBox().getAverageSideLength();
+
+        ParticleHelper.drawSpiralParticle(mountPos,mountRadius,mountHeight, 2,20,player.world,ParticleTypes.WITCH);
+        ParticleHelper.drawCircleParticle(mountPos, mountRadius, player.world, ParticleTypes.DRAGON_BREATH);
+        ParticleHelper.spawnParticlePlatform(mountPos, mountRadius, 30,0.3, player.world, ParticleTypes.PORTAL);
+        //
 
         mount.discard();
         player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().dismiss.success), true);
@@ -251,7 +269,7 @@ public class MountManager {
         ItemStack stack = MountManager.playerItems.get(ownerUUID);
         NBTHelper.saveMountData(mount, stack, true);
         NBTHelper.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
-        
+
         // Clean up the maps
         playerMounts.remove(ownerUUID);
         mountTimers.remove(entity.getUuid());
@@ -326,7 +344,7 @@ public class MountManager {
         }
 
         player.getItemCooldownManager().set(stack.getItem(), SummonMounts.CONFIG.itemCooldown() * 20);
-
+        player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.FLUTE_CALL_EVENT, SoundCategory.AMBIENT, 1f, 1f);
         if (!SummonMounts.CONFIG.allowedDimensions().contains(player.getWorld().getRegistryKey().getValue().toString())) {
             player.sendMessage(Text.literal( SummonMounts.CONFIG.locales().itemUse.wrongDimension), true);
             return TypedActionResult.pass(stack);
@@ -344,15 +362,14 @@ public class MountManager {
 
         UUID playerUUID = player.getUuid();
 
-        player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.FLUTE_CALL_EVENT, SoundCategory.AMBIENT, 1f, 1f);
-
         if (!MountManager.hasActiveMount(playerUUID, stack)) {
             Entity mount = MountManager.summonMount(player, stack);
             if (mount != null) {
                 return TypedActionResult.pass(stack);
             }
-        } else {
 
+
+        } else {
             if (!playerMounts.get(playerUUID).equals(nbt.getUuid("mount.uuid"))) {
                 player.sendMessage(Text.of(SummonMounts.CONFIG.locales().itemUse.wrongItem), true);
                 return TypedActionResult.pass(stack);
