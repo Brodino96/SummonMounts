@@ -29,21 +29,21 @@ public class ParticleHelper {
         }
     }
 
-        public static void drawCircleParticle(Vec3d center, double radius, World world, ParticleEffect particle) {
-            if (world instanceof ServerWorld serverWorld) {
+    public static void drawCircleParticle(Vec3d center, double radius, World world, ParticleEffect particle) {
+        if (world instanceof ServerWorld serverWorld) {
 
-                int points = (int) (radius * 20); // resolution: 20 points per block of radius
-                double angleStep = 2 * Math.PI / points;
-                for (int i = 0; i < points; i++) {
-                    double angle = i * angleStep;
-                    double x = center.x + radius * Math.cos(angle);
-                    double y = center.y;
-                    double z = center.z + radius * Math.sin(angle);
-                    serverWorld.spawnParticles(particle, x, y, z, 1, 0, 0, 0, 0);
-                }
-
+            int points = (int) (radius * 20); // resolution: 20 points per block of radius
+            double angleStep = 2 * Math.PI / points;
+            for (int i = 0; i < points; i++) {
+                double angle = i * angleStep;
+                double x = center.x + radius * Math.cos(angle);
+                double y = center.y;
+                double z = center.z + radius * Math.sin(angle);
+                serverWorld.spawnParticles(particle, x, y, z, 1, 0, 0, 0, 0);
             }
+
         }
+    }
 
 
     /**
