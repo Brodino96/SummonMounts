@@ -45,7 +45,7 @@ public class Mount {
      * @param entity The horse entity to create a mount from
      * @return A new Mount instance with data from the provided entity
      */
-    public Mount fromEntity(AbstractHorseEntity entity) {
+    public static Mount fromEntity(AbstractHorseEntity entity) {
         Mount mount = new Mount(
                 entity.getUuid(),
                 entity.getOwnerUuid(),
