@@ -184,7 +184,10 @@ public class Mount {
         return Optional.of(mount);
     }
 
-
+    public void dismiss() {
+        this.activeEntity.discard();
+        ParticleHelper.dismissParticles(this.activeEntity);
+    }
 
 
 
