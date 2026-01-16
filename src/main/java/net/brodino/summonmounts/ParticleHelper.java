@@ -7,7 +7,7 @@ package net.brodino.summonmounts;
  * Edited to better fit needs
  */
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -18,7 +18,7 @@ public class ParticleHelper {
     /**
      * Draws particles around the specified entity
      */
-    public static void summonParticles(Entity entity) {
+    public static void summonParticles(AbstractHorseEntity entity) {
         if (!(entity.getWorld() instanceof ServerWorld world)) {
             return;
         }
@@ -44,7 +44,7 @@ public class ParticleHelper {
     }
 
 
-    public static void dismissParticles(Entity entity) {
+    public static void dismissParticles(AbstractHorseEntity entity) {
         if (!(entity.getWorld() instanceof ServerWorld world)) {
             return;
         }

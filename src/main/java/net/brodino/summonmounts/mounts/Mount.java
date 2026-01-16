@@ -160,7 +160,7 @@ public class Mount {
             return Optional.empty();
         }
 
-        Entity mount = this.entityType.create(currentWorld);
+        AbstractHorseEntity mount = (AbstractHorseEntity) this.entityType.create(currentWorld);
         if (mount == null) {
             return Optional.empty();
         }
@@ -179,7 +179,7 @@ public class Mount {
 
         player.startRiding(mount, true);
 
-        return Optional.of((AbstractHorseEntity) mount);
+        return Optional.of(mount);
     }
 
 
