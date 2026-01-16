@@ -10,6 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -132,13 +133,13 @@ public class Mount {
         return allowedMounts.contains(typeId);
     }
 
-    public boolean isAllowedDimension(ServerPlayerEntity player) {
+    public boolean isInAllowedDimension(World world) {
         ArrayList<String> allowedDimensions = SummonMounts.CONFIG.getAllowedDimensions();
         if (allowedDimensions.isEmpty()) {
             return true;
         }
 
-        return allowedDimensions.contains(player.getWorld().getRegistryKey().getValue().toString());
+        return allowedDimensions.contains(world.getRegistryKey().getValue().toString());
 
     }
 
