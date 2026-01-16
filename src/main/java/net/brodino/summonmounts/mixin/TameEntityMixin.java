@@ -17,11 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractHorseEntity.class)
 public class TameEntityMixin {
 
-    public TameEntityMixin() {
-        super();
-        SummonMounts.LOGGER.info("Initialized TameEntityMixin");
-    }
-
     @Inject(method = "bondWithPlayer", at = @At("TAIL"))
     private void bondWithPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         SummonMounts.LOGGER.info("{} has tamed a mount", Utils.getPlayerName(player));
