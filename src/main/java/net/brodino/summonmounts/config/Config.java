@@ -72,6 +72,13 @@ public class Config {
         return this.data.summonItem;
     }
 
+    public boolean getParticlesOnSummon() {
+        return this.data.particlesOnSummon;
+    }
+    public boolean getParticlesOnDismiss() {
+        return this.data.particlesOnDismiss;
+    }
+
     public ArrayList<String> getAllowedMounts() {
         return this.data.allowedMounts;
     }
