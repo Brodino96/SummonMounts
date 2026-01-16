@@ -143,12 +143,39 @@ public class Mount {
 
     }
 
-    public AbstractHorseEntity summon(ServerPlayerEntity player) {
-        if (!this.isAllowedDimension(player)) {
-            return null;
+    /**
+     * Summons the mount in the world
+     * @param player The player using the item
+     * @return Optional containing the mount entity or nothing
+     */
+    public Optional<AbstractHorseEntity> summon(ServerPlayerEntity player) {
+        World currentWorld = player.getWorld();
+        if (!this.isInAllowedDimension(currentWorld)) {
+            return Optional.empty();
         }
 
-        return null;
+        if (!this.isAllowedType()) {
+            return Optional.empty();
+        }
+
+        Entity mount = this.entityType.create(currentWorld);
+        if (mount == null) {
+            return Optional.empty();
+        }
+
+        mount.setPosition(player.getPos());
+        mount.setVelocity(0,0,0);
+        mount.fallDistance = 0;
+
+        currentWorld.spawnEntity(mount);
+
+        if (SummonMounts.CONFIG.getParticlesOnSummon()) {
+            ParticleHelper.summonParticles(mount);
+        }
+
+        player.startRiding(mount, true);
+
+        return Optional.of((AbstractHorseEntity) mount);
     }
 
 
