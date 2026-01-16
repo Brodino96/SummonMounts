@@ -4,11 +4,6 @@
   "package": "net.brodino.summonmounts.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "DimensionChangeMixin",
-    "DropItemMixin",
-    "FuckSpellEngine",
-    "ItemMoveMixin",
-    "PlayerTeleportMixin",
     "TameEntityMixin"
   ],
   "client": [
