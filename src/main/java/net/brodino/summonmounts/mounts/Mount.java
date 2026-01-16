@@ -173,6 +173,8 @@ public class Mount {
 
         currentWorld.spawnEntity(mount);
 
+        this.activeEntity = mount;
+
         if (SummonMounts.CONFIG.getParticlesOnSummon()) {
             ParticleHelper.summonParticles(mount);
         }
