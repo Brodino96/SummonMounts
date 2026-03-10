@@ -33,7 +33,7 @@ public class MountManager {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
     private static final Map<UUID, ItemStack> playerItems = new HashMap<>();
     private static final Map<UUID, Integer> mountTimers = new HashMap<>();
-    private static final Integer DESPAWN_TIMER = SummonMounts.CONFIG.despawnTime() * 20;
+    private static final Integer DESPAWN_TIMER = SummonMounts.CONFIG.getDespawnTime() * 20;
 
     /**
      * Method to associate a clean mount to an item
@@ -52,20 +52,20 @@ public class MountManager {
 
         UUID mountUuid = entity.getUuid();
         if (playerMounts.containsValue(mountUuid)) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.alreadyBounded), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().binding.alreadyBounded), true);
             return false;
         }
 
         AbstractHorseEntity mount = (AbstractHorseEntity) entity;
 
         if (!mount.isTame() || !player.getUuid().equals(mount.getOwnerUuid())) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.notYours), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().binding.notYours), true);
             return false;
         }
 
         String mountId = Registry.ENTITY_TYPE.getId(mount.getType()).toString();
         boolean isAllowed = false;
-        for (String allowedType : SummonMounts.CONFIG.allowedSummons()) {
+        for (String allowedType : SummonMounts.CONFIG.getAllowedSummons()) {
             if (allowedType.equals(mountId)) {
                 isAllowed = true;
                 break;
@@ -73,7 +73,7 @@ public class MountManager {
         }
 
         if (!isAllowed) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.notAllowed), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().binding.notAllowed), true);
             return false;
         }
 
@@ -81,7 +81,7 @@ public class MountManager {
         NBTHelper.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
         mount.discard();
 
-        player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().binding.success), true);
+        player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().binding.success), true);
 
         SummonMounts.LOGGER.info("{} successfully bound a mount to his item", playerName);
 
@@ -94,7 +94,7 @@ public class MountManager {
 
         NbtCompound nbt = stack.getNbt();
         if (nbt == null || !nbt.contains("mount.type")) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().spawn.noSavedData), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().spawn.noSavedData), true);
             return null;
         }
 
@@ -106,7 +106,7 @@ public class MountManager {
 
         Entity entity = entityType.create(world);
         if (entity == null) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().spawn.spawnFailed), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().spawn.spawnFailed), true);
             return null;
         }
 
@@ -123,7 +123,7 @@ public class MountManager {
         playerMounts.put(playerUuid, mount.getUuid());
         playerItems.put(playerUuid, stack);
 
-        player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().spawn.success), true);
+        player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().spawn.success), true);
         SummonMounts.LOGGER.info("{} successfully summoned a mount", playerName);
 
         return mount;
@@ -160,7 +160,7 @@ public class MountManager {
         //
 
         mount.discard();
-        player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().dismiss.success), true);
+        player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().dismiss.success), true);
         SummonMounts.LOGGER.info("Successfully dismissed {}'s mount", playerName);
 
         playerMounts.remove(playerUUID);
@@ -286,7 +286,7 @@ public class MountManager {
 
         ItemStack stack = player.getStackInHand(hand);
 
-        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.getSummonItem()));
 
         if (stack.getItem() != summonItem) {
             return;
@@ -302,7 +302,7 @@ public class MountManager {
 
         ItemStack stack = player.getStackInHand(hand);
 
-        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.getSummonItem()));
 
         if (!stack.getItem().equals(summonItem)) {
             return ActionResult.PASS;
@@ -326,14 +326,14 @@ public class MountManager {
     public static TypedActionResult<ItemStack> onItemUse(PlayerEntity player, World world, Hand hand) {
 
         ItemStack stack = player.getStackInHand(hand);
-        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.getSummonItem()));
 
         if (stack.getItem() != summonItem) {
             return TypedActionResult.pass(stack);
         }
 
         if (TagData.getCombat((IEntityDataSaver) player)) {
-            player.sendMessage(Text.literal( SummonMounts.CONFIG.locales().itemUse.inCombat), true);
+            player.sendMessage(Text.literal( SummonMounts.CONFIG.getLocales().itemUse.inCombat), true);
             return TypedActionResult.fail(stack);
         }
 
@@ -341,20 +341,20 @@ public class MountManager {
             return TypedActionResult.fail(stack);
         }
 
-        player.getItemCooldownManager().set(stack.getItem(), SummonMounts.CONFIG.itemCooldown() * 20);
+        player.getItemCooldownManager().set(stack.getItem(), SummonMounts.CONFIG.getItemCooldown() * 20);
         player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.FLUTE_CALL_EVENT, SoundCategory.AMBIENT, 1f, 1f);
-        if (!SummonMounts.CONFIG.allowedDimensions().contains(player.getWorld().getRegistryKey().getValue().toString())) {
-            player.sendMessage(Text.literal( SummonMounts.CONFIG.locales().itemUse.wrongDimension), true);
+        if (!SummonMounts.CONFIG.getAllowedSummons().contains(player.getWorld().getRegistryKey().getValue().toString())) {
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().itemUse.wrongDimension), true);
             return TypedActionResult.pass(stack);
         }
 
         if (!stack.hasNbt()) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().itemUse.notBounded), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().itemUse.notBounded), true);
         }
 
         NbtCompound nbt = stack.getNbt();
         if (!nbt.contains("mount.genericData") || !nbt.contains("mount.uuid")) {
-            player.sendMessage(Text.literal(SummonMounts.CONFIG.locales().itemUse.notBounded), true);
+            player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().itemUse.notBounded), true);
             return TypedActionResult.pass(stack);
         }
 
@@ -369,7 +369,7 @@ public class MountManager {
 
         } else {
             if (!playerMounts.get(playerUUID).equals(nbt.getUuid("mount.uuid"))) {
-                player.sendMessage(Text.of(SummonMounts.CONFIG.locales().itemUse.wrongItem), true);
+                player.sendMessage(Text.of(SummonMounts.CONFIG.getLocales().itemUse.wrongItem), true);
                 return TypedActionResult.pass(stack);
             }
 

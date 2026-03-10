@@ -11,7 +11,7 @@ public class SummonMounts implements ModInitializer {
 
     public static final String MOD_ID = "summonmounts";
     public static final Logger LOGGER = LoggerFactory.getLogger(SummonMounts.MOD_ID);
-    public static net.brodino.summonmounts.Config CONFIG = net.brodino.summonmounts.Config.createAndLoad();
+    public static Config CONFIG = new Config();
     public static MinecraftServer SERVER;
 
     @Override

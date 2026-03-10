@@ -32,7 +32,7 @@ public class ItemMoveMixin {
             return;
         }
 
-        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem()));
+        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.getSummonItem()));
         if (stack.getItem() != summonItem) {
             return;
         }

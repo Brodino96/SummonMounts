@@ -6,7 +6,6 @@
   "mixins": [
     "DimensionChangeMixin",
     "DropItemMixin",
-    "FuckSpellEngine",
     "ItemMoveMixin",
     "PlayerTeleportMixin",
     "TameEntityMixin"

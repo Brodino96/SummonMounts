@@ -31,7 +31,7 @@ public class TameEntityMixin {
 
         AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
         
-        ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.summonItem())));
+        ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.getSummonItem())));
         MountManager.bindMountToItem(player, entity, stack);
         player.giveItemStack(stack);
     }

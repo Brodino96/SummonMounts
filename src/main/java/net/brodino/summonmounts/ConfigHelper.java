@@ -4,7 +4,7 @@ import io.wispforest.owo.config.annotation.Config;
 
 import java.util.ArrayList;
 
-@Config(name = "summonmounts", wrapperName = "Config")
+@Config(name = "summonmounts", wrapperName = "OldConfig")
 public class ConfigHelper {
 
     public String summonItem = "minecraft:echo_shard";
