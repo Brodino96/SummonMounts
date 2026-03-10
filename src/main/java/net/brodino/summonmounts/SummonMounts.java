@@ -1,11 +1,11 @@
 package net.brodino.summonmounts;
 
+import net.brodino.summonmounts.commands.SpawnRandomHorseCommand;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.brodino.summonmounts.commands.SpawnRandomHorseCommand;
 
 public class SummonMounts implements ModInitializer {
 
