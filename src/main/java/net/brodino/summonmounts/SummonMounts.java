@@ -29,6 +29,9 @@ public class SummonMounts implements ModInitializer {
     public static void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess _r, CommandManager.RegistrationEnvironment _e) {
         dispatcher.register(CommandManager.literal(SummonMounts.MOD_ID)
             .requires(src -> src.hasPermissionLevel(2))
+            .then(CommandManager.literal("reloadConfig")
+                .executes(ReloadConfig::execute)
+            )
             .then(CommandManager.literal("spawnHorse")
                 .executes(SpawnHorse::execute)
             )
