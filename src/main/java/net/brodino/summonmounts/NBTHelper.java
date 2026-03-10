@@ -112,7 +112,7 @@ public class NBTHelper {
             mountNbt.put("SaddleItem", saddleData);
         }
 
-        mount.setUuid(nbt.getUuid("mount.uuid"));
+        mountNbt.remove("UUID");
 
         mount.readNbt(mountNbt);
         return mount;

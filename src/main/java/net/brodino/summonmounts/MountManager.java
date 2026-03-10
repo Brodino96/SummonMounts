@@ -22,6 +22,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class MountManager {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
     private static final Map<UUID, ItemStack> playerItems = new HashMap<>();
     private static final Map<UUID, Integer> mountTimers = new HashMap<>();
+    private static final Map<UUID, RegistryKey<World>> mountWorlds = new HashMap<>();
     private static final Integer DESPAWN_TIMER = SummonMounts.CONFIG.getDespawnTime() * 20;
 
     /**
@@ -45,7 +48,7 @@ public class MountManager {
 
         String playerName = player.getDisplayName().getString();
 
-        if (!(entity instanceof AbstractHorseEntity)) {
+        if (!(entity instanceof AbstractHorseEntity mount)) {
             return false;
         }
 
@@ -54,8 +57,6 @@ public class MountManager {
             player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().binding.alreadyBounded), true);
             return false;
         }
-
-        AbstractHorseEntity mount = (AbstractHorseEntity) entity;
 
         if (!mount.isTame() || !player.getUuid().equals(mount.getOwnerUuid())) {
             player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().binding.notYours), true);
@@ -100,7 +101,7 @@ public class MountManager {
         UUID playerUuid = player.getUuid();
 
         String mountTypeId = nbt.getString("mount.type");
-        World world = SummonMounts.SERVER.getOverworld();
+        ServerWorld world = (ServerWorld) player.getWorld();
         EntityType<?> entityType = Registry.ENTITY_TYPE.get(new Identifier(mountTypeId));
 
         Entity entity = entityType.create(world);
@@ -112,15 +113,18 @@ public class MountManager {
         Entity mount = NBTHelper.loadMountData((AbstractHorseEntity) entity, nbt);
 
         mount.setPosition(player.getX(), player.getY(), player.getZ());
-        mount.setVelocity(0,0,0);
+        mount.setVelocity(0, 0, 0);
         mount.fallDistance = 0;
 
-        ParticleHelper.drawConicalSpiralParticle(mount.getPos(),mount.getBoundingBox().getAverageSideLength(),mount.getHeight(), 2,20,player.world,ParticleTypes.WITCH);
+        ParticleHelper.drawConicalSpiralParticle(mount.getPos(), mount.getBoundingBox().getAverageSideLength(), mount.getHeight(), 2, 20, world, ParticleTypes.WITCH);
 
         world.spawnEntity(mount);
 
+        mount.refreshPositionAndAngles(player.getX(), player.getY(), player.getZ(), player.getYaw(), 0);
+
         playerMounts.put(playerUuid, mount.getUuid());
         playerItems.put(playerUuid, stack);
+        mountWorlds.put(mount.getUuid(), world.getRegistryKey());
 
         player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().spawn.success), true);
         SummonMounts.LOGGER.info("{} successfully summoned a mount", playerName);
@@ -140,7 +144,13 @@ public class MountManager {
 
         UUID mountUUID = playerMounts.get(playerUUID);
 
-        Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
+        RegistryKey<World> worldKey = mountWorlds.getOrDefault(mountUUID, player.getWorld().getRegistryKey());
+        ServerWorld world = SummonMounts.SERVER.getWorld(worldKey);
+        if (world == null) {
+            return ItemStack.EMPTY;
+        }
+
+        Entity mount = world.getEntity(mountUUID);
         if (mount == null || !mount.isAlive()) {
             return ItemStack.EMPTY;
         }
@@ -164,6 +174,7 @@ public class MountManager {
 
         playerMounts.remove(playerUUID);
         mountTimers.remove(mountUUID);
+        mountWorlds.remove(mountUUID);
         playerItems.remove(playerUUID);
 
         return output;
@@ -176,10 +187,27 @@ public class MountManager {
             UUID playerUUID = entry.getKey();
             UUID mountUUID = entry.getValue();
 
-            Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
+            RegistryKey<World> worldKey = mountWorlds.get(mountUUID);
+            if (worldKey == null) {
+                playerMounts.remove(playerUUID);
+                mountTimers.remove(mountUUID);
+                mountWorlds.remove(mountUUID);
+                continue;
+            }
+
+            ServerWorld world = SummonMounts.SERVER.getWorld(worldKey);
+            if (world == null) {
+                playerMounts.remove(playerUUID);
+                mountTimers.remove(mountUUID);
+                mountWorlds.remove(mountUUID);
+                continue;
+            }
+
+            Entity mount = world.getEntity(mountUUID);
             if (mount == null || !mount.isAlive()) {
                 playerMounts.remove(playerUUID);
                 mountTimers.remove(mountUUID);
+                mountWorlds.remove(mountUUID);
                 continue;
             }
 
@@ -213,7 +241,17 @@ public class MountManager {
         }
 
         UUID mountUUID = playerMounts.get(playerUUID);
-        Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
+
+        RegistryKey<World> worldKey = mountWorlds.get(mountUUID);
+        if (worldKey == null) {
+            playerMounts.remove(playerUUID);
+            playerItems.remove(playerUUID);
+            mountTimers.remove(mountUUID);
+            return;
+        }
+
+        ServerWorld world = SummonMounts.SERVER.getWorld(worldKey);
+        Entity mount = world != null ? world.getEntity(mountUUID) : null;
 
         if (mount != null && mount.isAlive()) {
             MountManager.dismissMount(player);
@@ -229,11 +267,21 @@ public class MountManager {
 
         if (SummonMounts.SERVER == null) return false;
 
-        Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
+        RegistryKey<World> worldKey = mountWorlds.get(mountUUID);
+        if (worldKey == null) {
+            playerMounts.remove(playerUUID);
+            playerItems.remove(playerUUID);
+            mountTimers.remove(mountUUID);
+            return false;
+        }
+
+        ServerWorld world = SummonMounts.SERVER.getWorld(worldKey);
+        Entity mount = world != null ? world.getEntity(mountUUID) : null;
         if (mount == null || !mount.isAlive()) {
             playerMounts.remove(playerUUID);
             playerItems.remove(playerUUID);
             mountTimers.remove(mountUUID);
+            mountWorlds.remove(mountUUID);
             return false;
         }
 
@@ -245,13 +293,12 @@ public class MountManager {
      * @param entity The entity that died
      */
     public static void onMountDeath(Entity entity) {
-        if (!(entity instanceof AbstractHorseEntity)) {
+        if (!(entity instanceof AbstractHorseEntity mount)) {
             return;
         }
 
         SummonMounts.LOGGER.info("A mount has died, beginning removal process");
 
-        AbstractHorseEntity mount = (AbstractHorseEntity) entity;
         UUID ownerUUID = mount.getOwnerUuid();
 
         if (ownerUUID == null) {
@@ -352,7 +399,7 @@ public class MountManager {
         }
 
         NbtCompound nbt = stack.getNbt();
-        if (!nbt.contains("mount.genericData") || !nbt.contains("mount.uuid")) {
+        if (nbt != null && !nbt.contains("mount.genericData") || !nbt.contains("mount.uuid")) {
             player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().itemUse.notBounded), true);
             return TypedActionResult.pass(stack);
         }
@@ -367,7 +414,10 @@ public class MountManager {
 
 
         } else {
-            if (!playerMounts.get(playerUUID).equals(nbt.getUuid("mount.uuid"))) {
+            // Check if this is the same item that was used to summon the active mount
+            // We compare ItemStack references since UUID changes each summon
+            ItemStack boundItem = playerItems.get(playerUUID);
+            if (boundItem == null || boundItem != stack) {
                 player.sendMessage(Text.of(SummonMounts.CONFIG.getLocales().itemUse.wrongItem), true);
                 return TypedActionResult.pass(stack);
             }
