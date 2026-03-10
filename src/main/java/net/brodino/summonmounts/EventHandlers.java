@@ -1,5 +1,6 @@
 package net.brodino.summonmounts;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -16,6 +17,9 @@ public class EventHandlers {
      * Registers all event handlers for the mod
      */
     public static void initialize() {
+
+        // Register commands
+        CommandRegistrationCallback.EVENT.register(SummonMounts::registerCommand);
 
         // Register server start event to store server instance
         SummonMounts.LOGGER.info("Storing the server inside the mod");

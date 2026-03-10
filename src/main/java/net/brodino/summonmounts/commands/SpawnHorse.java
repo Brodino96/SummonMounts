@@ -1,23 +1,15 @@
 package net.brodino.summonmounts.commands;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.HorseEntity;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.random.Random;
 
-public class SpawnRandomHorseCommand {
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("spawnhorse")
-            .requires(source -> source.hasPermissionLevel(2)) // Requires permission level 2 (like game operators)
-            .executes(SpawnRandomHorseCommand::execute));
-    }
-
-    private static int execute(CommandContext<ServerCommandSource> context) {
+public class SpawnHorse {
+    public static int execute(CommandContext<ServerCommandSource> context) {
         ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
