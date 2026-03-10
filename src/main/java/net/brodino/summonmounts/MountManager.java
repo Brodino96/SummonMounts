@@ -342,7 +342,7 @@ public class MountManager {
 
         player.getItemCooldownManager().set(stack.getItem(), SummonMounts.CONFIG.getItemCooldown() * 20);
         player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundInit.FLUTE_CALL_EVENT, SoundCategory.AMBIENT, 1f, 1f);
-        if (!SummonMounts.CONFIG.getAllowedSummons().contains(player.getWorld().getRegistryKey().getValue().toString())) {
+        if (!SummonMounts.CONFIG.getAllowedDimensions().contains(player.getWorld().getRegistryKey().getValue().toString())) {
             player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().itemUse.wrongDimension), true);
             return TypedActionResult.pass(stack);
         }
