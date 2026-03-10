@@ -20,8 +20,6 @@ public class SummonMounts implements ModInitializer {
         
         // Register event handlers
         EventHandlers.initialize();
-
-        //AntiAbuse.initialize();
         
         // Register commands
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
