@@ -31,7 +31,7 @@ public class DropItemMixin {
             return;
         }
 
-        if (!stack.hasNbt() || !stack.getNbt().contains("mount.genericData")) {
+        if (!stack.hasNbt() || !stack.getNbt().contains("mount.uuid")) {
             return;
         }
 

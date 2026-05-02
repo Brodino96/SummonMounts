@@ -37,10 +37,10 @@ public class EventHandlers {
             MountManager.playerDisconnected(handler.player);
         });
 
-        // Register entity death event
+        // Register entity death event - use ALLOW_DEATH to intercept before items drop
         SummonMounts.LOGGER.info("Registering death event");
-        ServerLivingEntityEvents.AFTER_DEATH.register((entity, damageSource) -> {
-            MountManager.onMountDeath(entity);
+        ServerLivingEntityEvents.ALLOW_DEATH.register((entity, damageSource, damageAmount) -> {
+            return MountManager.onMountDeath(entity);
         });
 
         // Register item use on entity callbacks

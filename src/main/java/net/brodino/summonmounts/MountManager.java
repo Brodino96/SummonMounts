@@ -20,6 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -87,6 +88,57 @@ public class MountManager {
         return true;
     }
 
+    /**
+     * Finds a safe spawn position near the player that is not inside a solid block.
+     * Tries the player's exact position first, then positions in front, beside, and behind.
+     * Scans upward up to 3 blocks if the candidate column is obstructed.
+     * Falls back to the player's position if no clear spot is found.
+     */
+    private static Vec3d findSafeSpawnPosition(PlayerEntity player, Entity mount, World world) {
+        double mountWidth = mount.getWidth();
+        double mountHeight = mount.getHeight();
+
+        // Candidate offsets relative to player: at player, in front, left, right, behind
+        float yaw = player.getYaw();
+        double radYaw = Math.toRadians(yaw);
+        double fx = -Math.sin(radYaw); // forward X
+        double fz =  Math.cos(radYaw); // forward Z
+
+        double[][] offsets = {
+            {0, 0},                 // at player
+            {fx, fz},               // in front
+            {-fz, fx},              // left
+            {fz, -fx},              // right
+            {-fx, -fz},             // behind
+        };
+
+        for (double[] offset : offsets) {
+            double cx = player.getX() + offset[0] * (mountWidth + 0.5);
+            double cz = player.getZ() + offset[1] * (mountWidth + 0.5);
+
+            // Try the player's Y and up to 3 blocks above
+            for (int dy = 0; dy <= 3; dy++) {
+                double cy = player.getY() + dy;
+                if (isClearForMount(world, cx, cy, cz, mountWidth, mountHeight)) {
+                    return new Vec3d(cx, cy, cz);
+                }
+            }
+        }
+
+        // Fallback: player's position
+        return player.getPos();
+    }
+
+    /**
+     * Returns true if the axis-aligned box for the mount at (x, y, z) does not
+     * intersect any solid block collision shape.
+     */
+    private static boolean isClearForMount(World world, double x, double y, double z, double width, double height) {
+        double half = width / 2.0;
+        Box box = new Box(x - half, y, z - half, x + half, y + height, z + half);
+        return world.isSpaceEmpty(box);
+    }
+
     public static Entity summonMount(PlayerEntity player, ItemStack stack) {
 
         String playerName = player.getDisplayName().getString();
@@ -111,13 +163,21 @@ public class MountManager {
 
         Entity mount = NBTHelper.loadMountData((AbstractHorseEntity) entity, nbt);
 
-        mount.setPosition(player.getX(), player.getY(), player.getZ());
+        // Find a safe spawn position that isn't inside a block
+        Vec3d spawnPos = findSafeSpawnPosition(player, mount, world);
+
+        mount.setPosition(spawnPos.x, spawnPos.y, spawnPos.z);
+        mount.setYaw(player.getYaw());
+        mount.setHeadYaw(player.getYaw());
         mount.setVelocity(0,0,0);
         mount.fallDistance = 0;
 
         ParticleHelper.drawConicalSpiralParticle(mount.getPos(),mount.getBoundingBox().getAverageSideLength(),mount.getHeight(), 2,20,player.world,ParticleTypes.WITCH);
 
         world.spawnEntity(mount);
+
+        // Re-apply variant after spawning, since the spawn packet may override it
+        NBTHelper.applyVariant((AbstractHorseEntity) mount, nbt);
 
         playerMounts.put(playerUuid, mount.getUuid());
         playerItems.put(playerUuid, stack);
@@ -241,36 +301,71 @@ public class MountManager {
     }
 
     /**
-     * Handles the death of a mount
-     * @param entity The entity that died
+     * Handles the death of a mount by intercepting it before it happens.
+     * Saves the mount data and recalls the mount instead of letting it die.
+     * @param entity The entity that is about to die
+     * @return true to allow death (for non-tracked mounts), false to prevent death (for tracked mounts)
      */
-    public static void onMountDeath(Entity entity) {
-        if (!(entity instanceof AbstractHorseEntity)) {
-            return;
+    public static boolean onMountDeath(Entity entity) {
+        if (!(entity instanceof AbstractHorseEntity mount)) {
+            return true; // Allow death for non-horse entities
         }
 
-        SummonMounts.LOGGER.info("A mount has died, beginning removal process");
-
-        AbstractHorseEntity mount = (AbstractHorseEntity) entity;
         UUID ownerUUID = mount.getOwnerUuid();
-
         if (ownerUUID == null) {
-            return;
+            return true; // Allow death for untamed mounts
         }
+
+        // Check if this mount is being tracked by our system
+        UUID mountUUID = mount.getUuid();
+        if (!playerMounts.containsValue(mountUUID)) {
+            return true; // Allow death for mounts not tracked by our system
+        }
+
+        SummonMounts.LOGGER.info("Intercepting mount death, recalling mount instead");
 
         ServerPlayerEntity owner = SummonMounts.SERVER.getPlayerManager().getPlayer(ownerUUID);
-        if (owner == null) {
-            return;
+
+        // Get the item associated with this mount
+        ItemStack mountItem = playerItems.get(ownerUUID);
+        if (mountItem == null || mountItem.isEmpty()) {
+            SummonMounts.LOGGER.warn("Could not find mount item for player, allowing death");
+            playerMounts.remove(ownerUUID);
+            mountTimers.remove(mountUUID);
+            playerItems.remove(ownerUUID);
+            return true;
         }
 
-        ItemStack stack = MountManager.playerItems.get(ownerUUID);
-        NBTHelper.saveMountData(mount, stack, true);
-        NBTHelper.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
+        // Set health to max before saving so mount respawns at full health
+        mount.setHealth(mount.getMaxHealth());
+
+        // Save mount data BEFORE death (with dead=false to preserve armor, saddle, health)
+        NBTHelper.saveMountData(mount, mountItem, false);
+        NBTHelper.setCustomLore(mountItem, "Contains: " + mount.getDisplayName().getString());
+        SummonMounts.LOGGER.info("Mount data saved successfully before death (health reset to max)");
+
+        // Particle effects for recall
+        Vec3d mountPos = mount.getPos();
+        double mountHeight = mount.getHeight();
+        double mountRadius = mount.getBoundingBox().getAverageSideLength();
+
+        ParticleHelper.drawSpiralParticle(mountPos, mountRadius, mountHeight, 2, 20, owner.world, ParticleTypes.WITCH);
+        ParticleHelper.drawCircleParticle(mountPos, mountRadius, owner.world, ParticleTypes.DRAGON_BREATH);
+        ParticleHelper.spawnParticlePlatform(mountPos, mountRadius, 30, 0.3, owner.world, ParticleTypes.PORTAL);
+
+        // Discard the mount (remove from world without dropping items)
+        mount.discard();
 
         // Clean up the maps
         playerMounts.remove(ownerUUID);
-        mountTimers.remove(entity.getUuid());
+        mountTimers.remove(mountUUID);
         playerItems.remove(ownerUUID);
+
+        // Notify the player
+        owner.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().dismiss.success), true);
+
+        // Return false to prevent the actual death (which would drop items)
+        return false;
     }
 
     /**
@@ -291,7 +386,7 @@ public class MountManager {
             return;
         }
 
-        if (!stack.hasNbt() || !stack.getNbt().contains("mount.genericData")) {
+        if (!stack.hasNbt() || !stack.getNbt().contains("mount.uuid")) {
             MountManager.bindMountToItem(player, target, stack);
         }
 
@@ -352,7 +447,7 @@ public class MountManager {
         }
 
         NbtCompound nbt = stack.getNbt();
-        if (!nbt.contains("mount.genericData") || !nbt.contains("mount.uuid")) {
+        if (!nbt.contains("mount.uuid")) {
             player.sendMessage(Text.literal(SummonMounts.CONFIG.getLocales().itemUse.notBounded), true);
             return TypedActionResult.pass(stack);
         }
