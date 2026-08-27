@@ -10,13 +10,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class Config {
+@Deprecated
+public class OldConfig {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	private Path configPath;
-	private Config.Type data;
+	private OldConfig.Type data;
 
-	public Config() {
+	public OldConfig() {
 		Path dataDirectory = Path.of("config");
 
 		try {
@@ -38,7 +39,7 @@ public class Config {
 		}
 
 		try (Reader reader = Files.newBufferedReader(this.configPath)) {
-			this.data = GSON.fromJson(reader, Config.Type.class);
+			this.data = GSON.fromJson(reader, OldConfig.Type.class);
 			if (data == null) {
 				this.data = this.getDefaults();
 				this.save();
@@ -56,8 +57,8 @@ public class Config {
 		}
 	}
 
-	private Config.Type getDefaults() {
-		return new Config.Type();
+	private OldConfig.Type getDefaults() {
+		return new OldConfig.Type();
 	}
 
 	public String getSummonItem() {

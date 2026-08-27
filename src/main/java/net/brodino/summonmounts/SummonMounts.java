@@ -15,7 +15,7 @@ public class SummonMounts implements ModInitializer {
 
     public static final String MOD_ID = "summonmounts";
     public static final Logger LOGGER = LoggerFactory.getLogger(SummonMounts.MOD_ID);
-    public static Config CONFIG = new Config();
+    public static OldConfig OLD_CONFIG = new OldConfig();
     public static MinecraftServer SERVER;
 
     @Override

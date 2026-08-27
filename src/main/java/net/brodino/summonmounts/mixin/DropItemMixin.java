@@ -27,7 +27,7 @@ public class DropItemMixin {
         ItemStack stack = inventory.getMainHandStack();
 
         Identifier itemIdentifier = Registry.ITEM.getKey(stack.getItem()).get().getValue();
-        if (!itemIdentifier.equals(new Identifier(SummonMounts.CONFIG.getSummonItem()))) {
+        if (!itemIdentifier.equals(new Identifier(SummonMounts.OLD_CONFIG.getSummonItem()))) {
             return;
         }
 

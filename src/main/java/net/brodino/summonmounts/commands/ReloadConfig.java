@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 
 public class ReloadConfig {
     public static int execute(CommandContext<ServerCommandSource> context) {
-        SummonMounts.CONFIG.reload();
+        SummonMounts.OLD_CONFIG.reload();
         context.getSource().sendMessage(Text.literal(SummonMounts.MOD_ID + " config reloaded"));
         return 1;
     }
