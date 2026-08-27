@@ -29,6 +29,7 @@ public class Mount implements ParticleHelper {
 
     public void recall() {
         // Save data inside itemstack
+        this.entity.discard();
         this.recallParticles((ServerWorld) this.entity.getWorld(), this);
 
     }

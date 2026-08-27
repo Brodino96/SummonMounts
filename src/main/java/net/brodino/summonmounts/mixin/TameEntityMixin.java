@@ -1,38 +1,57 @@
 package net.brodino.summonmounts.mixin;
 
-import net.brodino.summonmounts.MountManagerOld;
 import net.brodino.summonmounts.SummonMounts;
-import net.minecraft.entity.EntityType;
+import net.brodino.summonmounts.config.data.mounts.MountEntry;
+import net.brodino.summonmounts.items.ItemManager;
+import net.brodino.summonmounts.items.flutes.FluteItem;
+import net.brodino.summonmounts.mount.Mount;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Optional;
+
 @Mixin(AbstractHorseEntity.class)
-public class TameEntityMixin {
+public abstract class TameEntityMixin {
 
-    public TameEntityMixin(EntityType<? extends AnimalEntity> entityType, World world) {
-        super();
-        SummonMounts.LOGGER.info("TameEntityMixin");
-    }
+    @Shadow
+    public abstract StackReference getStackReference(int mappedIndex);
 
+    @Environment(EnvType.SERVER)
     @Inject(method = "bondWithPlayer", at = @At("TAIL"))
-    private void bondWithPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+    private void summonmounts$bondWithPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
 
-        String playerName = player.getDisplayName().getString();
-        SummonMounts.LOGGER.info("{} has tamed a mount", playerName);
+        String playerName = player.getName().getString();
 
         AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
-        
-        ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(SummonMounts.OLD_CONFIG.getSummonItem())));
-        MountManagerOld.bindMountToItem(player, entity, stack);
+        String entityId = Registry.ENTITY_TYPE.getId(entity.getType()).toString();
+
+        SummonMounts.LOGGER.info("{} has tamed the mount: {}", playerName, entityId);
+
+        Optional<MountEntry> mountEntry = SummonMounts.CONFIG.getData().mounts
+                .stream()
+                .filter(entry -> entry.id.equals(entityId))
+                .findFirst();
+
+        if (mountEntry.isEmpty()) {
+            SummonMounts.LOGGER.info("Failed to find config for mount: {}", entityId);
+            return;
+        }
+
+        FluteItem item = ItemManager.getItemFromEnum(mountEntry.get().flute);
+        ItemStack stack = new ItemStack(item);
+        Mount.fromEntity((ServerPlayerEntity) player, entity, stack);
         player.giveItemStack(stack);
+
     }
 }
