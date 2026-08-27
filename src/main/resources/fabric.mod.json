@@ -7,10 +7,13 @@
   "authors": [ "Brodino" ],
   "contact": {},
   "license": "MIT",
-  "environment": "server",
+  "environment": "*",
   "entrypoints": {
     "main": [
       "net.brodino.summonmounts.SummonMounts"
+    ],
+    "client": [
+      "net.brodino.summonmounts.client.SummonMountsClient"
     ]
   },
   "mixins": [
