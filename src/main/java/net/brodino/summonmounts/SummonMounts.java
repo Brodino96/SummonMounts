@@ -5,6 +5,7 @@ import net.brodino.summonmounts.commands.ReloadConfig;
 import net.brodino.summonmounts.commands.SpawnHorse;
 import net.brodino.summonmounts.config.Config;
 import net.brodino.summonmounts.config.ConfigType;
+import net.brodino.summonmounts.items.ItemManager;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
@@ -27,6 +28,7 @@ public class SummonMounts implements ModInitializer {
         
         // Register event handlers
         EventHandlers.initialize();
+        ItemManager.initialize();
     }
 
     public static void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess _r, CommandManager.RegistrationEnvironment _e) {
