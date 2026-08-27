@@ -3,6 +3,8 @@ package net.brodino.summonmounts;
 import com.mojang.brigadier.CommandDispatcher;
 import net.brodino.summonmounts.commands.ReloadConfig;
 import net.brodino.summonmounts.commands.SpawnHorse;
+import net.brodino.summonmounts.config.Config;
+import net.brodino.summonmounts.config.ConfigType;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
@@ -16,6 +18,7 @@ public class SummonMounts implements ModInitializer {
     public static final String MOD_ID = "summonmounts";
     public static final Logger LOGGER = LoggerFactory.getLogger(SummonMounts.MOD_ID);
     public static OldConfig OLD_CONFIG = new OldConfig();
+    public static final Config<ConfigType> CONFIG = new Config<>(MOD_ID + "new", ConfigType.class, ConfigType::new, LOGGER);
     public static MinecraftServer SERVER;
 
     @Override
