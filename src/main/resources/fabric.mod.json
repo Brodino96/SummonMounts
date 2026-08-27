@@ -10,10 +10,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.brodino.summonmounts.SummonMounts"
+      "dev.brodino.summonmounts.SummonMounts"
     ],
     "client": [
-      "net.brodino.summonmounts.client.SummonMountsClient"
+      "dev.brodino.summonmounts.client.SummonMountsClient"
     ]
   },
   "mixins": [
