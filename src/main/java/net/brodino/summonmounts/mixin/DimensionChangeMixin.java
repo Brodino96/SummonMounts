@@ -1,6 +1,6 @@
 package net.brodino.summonmounts.mixin;
 
-import net.brodino.summonmounts.MountManager;
+import net.brodino.summonmounts.MountManagerOld;
 import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,6 +20,6 @@ public class DimensionChangeMixin {
     @Inject(method = "removePlayer", at = @At("HEAD"))
     private void removePlayer(ServerPlayerEntity player, Entity.RemovalReason reason, CallbackInfo ci) {
         SummonMounts.LOGGER.info("{} changed dimension", player.getDisplayName().getString());
-        MountManager.playerDisconnected(player);
+        MountManagerOld.playerDisconnected(player);
     }
 }

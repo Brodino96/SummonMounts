@@ -1,6 +1,6 @@
 package net.brodino.summonmounts.mixin;
 
-import net.brodino.summonmounts.MountManager;
+import net.brodino.summonmounts.MountManagerOld;
 import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -32,7 +32,7 @@ public class TameEntityMixin {
         AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
         
         ItemStack stack = new ItemStack(Registry.ITEM.get(new Identifier(SummonMounts.CONFIG.getSummonItem())));
-        MountManager.bindMountToItem(player, entity, stack);
+        MountManagerOld.bindMountToItem(player, entity, stack);
         player.giveItemStack(stack);
     }
 }

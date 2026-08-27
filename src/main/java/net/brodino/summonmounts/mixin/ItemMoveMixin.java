@@ -1,6 +1,6 @@
 package net.brodino.summonmounts.mixin;
 
-import net.brodino.summonmounts.MountManager;
+import net.brodino.summonmounts.MountManagerOld;
 import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -43,7 +43,7 @@ public class ItemMoveMixin {
         }
 
         UUID playerUUID = player.getUuid();
-        if (MountManager.hasActiveMount(playerUUID, stack)) {
+        if (MountManagerOld.hasActiveMount(playerUUID, stack)) {
             SummonMounts.LOGGER.info("{} tried to move a bound item in his inventory", player.getDisplayName().getString());
             ci.cancel();
         }

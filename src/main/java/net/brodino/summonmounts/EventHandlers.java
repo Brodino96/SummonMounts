@@ -34,28 +34,28 @@ public class EventHandlers {
         // Register player disconnect event
         SummonMounts.LOGGER.info("Registering disconnect event");
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-            MountManager.playerDisconnected(handler.player);
+            MountManagerOld.playerDisconnected(handler.player);
         });
 
         // Register entity death event - use ALLOW_DEATH to intercept before items drop
         SummonMounts.LOGGER.info("Registering death event");
         ServerLivingEntityEvents.ALLOW_DEATH.register((entity, damageSource, damageAmount) -> {
-            return MountManager.onMountDeath(entity);
+            return MountManagerOld.onMountDeath(entity);
         });
 
         // Register item use on entity callbacks
         SummonMounts.LOGGER.info("Registering itemUseOnEntity event");
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            MountManager.itemUsedOnAnEntity(player, world, hand, entity, hitResult);
+            MountManagerOld.itemUsedOnAnEntity(player, world, hand, entity, hitResult);
             return ActionResult.PASS;
         });
 
         // Register item use callbacks
         SummonMounts.LOGGER.info("Registering item use event");
-        UseItemCallback.EVENT.register(MountManager::onItemUse);
+        UseItemCallback.EVENT.register(MountManagerOld::onItemUse);
 
         SummonMounts.LOGGER.info("Registering item use on a block event");
-        UseBlockCallback.EVENT.register(MountManager::itemUsedOnABlock);
+        UseBlockCallback.EVENT.register(MountManagerOld::itemUsedOnABlock);
     }
     
     /**
@@ -63,7 +63,7 @@ public class EventHandlers {
      * @param server The Minecraft server instance
      */
     private static void onServerTick(MinecraftServer server) {
-        MountManager.tickMounts();
+        MountManagerOld.tickMounts();
     }
 
 }

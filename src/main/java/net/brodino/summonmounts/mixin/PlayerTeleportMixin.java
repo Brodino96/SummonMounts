@@ -1,6 +1,6 @@
 package net.brodino.summonmounts.mixin;
 
-import net.brodino.summonmounts.MountManager;
+import net.brodino.summonmounts.MountManagerOld;
 import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -29,6 +29,6 @@ public class PlayerTeleportMixin {
         }
 
         SummonMounts.LOGGER.info("{} teleported more than 10 blocks", this.player.getDisplayName().getString());
-        MountManager.playerDisconnected(this.player);
+        MountManagerOld.playerDisconnected(this.player);
     }
 }

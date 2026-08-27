@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class MountManager {
+public class MountManagerOld {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
     private static final Map<UUID, ItemStack> playerItems = new HashMap<>();
     private static final Map<UUID, Integer> mountTimers = new HashMap<>();
@@ -254,7 +254,7 @@ public class MountManager {
                     ServerPlayerEntity owner = SummonMounts.SERVER.getPlayerManager().getPlayer(playerUUID);
 
                     if (owner != null) {
-                        MountManager.dismissMount(owner);
+                        MountManagerOld.dismissMount(owner);
                     }
 
                 } else {
@@ -276,7 +276,7 @@ public class MountManager {
         Entity mount = SummonMounts.SERVER.getOverworld().getEntity(mountUUID);
 
         if (mount != null && mount.isAlive()) {
-            MountManager.dismissMount(player);
+            MountManagerOld.dismissMount(player);
         }
     }
 
@@ -387,7 +387,7 @@ public class MountManager {
         }
 
         if (!stack.hasNbt() || !stack.getNbt().contains("mount.uuid")) {
-            MountManager.bindMountToItem(player, target, stack);
+            MountManagerOld.bindMountToItem(player, target, stack);
         }
 
     }
@@ -454,8 +454,8 @@ public class MountManager {
 
         UUID playerUUID = player.getUuid();
 
-        if (!MountManager.hasActiveMount(playerUUID, stack)) {
-            Entity mount = MountManager.summonMount(player, stack);
+        if (!MountManagerOld.hasActiveMount(playerUUID, stack)) {
+            Entity mount = MountManagerOld.summonMount(player, stack);
             if (mount != null) {
                 return TypedActionResult.pass(stack);
             }
@@ -467,7 +467,7 @@ public class MountManager {
                 return TypedActionResult.pass(stack);
             }
 
-            ItemStack out = MountManager.dismissMount(player);
+            ItemStack out = MountManagerOld.dismissMount(player);
             if (!out.equals(ItemStack.EMPTY)) {
                 player.setStackInHand(hand, out);
                 return TypedActionResult.pass(stack);

@@ -1,6 +1,6 @@
 package net.brodino.summonmounts.mixin;
 
-import net.brodino.summonmounts.MountManager;
+import net.brodino.summonmounts.MountManagerOld;
 import net.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class DropItemMixin {
         }
 
         UUID playerUUID = player.getUuid();
-        if (MountManager.hasActiveMount(playerUUID, stack)) {
+        if (MountManagerOld.hasActiveMount(playerUUID, stack)) {
             SummonMounts.LOGGER.info("{} tried to drop a mount item", player.getDisplayName().getString());
             cir.setReturnValue(false);
             cir.cancel();
