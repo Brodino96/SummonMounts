@@ -1,8 +1,8 @@
 package net.brodino.summonmounts.config;
 
-import net.brodino.summonmounts.config.data.FluteTypes;
 import net.brodino.summonmounts.config.data.flutes.FlutesConfig;
 import net.brodino.summonmounts.config.data.mounts.MountEntry;
+import net.brodino.summonmounts.items.FluteTypes;
 
 import java.util.List;
 

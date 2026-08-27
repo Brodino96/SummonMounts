@@ -1,6 +1,6 @@
 package net.brodino.summonmounts.config.data.mounts;
 
-import net.brodino.summonmounts.config.data.FluteTypes;
+import net.brodino.summonmounts.items.FluteTypes;
 
 public class MountEntry {
 
