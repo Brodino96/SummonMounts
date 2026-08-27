@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Deprecated
 public class MountManagerOld {
     private static final Map<UUID, UUID> playerMounts = new HashMap<>();
     private static final Map<UUID, ItemStack> playerItems = new HashMap<>();
