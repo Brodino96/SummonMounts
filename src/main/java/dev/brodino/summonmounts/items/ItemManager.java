@@ -2,7 +2,6 @@ package dev.brodino.summonmounts.items;
 
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.items.flutes.*;
-import net.brodino.summonmounts.items.flutes.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
