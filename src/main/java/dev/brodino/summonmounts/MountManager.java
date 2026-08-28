@@ -19,6 +19,12 @@ public class MountManager {
 
     private static final HashMap<UUID, Mount> MOUNTS = new HashMap<>();
 
+    public static boolean hasActiveMount(PlayerEntity player) { return MOUNTS.containsKey(player.getUuid()); }
+    public static Mount getActiveMount(PlayerEntity player) { return MOUNTS.get(player.getUuid()); }
+    private static Optional<Mount> getMountFromEntity(LivingEntity entity) {
+        return MOUNTS.values().stream().filter(mount -> mount.equals(entity)).findFirst();
+    }
+
     public static void summon(PlayerEntity player, Mount mount) {
         if (hasActiveMount(player)) return;
         mount.summon();
@@ -32,21 +38,7 @@ public class MountManager {
         MOUNTS.remove(player.getUuid());
     }
 
-    public static boolean hasActiveMount(PlayerEntity player) {
-        return MOUNTS.containsKey(player.getUuid());
-    }
-
-    public static Mount getActiveMount(PlayerEntity player) {
-        return MOUNTS.get(player.getUuid());
-    }
-
-    private static Optional<Mount> getMountFromEntity(LivingEntity entity) {
-        if (!(entity instanceof AbstractHorseEntity horseEntity)) {
-            return Optional.empty();
-        }
-
-        return MOUNTS.values().stream().filter(mount -> mount.equals(horseEntity)).findFirst();
-    }
+    // Events
 
     public static boolean onMountDeath(LivingEntity entity, DamageSource source, float amount) {
         Optional<Mount> mountOptional = getMountFromEntity(entity);
@@ -60,6 +52,7 @@ public class MountManager {
     }
 
     public static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
+        SummonMounts.LOGGER.info("Recalling {}'s mount because trying to leave the server", handler.player.getName().getString());
         recall(handler.player);
     }
 
