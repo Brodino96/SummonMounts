@@ -81,5 +81,7 @@ public class Config {
     public FlutesConfig getFlutes() { return this.data.flutes; }
     public List<String> getAllowedDimensions() { return this.data.allowedDimensions; }
     public int getFluteCooldown() { return this.data.flutesCooldownSeconds; }
-
+    public int getMountAliveTicks() { return this.data.mountAliveSeconds * 20; }
+    public int getMountIdleTicks() { return this.data.mountIdleSeconds * 20; }
+    public int getMountAirborneTicks() { return this.data.mountAirborneSeconds * 20; }
 }

@@ -30,7 +30,7 @@ public class EventHandlers {
 
         // Register server tick event for mount timer handling
         SummonMounts.LOGGER.info("Registering tick event");
-        ServerTickEvents.END_SERVER_TICK.register(EventHandlers::onServerTick);
+        ServerTickEvents.END_SERVER_TICK.register(MountManager::tick);
 
         // Register player disconnect event
         SummonMounts.LOGGER.info("Registering disconnect event");

@@ -3,6 +3,7 @@ package dev.brodino.summonmounts.items.flutes;
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.mount.Mount;
+import dev.brodino.summonmounts.mount.RecallReason;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -67,7 +68,7 @@ public class FluteItem extends Item {
         if (!mount.getStack().equals(stack)) {
             return TypedActionResult.fail(stack);
         }
-        MountManager.recall(player);
+        MountManager.recall(player, RecallReason.MANUAL);
         return TypedActionResult.success(stack);
     }
 

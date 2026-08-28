@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
@@ -25,6 +26,9 @@ public class Mount implements ParticleHelper {
     private final AbstractHorseEntity entity;
     private final ItemStack stack;
     private final Identifier id;
+    private double aliveTicks = 0;
+    private double idleTicks = 0;
+    private double airborneTicks = 0;
 
     private Mount(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         this.summoner = summoner;
@@ -35,7 +39,7 @@ public class Mount implements ParticleHelper {
 
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
-        mount.recall();
+        mount.recall(RecallReason.NONE);
         stack.addEnchantment(Enchantments.LOYALTY, 1);
     }
 
@@ -63,7 +67,9 @@ public class Mount implements ParticleHelper {
         this.summonParticles((ServerWorld) this.entity.getWorld(), this);
     }
 
-    public void recall() {
+    public void recall(RecallReason reason) {
+        this.summoner.sendMessage(Text.translatable(reason.reason()), true);
+        SummonMounts.LOGGER.info(RecallReason.getLog(reason), this.summoner.getName().getString());
         FluteItem.saveMount(this.stack, this);
         this.entity.discard();
         this.recallParticles((ServerWorld) this.entity.getWorld(), this);
@@ -143,5 +149,32 @@ public class Mount implements ParticleHelper {
             return this.entity.getUuid().equals(horseEntity.getUuid());
         }
         return super.equals(obj);
+    }
+
+    public RecallReason tick() {
+        this.aliveTicks++;
+        if (this.aliveTicks >= SummonMounts.CONFIG.getMountAliveTicks()) {
+            return RecallReason.ALIVE;
+        }
+
+        if (this.entity.hasPassengers()) {
+            this.idleTicks = 0;
+        } else {
+            this.idleTicks++;
+            if (this.idleTicks >= SummonMounts.CONFIG.getMountIdleTicks()) {
+                return RecallReason.IDLE;
+            }
+        }
+
+        if (this.entity.isOnGround() || this.entity.isTouchingWater()) {
+            this.airborneTicks = 0;
+        } else {
+            this.airborneTicks++;
+            if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks()) {
+                return RecallReason.AIRBORNE;
+            }
+        }
+
+        return RecallReason.NONE;
     }
 }

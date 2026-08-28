@@ -1,11 +1,9 @@
 package dev.brodino.summonmounts;
 
 import dev.brodino.summonmounts.mount.Mount;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import dev.brodino.summonmounts.mount.RecallReason;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -30,10 +28,10 @@ public class MountManager {
         MOUNTS.put(player.getUuid(), mount);
     }
 
-    public static void recall(PlayerEntity player) {
+    public static void recall(PlayerEntity player, RecallReason reason) {
         Mount mount = getActiveMount(player);
         if (mount == null) return;
-        mount.recall();
+        mount.recall(reason);
         MOUNTS.remove(player.getUuid());
     }
 
@@ -46,29 +44,31 @@ public class MountManager {
         }
 
         Mount mount = mountOptional.get();
-        recall(mount.getSummoner());
+        recall(mount.getSummoner(), RecallReason.DEATH);
         return false;
     }
 
     public static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
-        SummonMounts.LOGGER.info("Recalling {}'s mount because trying to leave the server", handler.player.getName().getString());
-        recall(handler.player);
+        recall(handler.player, RecallReason.DISCONNECT);
     }
 
     public static void onDimensionChange(ServerPlayerEntity player, ServerWorld from, ServerWorld to) {
         if (from.equals(to)) return;
-        SummonMounts.LOGGER.info("Recalling {}'s mount because changed dimension", player.getName().getString());
-        recall(player);
+        recall(player, RecallReason.DIMENSION);
     }
 
-    public static void tick() {
+    public static void tick(MinecraftServer server) {
         Iterator<Map.Entry<UUID, Mount>> iterator = MOUNTS.entrySet().iterator();
 
         while (iterator.hasNext()) {
             Map.Entry<UUID, Mount> entry = iterator.next();
 
-            // Tick every mount
-            iterator.remove();
+            Mount mount = entry.getValue();
+            RecallReason reason = mount.tick();
+            if (reason != RecallReason.NONE) {
+                mount.recall(reason);
+                iterator.remove();
+            }
         }
     }
 }
