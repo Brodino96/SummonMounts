@@ -4,22 +4,19 @@ import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.items.flutes.FluteItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.PlayerEntityRenderer;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Environment(EnvType.SERVER)
 public class Mount implements ParticleHelper {
@@ -39,6 +36,7 @@ public class Mount implements ParticleHelper {
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
         mount.recall();
+        stack.addEnchantment(Enchantments.LOYALTY, 1);
     }
 
     public static Optional<Mount> fromStack(PlayerEntity player, ItemStack stack) {
@@ -79,39 +77,41 @@ public class Mount implements ParticleHelper {
     public double getHeight() { return this.entity.getHeight(); }
     public double getRadius() { return this.entity.getBoundingBox().getAverageSideLength(); }
 
+    public ItemStack getStack() { return this.stack; }
+
     public NbtCompound getSavableNbt() {
         NbtCompound nbt = new NbtCompound();
         NbtCompound mountNbt = new NbtCompound();
-        entity.writeNbt(mountNbt);
+        this.entity.writeNbt(mountNbt);
 
-        if (!entity.isDead()) {
-            if (mountNbt.contains("ArmorItems")) { nbt.put("armor", mountNbt.get("ArmorItems")); }
-            if (mountNbt.contains("SaddleItem")) { nbt.put("saddle", mountNbt.get("SaddleItem")); }
-            if (mountNbt.contains("DecorItem")) { nbt.put("decor", mountNbt.get("DecorItem")); }
+        if (!this.entity.isDead()) {
+            if (mountNbt.contains("ArmorItem")) { nbt.put("ArmorItem", mountNbt.get("ArmorItem")); }
+            if (mountNbt.contains("SaddleItem")) { nbt.put("SaddleItem", mountNbt.get("SaddleItem")); }
+            if (mountNbt.contains("DecorItem")) { nbt.put("DecorItem", mountNbt.get("DecorItem")); }
         }
 
-        Text name = entity.getDisplayName();
-        if (name != null) { nbt.putString("name", name.getString()); }
-
-        UUID owner = entity.getOwnerUuid();
-        if (owner != null) { nbt.putUuid("owner", owner); }
-
-        if (mountNbt.contains("Variant")) { nbt.putInt("variant", mountNbt.getInt("Variant")); }
+        if (mountNbt.contains("CustomName")) { nbt.putString("CustomName", mountNbt.getString("CustomName")); }
+        if (mountNbt.contains("Owner")) { nbt.putUuid("Owner", mountNbt.getUuid("Owner")); }
+        if (mountNbt.contains("Variant")) { nbt.putInt("Variant", mountNbt.getInt("Variant")); }
+        if (mountNbt.contains("Tame")) { nbt.putBoolean("Tame", mountNbt.getBoolean("Tame")); }
 
         nbt.putString("type", this.id.toString());
 
         return nbt;
     }
 
-    private static void applyNbtToEntity(NbtCompound nbt, AbstractHorseEntity entity) {
+    private static void applyNbtToEntity(NbtCompound stackNbt, AbstractHorseEntity entity) {
         NbtCompound mountNbt = new NbtCompound();
         entity.writeNbt(mountNbt);
 
-        if (nbt.contains("armor")) { mountNbt.put("ArmorItems", nbt.get("armor")); }
-        if (nbt.contains("saddle")) { mountNbt.put("SaddleItem", nbt.get("saddle")); }
-        if (nbt.contains("decor")) { mountNbt.put("DecorItem", nbt.get("decor")); }
-        if (nbt.contains("variant")) { mountNbt.putInt("Variant", nbt.getInt("variant")); };
-        if (nbt.contains("name")) { entity.setCustomName(Text.literal(nbt.getString("name"))); }
-        if (nbt.contains("owner")) { entity.setOwnerUuid(nbt.getUuid("owner")); }
+        if (stackNbt.contains("ArmorItem")) mountNbt.put("ArmorItem", stackNbt.get("ArmorItem"));
+        if (stackNbt.contains("SaddleItem")) mountNbt.put("SaddleItem", stackNbt.get("SaddleItem"));
+        if (stackNbt.contains("DecorItem")) mountNbt.put("DecorItem", stackNbt.get("DecorItem"));
+        if (stackNbt.contains("CustomName")) mountNbt.putString("CustomName", stackNbt.getString("CustomName"));
+        if (stackNbt.contains("Variant")) mountNbt.putInt("Variant", stackNbt.getInt("Variant"));
+        if (stackNbt.contains("Tame")) mountNbt.putBoolean("Tame", stackNbt.getBoolean("Tame"));
+        if (stackNbt.contains("Owner")) mountNbt.putUuid("Owner", stackNbt.getUuid("Owner"));
+
+        entity.readNbt(mountNbt);
     }
 }
