@@ -3,30 +3,17 @@ package dev.brodino.summonmounts;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
 
 public class EventHandlers {
 
-    /**
-     * Registers all event handlers for the mod
-     */
     public static void initialize() {
 
         // Register commands
         CommandRegistrationCallback.EVENT.register(SummonMounts::registerCommand);
-
-        // Register server start event to store server instance
-        SummonMounts.LOGGER.info("Storing the server inside the mod");
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            SummonMounts.SERVER = server;
-        });
 
         // Register server tick event for mount timer handling
         SummonMounts.LOGGER.info("Registering tick event");
@@ -47,22 +34,7 @@ public class EventHandlers {
             return ActionResult.PASS;
         });
 
-        // Register item use callbacks
-        SummonMounts.LOGGER.info("Registering item use event");
-        UseItemCallback.EVENT.register(MountManagerOld::onItemUse);
-
-        SummonMounts.LOGGER.info("Registering item use on a block event");
-        UseBlockCallback.EVENT.register(MountManagerOld::itemUsedOnABlock);
-
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(MountManager::onDimensionChange);
-    }
-    
-    /**
-     * Handles the server tick event to check mount timers
-     * @param server The Minecraft server instance
-     */
-    private static void onServerTick(MinecraftServer server) {
-        MountManagerOld.tickMounts();
     }
 
 }
