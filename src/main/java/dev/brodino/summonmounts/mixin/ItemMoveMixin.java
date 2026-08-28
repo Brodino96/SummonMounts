@@ -1,20 +1,16 @@
 package dev.brodino.summonmounts.mixin;
 
-import dev.brodino.summonmounts.MountManagerOld;
+import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.items.ItemManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.UUID;
 
 @Mixin(ScreenHandler.class)
 public class ItemMoveMixin {
@@ -33,20 +29,15 @@ public class ItemMoveMixin {
             return;
         }
 
-        Item summonItem = Registry.ITEM.get(new Identifier(SummonMounts.OLD_CONFIG.getSummonItem()));
-        if (stack.getItem() != summonItem) {
+        if (!ItemManager.isFlute(stack.getItem())) {
             return;
         }
 
-        if (!stack.hasNbt() || !stack.getNbt().contains("mount.uuid")) {
-            return;
+        if (stack.getNbt() != null && stack.getNbt().contains(SummonMounts.MOD_ID)) {
+            if (MountManager.hasActiveMount(player)) {
+                SummonMounts.LOGGER.info("{} tried to move a bound item in his inventory", player.getDisplayName().getString());
+                ci.cancel();
+            }
         }
-
-        UUID playerUUID = player.getUuid();
-        if (MountManagerOld.hasActiveMount(playerUUID, stack)) {
-            SummonMounts.LOGGER.info("{} tried to move a bound item in his inventory", player.getDisplayName().getString());
-            ci.cancel();
-        }
-
     }
 }
