@@ -13,6 +13,7 @@ public class MountManager {
     private static final HashMap<UUID, Mount> MOUNTS = new HashMap<>();
 
     public static void summon(PlayerEntity player, Mount mount) {
+        if (hasActiveMount(player)) return;
         mount.summon();
         MOUNTS.put(player.getUuid(), mount);
     }
