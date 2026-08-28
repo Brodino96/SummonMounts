@@ -9,6 +9,7 @@ import java.util.List;
 public class ConfigType {
 
     public List<String> allowedDimensions = List.of("minecraft:overworld");
+    public int flutesCooldownSeconds = 1;
     public int mountAliveSeconds = 5 * 60;
     public int mountIdleSeconds = 30;
     public int mountAirborneSeconds = 2 * 60;

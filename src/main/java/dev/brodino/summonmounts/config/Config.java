@@ -78,5 +78,6 @@ public class Config {
 
     public ConfigType getData() { return this.data; }
     public FlutesConfig getFlutes() { return this.data.flutes; }
+    public int getFluteCooldown() { return this.data.flutesCooldownSeconds; }
 
 }
