@@ -7,7 +7,7 @@ public class CopperFlute extends FluteItem {
 
     public CopperFlute() {
         super(FluteItem.SHARED_SETTINGS
-                .maxDamage(SummonMounts.CONFIG.getData().flutes.copper.durability)
+                .maxDamage(SummonMounts.CONFIG.getFlutes().copper.durability)
                 .rarity(Rarity.COMMON)
         );
     }

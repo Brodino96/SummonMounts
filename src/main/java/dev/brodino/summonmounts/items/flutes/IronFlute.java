@@ -7,7 +7,7 @@ public class IronFlute extends FluteItem {
 
     public IronFlute() {
         super(FluteItem.SHARED_SETTINGS
-                .maxDamage(SummonMounts.CONFIG.getData().flutes.iron.durability)
+                .maxDamage(SummonMounts.CONFIG.getFlutes().iron.durability)
                 .rarity(Rarity.UNCOMMON)
         );
     }

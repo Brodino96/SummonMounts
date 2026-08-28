@@ -2,6 +2,7 @@ package dev.brodino.summonmounts.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.brodino.summonmounts.config.data.flutes.FlutesConfig;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -76,5 +77,6 @@ public class Config {
     }
 
     public ConfigType getData() { return this.data; }
+    public FlutesConfig getFlutes() { return this.data.flutes; }
 
 }

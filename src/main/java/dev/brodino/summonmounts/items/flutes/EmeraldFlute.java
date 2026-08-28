@@ -7,7 +7,7 @@ public class EmeraldFlute extends FluteItem {
 
     public EmeraldFlute() {
         super(FluteItem.SHARED_SETTINGS
-                .maxDamage(SummonMounts.CONFIG.getData().flutes.emerald.durability)
+                .maxDamage(SummonMounts.CONFIG.getFlutes().emerald.durability)
                 .rarity(Rarity.EPIC)
         );
     }

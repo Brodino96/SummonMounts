@@ -7,7 +7,7 @@ public class DiamondFlute extends FluteItem {
 
     public DiamondFlute() {
         super(FluteItem.SHARED_SETTINGS
-                .maxDamage(SummonMounts.CONFIG.getData().flutes.diamond.durability)
+                .maxDamage(SummonMounts.CONFIG.getFlutes().diamond.durability)
                 .rarity(Rarity.EPIC)
         );
     }

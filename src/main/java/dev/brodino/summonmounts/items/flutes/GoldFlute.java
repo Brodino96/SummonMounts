@@ -7,7 +7,7 @@ public class GoldFlute extends FluteItem {
 
     public GoldFlute() {
         super(FluteItem.SHARED_SETTINGS
-                .maxDamage(SummonMounts.CONFIG.getData().flutes.gold.durability)
+                .maxDamage(SummonMounts.CONFIG.getFlutes().gold.durability)
                 .rarity(Rarity.RARE)
         );
     }
