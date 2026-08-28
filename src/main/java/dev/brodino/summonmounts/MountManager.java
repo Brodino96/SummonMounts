@@ -14,7 +14,6 @@ import net.minecraft.server.world.ServerWorld;
 
 import java.util.*;
 
-@Environment(EnvType.SERVER)
 public class MountManager {
 
     private static final HashMap<UUID, Mount> MOUNTS = new HashMap<>();
