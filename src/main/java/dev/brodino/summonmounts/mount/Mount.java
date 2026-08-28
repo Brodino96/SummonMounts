@@ -57,6 +57,12 @@ public class Mount implements ParticleHelper {
         return Optional.of(new Mount(player, abstractHorseEntity, stack));
     }
 
+    public void summon() {
+        this.entity.setPosition(this.summoner.getPos());
+        this.summoner.getWorld().spawnEntity(this.entity);
+        this.summonParticles((ServerWorld) this.entity.getWorld(), this);
+    }
+
     public void recall() {
         FluteItem.saveMount(this.stack, this);
         this.entity.discard();
@@ -85,21 +91,6 @@ public class Mount implements ParticleHelper {
             mountNbt.remove("DecorItem");
         }
     }
-
-    public void summon() {
-        // Create the entity
-        this.entity.setPosition(this.summoner.getPos());
-        this.summoner.getWorld().spawnEntity(this.entity);
-        this.summonParticles((ServerWorld) this.entity.getWorld(), this);
-    }
-
-    // Particle Helper Getters
-    public Vec3d getPos() { return this.entity.getPos(); }
-    public double getHeight() { return this.entity.getHeight(); }
-    public double getRadius() { return this.entity.getBoundingBox().getAverageSideLength(); }
-
-    public ItemStack getStack() { return this.stack; }
-    public PlayerEntity getSummoner() { return this.summoner; }
 
     public NbtCompound getSavableNbt() {
         NbtCompound nbt = new NbtCompound();
@@ -138,6 +129,13 @@ public class Mount implements ParticleHelper {
 
         entity.readNbt(mountNbt);
     }
+
+    // Getters
+    public Vec3d getPos() { return this.entity.getPos(); }
+    public double getHeight() { return this.entity.getHeight(); }
+    public double getRadius() { return this.entity.getBoundingBox().getAverageSideLength(); }
+    public ItemStack getStack() { return this.stack; }
+    public PlayerEntity getSummoner() { return this.summoner; }
 
     @Override
     public boolean equals(Object obj) {
