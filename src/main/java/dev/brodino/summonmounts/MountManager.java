@@ -18,7 +18,9 @@ public class MountManager {
     }
 
     public static void recall(PlayerEntity player) {
-        getActiveMount(player).recall();
+        Mount mount = getActiveMount(player);
+        if (mount == null) return;
+        mount.recall();
         MOUNTS.remove(player.getUuid());
     }
 
