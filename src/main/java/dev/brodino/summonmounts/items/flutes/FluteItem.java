@@ -10,7 +10,7 @@ import net.minecraft.nbt.NbtCompound;
 
 public class FluteItem extends Item {
 
-    public static final Settings SHARED_SETTINGS = new Settings()
+    public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.TOOLS)
             .fireproof()
             .maxCount(1);

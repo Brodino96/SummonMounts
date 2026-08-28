@@ -6,7 +6,7 @@ import net.minecraft.util.Rarity;
 public class IronFlute extends FluteItem {
 
     public IronFlute() {
-        super(FluteItem.SHARED_SETTINGS
+        super(FluteItem.BASE_SETTINGS
                 .maxDamage(SummonMounts.CONFIG.getFlutes().iron.durability)
                 .rarity(Rarity.UNCOMMON)
         );

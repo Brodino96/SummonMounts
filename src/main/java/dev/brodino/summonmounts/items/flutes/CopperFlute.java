@@ -6,7 +6,7 @@ import net.minecraft.util.Rarity;
 public class CopperFlute extends FluteItem {
 
     public CopperFlute() {
-        super(FluteItem.SHARED_SETTINGS
+        super(FluteItem.BASE_SETTINGS
                 .maxDamage(SummonMounts.CONFIG.getFlutes().copper.durability)
                 .rarity(Rarity.COMMON)
         );

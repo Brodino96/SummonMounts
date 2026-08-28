@@ -6,7 +6,7 @@ import net.minecraft.util.Rarity;
 public class DiamondFlute extends FluteItem {
 
     public DiamondFlute() {
-        super(FluteItem.SHARED_SETTINGS
+        super(FluteItem.BASE_SETTINGS
                 .maxDamage(SummonMounts.CONFIG.getFlutes().diamond.durability)
                 .rarity(Rarity.EPIC)
         );
