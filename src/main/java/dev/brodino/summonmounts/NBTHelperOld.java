@@ -11,7 +11,8 @@ import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 
-public class NBTHelper {
+@Deprecated
+public class NBTHelperOld {
 
     public static void setCustomLore(ItemStack stack, String description) {
 

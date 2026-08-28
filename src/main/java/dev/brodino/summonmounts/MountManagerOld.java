@@ -78,8 +78,8 @@ public class MountManagerOld {
             return false;
         }
 
-        NBTHelper.saveMountData(mount, stack, false);
-        NBTHelper.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
+        NBTHelperOld.saveMountData(mount, stack, false);
+        NBTHelperOld.setCustomLore(stack, "Contains: " + mount.getDisplayName().getString());
         mount.discard();
 
         player.sendMessage(Text.literal(SummonMounts.OLD_CONFIG.getLocales().binding.success), true);
@@ -162,7 +162,7 @@ public class MountManagerOld {
             return null;
         }
 
-        Entity mount = NBTHelper.loadMountData((AbstractHorseEntity) entity, nbt);
+        Entity mount = NBTHelperOld.loadMountData((AbstractHorseEntity) entity, nbt);
 
         // Find a safe spawn position that isn't inside a block
         Vec3d spawnPos = findSafeSpawnPosition(player, mount, world);
@@ -178,7 +178,7 @@ public class MountManagerOld {
         world.spawnEntity(mount);
 
         // Re-apply variant after spawning, since the spawn packet may override it
-        NBTHelper.applyVariant((AbstractHorseEntity) mount, nbt);
+        NBTHelperOld.applyVariant((AbstractHorseEntity) mount, nbt);
 
         playerMounts.put(playerUuid, mount.getUuid());
         playerItems.put(playerUuid, stack);
@@ -206,8 +206,8 @@ public class MountManagerOld {
             return ItemStack.EMPTY;
         }
 
-        ItemStack output = NBTHelper.saveMountData(mount, playerItems.get(playerUUID), false);
-        NBTHelper.setCustomLore(output, "Contains: " + mount.getDisplayName().getString());
+        ItemStack output = NBTHelperOld.saveMountData(mount, playerItems.get(playerUUID), false);
+        NBTHelperOld.setCustomLore(output, "Contains: " + mount.getDisplayName().getString());
 
         //PARTICLE EFFECT
         Vec3d mountPos = mount.getPos();
@@ -341,8 +341,8 @@ public class MountManagerOld {
         mount.setHealth(mount.getMaxHealth());
 
         // Save mount data BEFORE death (with dead=false to preserve armor, saddle, health)
-        NBTHelper.saveMountData(mount, mountItem, false);
-        NBTHelper.setCustomLore(mountItem, "Contains: " + mount.getDisplayName().getString());
+        NBTHelperOld.saveMountData(mount, mountItem, false);
+        NBTHelperOld.setCustomLore(mountItem, "Contains: " + mount.getDisplayName().getString());
         SummonMounts.LOGGER.info("Mount data saved successfully before death (health reset to max)");
 
         // Particle effects for recall
