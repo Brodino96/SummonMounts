@@ -99,6 +99,7 @@ public class Mount implements ParticleHelper {
     public double getRadius() { return this.entity.getBoundingBox().getAverageSideLength(); }
 
     public ItemStack getStack() { return this.stack; }
+    public PlayerEntity getSummoner() { return this.summoner; }
 
     public NbtCompound getSavableNbt() {
         NbtCompound nbt = new NbtCompound();
@@ -136,5 +137,13 @@ public class Mount implements ParticleHelper {
         if (stackNbt.contains("Owner")) mountNbt.putUuid("Owner", stackNbt.getUuid("Owner"));
 
         entity.readNbt(mountNbt);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AbstractHorseEntity horseEntity) {
+            return this.entity.getUuid().equals(horseEntity.getUuid());
+        }
+        return super.equals(obj);
     }
 }

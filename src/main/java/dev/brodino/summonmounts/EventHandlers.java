@@ -33,15 +33,11 @@ public class EventHandlers {
 
         // Register player disconnect event
         SummonMounts.LOGGER.info("Registering disconnect event");
-        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-            MountManagerOld.playerDisconnected(handler.player);
-        });
+        ServerPlayConnectionEvents.DISCONNECT.register(MountManager::onPlayerDisconnect);
 
         // Register entity death event - use ALLOW_DEATH to intercept before items drop
         SummonMounts.LOGGER.info("Registering death event");
-        ServerLivingEntityEvents.ALLOW_DEATH.register((entity, damageSource, damageAmount) -> {
-            return MountManagerOld.onMountDeath(entity);
-        });
+        ServerLivingEntityEvents.ALLOW_DEATH.register(MountManager::onMountDeath);
 
         // Register item use on entity callbacks
         SummonMounts.LOGGER.info("Registering itemUseOnEntity event");
