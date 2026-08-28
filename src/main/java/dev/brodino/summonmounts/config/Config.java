@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class Config {
 
@@ -78,6 +79,7 @@ public class Config {
 
     public ConfigType getData() { return this.data; }
     public FlutesConfig getFlutes() { return this.data.flutes; }
+    public List<String> getAllowedDimensions() { return this.data.allowedDimensions; }
     public int getFluteCooldown() { return this.data.flutesCooldownSeconds; }
 
 }
