@@ -35,7 +35,7 @@ public class ItemMoveMixin {
 
         if (stack.getNbt() != null && stack.getNbt().contains(SummonMounts.MOD_ID)) {
             if (MountManager.hasActiveMount(player)) {
-                SummonMounts.LOGGER.info("{} tried to move a bound item in his inventory", player.getDisplayName().getString());
+                SummonMounts.LOGGER.info("Stopping {} from moving flute inside inventory, has active mount", player.getName().getString());
                 ci.cancel();
             }
         }

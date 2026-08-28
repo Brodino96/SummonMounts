@@ -47,6 +47,8 @@ public abstract class TameEntityMixin {
             return;
         }
 
+        SummonMounts.LOGGER.info("Generating flute for {}", playerName);
+
         FluteItem item = ItemManager.getItemFromEnum(mountEntry.get().flute);
         ItemStack stack = new ItemStack(item);
         Mount.fromEntity(player, entity, stack);

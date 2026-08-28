@@ -29,7 +29,7 @@ public class DropItemMixin {
 
         if (stack.getNbt() != null && stack.getNbt().contains(SummonMounts.MOD_ID)) {
             if (MountManager.hasActiveMount(player)) {
-                SummonMounts.LOGGER.info("{} tried to drop a mount item", player.getDisplayName().getString());
+                SummonMounts.LOGGER.info("Stopping {} from dropping flute, has an active mount", player.getName().getString());
                 cir.setReturnValue(false);
                 cir.cancel();
                 player.networkHandler.sendPacket(new InventoryS2CPacket(player.currentScreenHandler.syncId, player.currentScreenHandler.getRevision(), player.currentScreenHandler.getStacks(), player.currentScreenHandler.getCursorStack()));
