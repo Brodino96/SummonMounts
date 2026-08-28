@@ -1,6 +1,7 @@
 package dev.brodino.summonmounts;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -52,6 +53,8 @@ public class EventHandlers {
 
         SummonMounts.LOGGER.info("Registering item use on a block event");
         UseBlockCallback.EVENT.register(MountManagerOld::itemUsedOnABlock);
+
+        ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(MountManager::onDimensionChange);
     }
     
     /**

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.*;
 
@@ -60,6 +61,12 @@ public class MountManager {
 
     public static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
         recall(handler.player);
+    }
+
+    public static void onDimensionChange(ServerPlayerEntity player, ServerWorld from, ServerWorld to) {
+        if (from.equals(to)) return;
+        SummonMounts.LOGGER.info("Recalling {}'s mount because changed dimension", player.getName().getString());
+        recall(player);
     }
 
     public static void tick() {
