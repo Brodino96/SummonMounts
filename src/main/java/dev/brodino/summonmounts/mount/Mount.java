@@ -59,10 +59,31 @@ public class Mount implements ParticleHelper {
 
     public void recall() {
         FluteItem.saveMount(this.stack, this);
-        // Save data inside itemstack
         this.entity.discard();
         this.recallParticles((ServerWorld) this.entity.getWorld(), this);
+    }
 
+    private void dropInventory() {
+        NbtCompound mountNbt = new NbtCompound();
+        this.entity.writeNbt(mountNbt);
+
+        if (mountNbt.contains("SaddleItem")) {
+            ItemStack saddle = ItemStack.fromNbt(mountNbt.getCompound("SaddleItem"));
+            if (!saddle.isEmpty()) this.entity.dropStack(saddle);
+            mountNbt.remove("SaddleItem");
+        }
+
+        if (mountNbt.contains("ArmorItem")) {
+            ItemStack armor = ItemStack.fromNbt(mountNbt.getCompound("ArmorItem"));
+            if (!armor.isEmpty()) this.entity.dropStack(armor);
+            mountNbt.remove("ArmorItem");
+        }
+
+        if (mountNbt.contains("DecorItem")) {
+            ItemStack decor = ItemStack.fromNbt(mountNbt.getCompound("DecorItem"));
+            if (!decor.isEmpty()) this.entity.dropStack(decor);
+            mountNbt.remove("DecorItem");
+        }
     }
 
     public void summon() {
@@ -84,7 +105,9 @@ public class Mount implements ParticleHelper {
         NbtCompound mountNbt = new NbtCompound();
         this.entity.writeNbt(mountNbt);
 
-        if (!this.entity.isDead()) {
+        if (entity.isDead()) {
+            this.dropInventory();
+        } else {
             if (mountNbt.contains("ArmorItem")) { nbt.put("ArmorItem", mountNbt.get("ArmorItem")); }
             if (mountNbt.contains("SaddleItem")) { nbt.put("SaddleItem", mountNbt.get("SaddleItem")); }
             if (mountNbt.contains("DecorItem")) { nbt.put("DecorItem", mountNbt.get("DecorItem")); }
