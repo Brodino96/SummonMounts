@@ -9,21 +9,16 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
-public class Config<T> {
+public class Config {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private Path configPath;
-    private T data;
-    private final Class<T> type;
-    private final Supplier<T> defaults;
+    private ConfigType data;
 
-    public Config(String configName, Class<T> type, Supplier<T> defaults, Logger logger) {
+    public Config(String configName, Logger logger) {
         Path dataDirectory = Path.of("config");
-        this.type = type;
-        this.defaults = defaults;
 
         try {
             if (!Files.exists(dataDirectory)) {
@@ -38,18 +33,22 @@ public class Config<T> {
 
     private void load() throws IOException {
         if (!Files.exists(this.configPath)) {
-            this.data = this.defaults.get();
+            this.data = this.getDefaults();
             this.saveToFile();
             return;
         }
 
         try (Reader reader = Files.newBufferedReader(this.configPath)) {
-            this.data = GSON.fromJson(reader, this.type);
+            this.data = GSON.fromJson(reader, ConfigType.class);
             if (data == null) {
-                this.data = this.defaults.get();
+                this.data = this.getDefaults();
                 this.saveToFile();
             }
         }
+    }
+
+    private ConfigType getDefaults() {
+        return new ConfigType();
     }
 
     public boolean reload() {
@@ -76,6 +75,6 @@ public class Config<T> {
         }
     }
 
-    public T getData() { return this.data; }
+    public ConfigType getData() { return this.data; }
 
 }
