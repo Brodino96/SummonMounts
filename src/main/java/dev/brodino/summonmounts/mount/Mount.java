@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
@@ -70,8 +69,8 @@ public class Mount implements ParticleHelper {
     }
 
     public void recall(RecallReason reason) {
-        this.summoner.sendMessage(Text.translatable(reason.reason()), true);
-        SummonMounts.LOGGER.info(RecallReason.getLog(reason), this.summoner.getName().getString());
+        this.summoner.sendMessage(reason.getReason(), true);
+        SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         FluteItem.saveMount(this.stack, this);
         this.entity.discard();
         this.recallParticles((ServerWorld) this.entity.getWorld(), this);
