@@ -2,6 +2,7 @@ package dev.brodino.summonmounts.items.flutes;
 
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.mount.Mount;
 import dev.brodino.summonmounts.mount.RecallReason;
 import net.fabricmc.api.EnvType;
@@ -38,8 +39,6 @@ public class FluteItem extends Item {
             return TypedActionResult.fail(stack);
         }
 
-        // Combat log check
-
         if (!SummonMounts.CONFIG.getAllowedDimensions().contains(world.getRegistryKey().getValue().toString())) {
             return TypedActionResult.fail(stack);
         }
@@ -56,6 +55,10 @@ public class FluteItem extends Item {
 
     private TypedActionResult<ItemStack> summon(PlayerEntity player, ItemStack stack) {
         if (this.getDurability(stack) <= 1) {
+            return TypedActionResult.fail(stack);
+        }
+
+        if (Utils.combatLogCheck(player)) {
             return TypedActionResult.fail(stack);
         }
 

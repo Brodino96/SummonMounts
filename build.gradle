@@ -60,10 +60,7 @@ dependencies {
     modImplementation "maven.modrinth:cloth-config:${project.cloth_config_version}"
     modImplementation "maven.modrinth:adventurez:${project.adventurez_version}"
 
-    implementation "com.electronwill.night-config:core:3.6.4"
-    implementation "com.electronwill.night-config:toml:3.6.4"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
-    modImplementation "maven.modrinth:combatlog:${project.combat_log_version}"
+    compileOnly "maven.modrinth:combatlog:${project.combat_log_version}"
 
 }
 

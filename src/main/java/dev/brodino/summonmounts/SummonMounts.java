@@ -6,6 +6,7 @@ import dev.brodino.summonmounts.commands.SpawnHorse;
 import dev.brodino.summonmounts.config.Config;
 import dev.brodino.summonmounts.items.ItemManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -20,6 +21,7 @@ public class SummonMounts implements ModInitializer {
     public static OldConfig OLD_CONFIG = new OldConfig();
     public static final Config CONFIG = new Config(MOD_ID + "new", LOGGER);
     public static MinecraftServer SERVER;
+    public static final boolean COMBATLOG_PRESENT = FabricLoader.getInstance().isModLoaded("combatlog");
 
     @Override
     public void onInitialize() {
