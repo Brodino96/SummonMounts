@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Environment(EnvType.SERVER)
 public class Mount implements ParticleHelper {
@@ -64,6 +65,7 @@ public class Mount implements ParticleHelper {
     public void summon() {
         this.entity.setPosition(this.summoner.getPos());
         this.summoner.getWorld().spawnEntity(this.entity);
+        // Play sound
         this.summonParticles((ServerWorld) this.entity.getWorld(), this);
     }
 
@@ -142,14 +144,7 @@ public class Mount implements ParticleHelper {
     public double getRadius() { return this.entity.getBoundingBox().getAverageSideLength(); }
     public ItemStack getStack() { return this.stack; }
     public PlayerEntity getSummoner() { return this.summoner; }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof AbstractHorseEntity horseEntity) {
-            return this.entity.getUuid().equals(horseEntity.getUuid());
-        }
-        return super.equals(obj);
-    }
+    public UUID getUuid() { return this.entity.getUuid(); }
 
     public RecallReason tick() {
         this.aliveTicks++;
