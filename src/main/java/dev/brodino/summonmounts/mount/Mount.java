@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Environment(EnvType.SERVER)
-public class Mount implements ParticleHelper {
+public class Mount implements ParticleHelper, PositionHelper {
 
     private final PlayerEntity summoner;
     private final AbstractHorseEntity entity;
@@ -63,7 +63,7 @@ public class Mount implements ParticleHelper {
     }
 
     public void summon() {
-        this.entity.setPosition(this.summoner.getPos());
+        this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound
         this.summonParticles((ServerWorld) this.entity.getWorld(), this);
