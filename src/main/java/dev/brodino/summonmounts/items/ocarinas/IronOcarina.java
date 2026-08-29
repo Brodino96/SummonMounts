@@ -12,4 +12,9 @@ public class IronOcarina extends OcarinaItem {
                 .maxDamage(SummonMounts.CONFIG.getOcarinas().iron.durability)
         );
     }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.UNCOMMON;
+    }
 }

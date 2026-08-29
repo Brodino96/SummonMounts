@@ -12,4 +12,9 @@ public class EmeraldOcarina extends OcarinaItem {
                 .maxDamage(SummonMounts.CONFIG.getOcarinas().emerald.durability)
         );
     }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.EPIC;
+    }
 }

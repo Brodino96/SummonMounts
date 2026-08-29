@@ -12,4 +12,9 @@ public class GoldOcarina extends OcarinaItem {
                 .maxDamage(SummonMounts.CONFIG.getOcarinas().gold.durability)
         );
     }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.RARE;
+    }
 }

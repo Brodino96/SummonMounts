@@ -12,4 +12,9 @@ public class CopperOcarina extends OcarinaItem {
                 .maxDamage(SummonMounts.CONFIG.getOcarinas().copper.durability)
         );
     }
+
+    @Override
+    public Rarity getRarity(ItemStack stack) {
+        return Rarity.COMMON;
+    }
 }
