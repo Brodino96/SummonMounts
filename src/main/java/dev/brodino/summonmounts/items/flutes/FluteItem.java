@@ -6,11 +6,15 @@ import dev.brodino.summonmounts.mount.Mount;
 import dev.brodino.summonmounts.mount.RecallReason;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -51,17 +55,28 @@ public class FluteItem extends Item {
     }
 
     private TypedActionResult<ItemStack> summon(PlayerEntity player, ItemStack stack) {
+        if (this.getDurability(stack) <= 1) {
+            return TypedActionResult.fail(stack);
+        }
+
         Optional<Mount> mount = Mount.fromStack(player, stack);
         if (mount.isEmpty()) {
             return TypedActionResult.fail(stack);
         }
 
-        MountManager.summon(player, mount.get());
-        // play sound
+        if (MountManager.summon(player, mount.get())) {
+            final int newDamage = stack.getDamage() + 1;
+            Criteria.ITEM_DURABILITY_CHANGED.trigger((ServerPlayerEntity) player, stack, newDamage);
+            stack.setDamage(newDamage);
+        }
 
         this.setCooldown(player);
         return TypedActionResult.success(stack);
 
+    }
+
+    private int getDurability(ItemStack stack) {
+        return stack.getMaxDamage() - stack.getDamage();
     }
 
     private TypedActionResult<ItemStack> recall(PlayerEntity player, ItemStack stack, Mount mount) {
@@ -74,6 +89,16 @@ public class FluteItem extends Item {
 
     private void setCooldown(PlayerEntity player) { player.getItemCooldownManager().set(this, SummonMounts.CONFIG.getFluteCooldown() * 20); }
 
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        final PlayerEntity player = context.getPlayer();
+        if (player == null) return ActionResult.FAIL;
+        if (MountManager.hasActiveMount(player)) {
+            return ActionResult.FAIL;
+        }
+        return super.useOnBlock(context);
+    }
+
     // Nbt stuff
 
     /**
@@ -81,13 +106,8 @@ public class FluteItem extends Item {
      * @param nbt The {@link NbtCompound} to check
      * @return true if it finds data linked to a {@link Mount}
      */
-    public static boolean containsMount(NbtCompound nbt) {
-        return nbt != null && nbt.contains(SummonMounts.MOD_ID);
-    }
-
-    public static boolean containsMount(ItemStack stack) {
-        return containsMount(stack.getNbt());
-    }
+    public static boolean containsMount(NbtCompound nbt) { return nbt != null && nbt.contains(SummonMounts.MOD_ID); }
+    public static boolean containsMount(ItemStack stack) { return containsMount(stack.getNbt()); }
 
     public static NbtCompound getMountData(ItemStack stack) {
         final NbtCompound nbt = stack.getNbt();

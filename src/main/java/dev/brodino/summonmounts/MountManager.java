@@ -22,10 +22,11 @@ public class MountManager {
         return MOUNTS.values().stream().filter(mount -> mount.equals(entity)).findFirst();
     }
 
-    public static void summon(PlayerEntity player, Mount mount) {
-        if (hasActiveMount(player)) return;
+    public static boolean summon(PlayerEntity player, Mount mount) {
+        if (hasActiveMount(player)) return false;
         mount.summon();
         MOUNTS.put(player.getUuid(), mount);
+        return true;
     }
 
     public static void recall(PlayerEntity player, RecallReason reason) {
