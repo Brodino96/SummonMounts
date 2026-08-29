@@ -1,27 +1,26 @@
 package dev.brodino.summonmounts.mount;
 
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import java.util.Locale;
 
 public enum RecallReason {
-    NONE(       "none",                     "Recalling {}'s mount"),
-    IDLE(       "idle_for_too_long",        "Recalling {}'s mount because it was idle for too long"),
-    TAME(       "tamed",                    "Recalling {}'s mount because it just got tame"),
-    ALIVE(      "alive_for_too_long",       "Recalling {}'s mount because it was alive for too long"),
-    DEATH(      "death",                    "Recalling {}'s mount because it died"),
-    MANUAL(     "manual",                   "Recalling {}'s mount because of manual recall"),
-    AIRBORNE(   "airborne_for_too_long",    "Recalling {}'s mount because it's stayed airborne for too long"),
-    DIMENSION(  "changed_dimension",        "Recalling {}'s mount because player changed dimension"),
-    DISCONNECT( "disconnected",             "Recalling {}'s mount because player disconnected");
+    NONE(       "Recalling {}'s mount"),
+    TAMED(       "Recalling {}'s mount because it just got tame"),
+    MANUAL(     "Recalling {}'s mount because of manual recall"),
+    DEATH(      "Recalling {}'s mount because it died"),
+    IDLE(       "Recalling {}'s mount because it was idle for too long"),
+    ALIVE(      "Recalling {}'s mount because it was alive for too long"),
+    AIRBORNE(   "Recalling {}'s mount because it's stayed airborne for too long"),
+    DISCONNECT( "Recalling {}'s mount because player disconnected"),
+    DIMENSION_CHANGE(  "Recalling {}'s mount because player changed dimension");
 
     private final String log;
-    private final MutableText reason;
+    private final String reason;
 
-    RecallReason(String reason, String log) {
+    RecallReason(String log) {
         this.log = log;
-        this.reason = Text.translatable("recall.summonmounts.feedback." + reason);
+        this.reason = "recall.summonmounts.feedback." + this.name().toLowerCase(Locale.ROOT);
     }
 
     public String getLog() { return this.log; }
-    public MutableText getReason() { return this.reason; }
+    public String getReason() { return this.reason; }
 }

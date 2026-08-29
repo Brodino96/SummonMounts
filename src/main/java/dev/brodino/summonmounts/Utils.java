@@ -11,7 +11,6 @@ public class Utils {
         return SummonMounts.COMBATLOG_PRESENT && TagData.getCombat((IEntityDataSaver) player);
     }
 
-    public static void notifyPlayer(PlayerEntity player, Text text) {
-        player.sendMessage(text, true);
-    }
+    public static void notifyPlayer(PlayerEntity player, Text text) { player.sendMessage(text, true); }
+    public static void notifyPlayer(PlayerEntity player, String translatableKey) { notifyPlayer(player, Text.translatable(translatableKey));}
 }

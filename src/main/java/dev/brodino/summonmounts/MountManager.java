@@ -55,7 +55,7 @@ public class MountManager {
 
     public static void onDimensionChange(ServerPlayerEntity player, ServerWorld from, ServerWorld to) {
         if (from.equals(to)) return;
-        recall(player, RecallReason.DIMENSION);
+        recall(player, RecallReason.DIMENSION_CHANGE);
     }
 
     public static void tick(MinecraftServer server) {

@@ -40,7 +40,7 @@ public class Mount implements ParticleHelper {
 
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
-        mount.recall(RecallReason.TAME);
+        mount.recall(RecallReason.TAMED);
         stack.addEnchantment(Enchantments.LOYALTY, 1);
     }
 
