@@ -1,6 +1,5 @@
 package dev.brodino.summonmounts;
 
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -9,9 +8,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 public class EventHandlers {
 
     public static void initialize() {
-
-        // Register commands
-        CommandRegistrationCallback.EVENT.register(SummonMounts::registerCommand);
 
         // Register server tick event for mount timer handling
         SummonMounts.LOGGER.info("Registering tick event");
