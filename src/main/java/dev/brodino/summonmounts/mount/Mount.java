@@ -1,6 +1,7 @@
 package dev.brodino.summonmounts.mount;
 
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.items.flutes.FluteItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -69,7 +70,7 @@ public class Mount implements ParticleHelper {
     }
 
     public void recall(RecallReason reason) {
-        this.summoner.sendMessage(reason.getReason(), true);
+        Utils.notifyPlayer(this.summoner, reason.getReason());
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         FluteItem.saveMount(this.stack, this);
         this.entity.discard();

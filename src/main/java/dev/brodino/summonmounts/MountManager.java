@@ -2,8 +2,6 @@ package dev.brodino.summonmounts;
 
 import dev.brodino.summonmounts.mount.Mount;
 import dev.brodino.summonmounts.mount.RecallReason;
-import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
-import fabric.me.toastymop.combatlog.util.TagData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
