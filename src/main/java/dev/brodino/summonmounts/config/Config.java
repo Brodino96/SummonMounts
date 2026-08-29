@@ -2,7 +2,7 @@ package dev.brodino.summonmounts.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.brodino.summonmounts.config.data.flutes.FlutesConfig;
+import dev.brodino.summonmounts.config.data.flutes.OcarinaConfig;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -78,9 +78,9 @@ public class Config {
     }
 
     public ConfigType getData() { return this.data; }
-    public FlutesConfig getFlutes() { return this.data.flutes; }
+    public OcarinaConfig getOcarinas() { return this.data.ocarinas; }
     public List<String> getAllowedDimensions() { return this.data.allowedDimensions; }
-    public int getFluteCooldown() { return this.data.flutesCooldownSeconds; }
+    public int getOcarinaCooldown() { return this.data.ocarinasCooldownSeconds; }
     public int getMountAliveTicks() { return this.data.mountAliveSeconds * 20; }
     public int getMountIdleTicks() { return this.data.mountIdleSeconds * 20; }
     public int getMountAirborneTicks() { return this.data.mountAirborneSeconds * 20; }

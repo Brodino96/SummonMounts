@@ -2,8 +2,8 @@ package dev.brodino.summonmounts.mixin;
 
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.config.data.mounts.MountEntry;
-import dev.brodino.summonmounts.items.ItemManager;
-import dev.brodino.summonmounts.items.flutes.FluteItem;
+import dev.brodino.summonmounts.items.OcarinaManager;
+import dev.brodino.summonmounts.items.OcarinaItem;
 import dev.brodino.summonmounts.mount.Mount;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -42,9 +42,9 @@ public abstract class TameEntityMixin {
             return;
         }
 
-        SummonMounts.LOGGER.info("Generating flute for {}", playerName);
+        SummonMounts.LOGGER.info("Generating ocarina for {}", playerName);
 
-        FluteItem item = ItemManager.getItemFromEnum(mountEntry.get().flute);
+        OcarinaItem item = OcarinaManager.getItemFromEnum(mountEntry.get().ocarina);
         ItemStack stack = new ItemStack(item);
         Mount.fromEntity(player, entity, stack);
         player.giveItemStack(stack);

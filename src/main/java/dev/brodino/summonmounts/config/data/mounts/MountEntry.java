@@ -1,14 +1,14 @@
 package dev.brodino.summonmounts.config.data.mounts;
 
-import dev.brodino.summonmounts.items.FluteTypes;
+import dev.brodino.summonmounts.items.OcarinaTypes;
 
 public class MountEntry {
 
     public String id;
-    public FluteTypes flute;
+    public OcarinaTypes ocarina;
 
-    public MountEntry(String id, FluteTypes type) {
+    public MountEntry(String id, OcarinaTypes ocarina) {
         this.id = id;
-        this.flute = type;
+        this.ocarina = ocarina;
     }
 }

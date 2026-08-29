@@ -7,5 +7,12 @@
   "recall.summonmounts.feedback.alive": "The energy sustaining your mount has faded",
   "recall.summonmounts.feedback.airborne": "Your mount reached its flight limit and returned",
   "recall.summonmounts.feedback.disconnected": "Your mount has been recalled",
-  "recall.summonmounts.feedback.dimension_change": "Your mount has been recalled"
+  "recall.summonmounts.feedback.dimension_change": "Your mount has been recalled",
+  "summon.summonmounts.feedback": "You summoned your mount",
+
+  "item.summonmounts.copper_ocarina": "Copper Ocarina",
+  "item.summonmounts.iron_ocarina": "Iron Ocarina",
+  "item.summonmounts.gold_ocarina": "Gold Ocarina",
+  "item.summonmounts.diamond_ocarina": "Diamond Ocarina",
+  "item.summonmounts.emerald_ocarina": "Emerald Ocarina"
 }

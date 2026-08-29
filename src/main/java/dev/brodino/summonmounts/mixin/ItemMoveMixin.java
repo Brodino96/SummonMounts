@@ -2,7 +2,7 @@ package dev.brodino.summonmounts.mixin;
 
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
-import dev.brodino.summonmounts.items.ItemManager;
+import dev.brodino.summonmounts.items.OcarinaManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
@@ -29,13 +29,13 @@ public class ItemMoveMixin {
             return;
         }
 
-        if (!ItemManager.isFlute(stack.getItem())) {
+        if (!OcarinaManager.isOcarina(stack.getItem())) {
             return;
         }
 
         if (stack.getNbt() != null && stack.getNbt().contains(SummonMounts.MOD_ID)) {
             if (MountManager.hasActiveMount(player)) {
-                SummonMounts.LOGGER.info("Stopping {} from moving flute inside inventory, has active mount", player.getName().getString());
+                SummonMounts.LOGGER.info("Stopping {} from moving ocarina inside inventory, has active mount", player.getName().getString());
                 ci.cancel();
             }
         }

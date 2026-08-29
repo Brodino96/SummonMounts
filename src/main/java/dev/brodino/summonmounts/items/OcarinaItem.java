@@ -1,4 +1,4 @@
-package dev.brodino.summonmounts.items.flutes;
+package dev.brodino.summonmounts.items;
 
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
@@ -22,14 +22,14 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class FluteItem extends Item {
+public class OcarinaItem extends Item {
 
     public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.TOOLS)
             .fireproof()
             .maxCount(1);
 
-    public FluteItem(Settings settings) { super(settings); }
+    public OcarinaItem(Settings settings) { super(settings); }
 
     @Override
     @Environment(EnvType.SERVER)
@@ -90,7 +90,7 @@ public class FluteItem extends Item {
         return TypedActionResult.success(stack);
     }
 
-    private void setCooldown(PlayerEntity player) { player.getItemCooldownManager().set(this, SummonMounts.CONFIG.getFluteCooldown() * 20); }
+    private void setCooldown(PlayerEntity player) { player.getItemCooldownManager().set(this, SummonMounts.CONFIG.getOcarinaCooldown() * 20); }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
@@ -118,8 +118,8 @@ public class FluteItem extends Item {
     }
 
     /**
-     * Saves the {@link Mount} inside the {@link FluteItem}
-     * @param stack {@link ItemStack} of the {@link FluteItem}
+     * Saves the {@link Mount} inside the {@link OcarinaItem}
+     * @param stack {@link ItemStack} of the {@link OcarinaItem}
      * @param mount The {@link Mount}
      */
     public static void saveMount(ItemStack stack, Mount mount) {

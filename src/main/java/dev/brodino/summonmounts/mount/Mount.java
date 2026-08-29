@@ -2,7 +2,7 @@ package dev.brodino.summonmounts.mount;
 
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
-import dev.brodino.summonmounts.items.flutes.FluteItem;
+import dev.brodino.summonmounts.items.OcarinaItem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.enchantment.Enchantments;
@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
@@ -63,6 +64,7 @@ public class Mount implements ParticleHelper, PositionHelper {
     }
 
     public void summon() {
+        Utils.notifyPlayer(this.summoner, Text.translatable("summon.summonmounts.feedback"));
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound
@@ -72,7 +74,7 @@ public class Mount implements ParticleHelper, PositionHelper {
     public void recall(RecallReason reason) {
         Utils.notifyPlayer(this.summoner, reason.getReason());
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
-        FluteItem.saveMount(this.stack, this);
+        OcarinaItem.saveMount(this.stack, this);
         this.entity.discard();
         this.recallParticles((ServerWorld) this.entity.getWorld(), this);
     }
