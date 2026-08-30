@@ -25,7 +25,8 @@ public class OcarinaItem extends Item {
     public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.TOOLS)
             .fireproof()
-            .maxCount(1);
+            .maxCount(1)
+            .maxDamage(32);
 
     public OcarinaItem(Settings settings) { super(settings); }
 
