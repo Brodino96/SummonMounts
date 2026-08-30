@@ -2,8 +2,8 @@ package dev.brodino.summonmounts.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.brodino.summonmounts.items.OcarinaTypes;
 import org.slf4j.Logger;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -82,5 +82,5 @@ public class Config {
     public int getMountAliveTicks() { return this.data.mountAliveSeconds * 20; }
     public int getMountIdleTicks() { return this.data.mountIdleSeconds * 20; }
     public int getMountAirborneTicks() { return this.data.mountAirborneSeconds * 20; }
-    public Float getFoodRepair(String id) { return this.data.foodRepair.get(id); }
+    public Float getFoodRepair(OcarinaTypes types) { return this.data.foodRepair.get(types); }
 }

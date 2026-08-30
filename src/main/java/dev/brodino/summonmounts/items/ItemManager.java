@@ -1,6 +1,7 @@
 package dev.brodino.summonmounts.items;
 
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.items.food.*;
 import dev.brodino.summonmounts.items.ocarinas.*;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -16,6 +17,11 @@ public class ItemManager {
     public static final OcarinaItem DIAMOND_OCARINA = register(OcarinaTypes.DIAMOND  + "_ocarina",   new DiamondOcarina());
     public static final OcarinaItem EMERALD_OCARINA = register(OcarinaTypes.EMERALD  + "_ocarina",   new EmeraldOcarina());
 
+    public static final RationItem COPPER_RATION    = register(OcarinaTypes.COPPER    + "_ration",    new CopperRation());
+    public static final RationItem IRON_RATION      = register(OcarinaTypes.IRON      + "_ration",    new IronRation());
+    public static final RationItem GOLD_RATION      = register(OcarinaTypes.GOLD      + "_ration",    new GoldRation());
+    public static final RationItem DIAMOND_RATION   = register(OcarinaTypes.DIAMOND   + "_ration",    new DiamondRation());
+    public static final RationItem EMERALD_RATION   = register(OcarinaTypes.EMERALD   + "_ration",    new EmeraldRation());
 
     public static void initialize() { SummonMounts.LOGGER.info("Initializing ocarina"); }
 
@@ -33,12 +39,13 @@ public class ItemManager {
         };
     }
 
-    public static boolean isOcarina(Item item) {
-        return item != null
-                && ( item.equals(COPPER_OCARINA)
-                || item.equals(IRON_OCARINA)
-                || item.equals(GOLD_OCARINA)
-                || item.equals(DIAMOND_OCARINA)
-                || item.equals(EMERALD_OCARINA) );
+    public static RationItem getRationFromEnum(OcarinaTypes type) {
+        return switch (type) {
+            case COPPER -> COPPER_RATION;
+            case IRON -> IRON_RATION;
+            case GOLD -> GOLD_RATION;
+            case DIAMOND -> DIAMOND_RATION;
+            case EMERALD -> EMERALD_RATION;
+        };
     }
 }

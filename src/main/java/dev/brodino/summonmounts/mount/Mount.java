@@ -165,6 +165,7 @@ public class Mount implements PositionHelper {
     public ItemStack getStack() { return this.stack; }
     public PlayerEntity getSummoner() { return this.summoner; }
     public UUID getUuid() { return this.entity.getUuid(); }
+    public OcarinaItem getItem() { return (OcarinaItem) this.stack.getItem(); }
 
     public RecallReason tick() {
         this.aliveTicks++;

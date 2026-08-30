@@ -13,8 +13,12 @@ public class ConfigType {
     public int mountAliveSeconds = 5 * 60;
     public int mountIdleSeconds = 30;
     public int mountAirborneSeconds = 2 * 60;
-    public HashMap<String, Float> foodRepair = new HashMap<>(){{
-        put("minecraft:hay_block", 1.0F);
+    public HashMap<OcarinaTypes, Float> foodRepair = new HashMap<>(){{
+        put(OcarinaTypes.COPPER, 1.0F);
+        put(OcarinaTypes.IRON, 1.0F);
+        put(OcarinaTypes.GOLD, 1.0F);
+        put(OcarinaTypes.DIAMOND, 1.0F);
+        put(OcarinaTypes.EMERALD, 1.0F);
     }};
     public List<MountEntry> mounts = List.of(
             new MountEntry("minecraft:donkey", OcarinaTypes.COPPER),
