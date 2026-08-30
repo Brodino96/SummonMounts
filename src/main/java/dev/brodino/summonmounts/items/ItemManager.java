@@ -10,19 +10,17 @@ import java.util.Locale;
 
 public class ItemManager {
 
-    public static final OcarinaItem COPPER_OCARINA = register(OcarinaTypes.COPPER.toString(), new CopperOcarina());
-    public static final OcarinaItem IRON_OCARINA = register(OcarinaTypes.IRON.toString(), new IronOcarina());
-    public static final OcarinaItem GOLD_OCARINA = register(OcarinaTypes.GOLD.toString(), new GoldOcarina());
-    public static final OcarinaItem DIAMOND_OCARINA = register(OcarinaTypes.DIAMOND.toString(), new DiamondOcarina());
-    public static final OcarinaItem EMERALD_OCARINA = register(OcarinaTypes.EMERALD.toString(), new EmeraldOcarina());
+    public static final OcarinaItem COPPER_OCARINA  = register(OcarinaTypes.COPPER   + "_ocarina",   new CopperOcarina());
+    public static final OcarinaItem IRON_OCARINA    = register(OcarinaTypes.IRON     + "_ocarina",   new IronOcarina());
+    public static final OcarinaItem GOLD_OCARINA    = register(OcarinaTypes.GOLD     + "_ocarina",   new GoldOcarina());
+    public static final OcarinaItem DIAMOND_OCARINA = register(OcarinaTypes.DIAMOND  + "_ocarina",   new DiamondOcarina());
+    public static final OcarinaItem EMERALD_OCARINA = register(OcarinaTypes.EMERALD  + "_ocarina",   new EmeraldOcarina());
 
 
-    public static void initialize() {
-        SummonMounts.LOGGER.info("Initializing ocarina");
-    }
+    public static void initialize() { SummonMounts.LOGGER.info("Initializing ocarina"); }
 
-    private static OcarinaItem register(String id, OcarinaItem flute) {
-        return Registry.register(Registry.ITEM, new Identifier(SummonMounts.MOD_ID, id.toLowerCase(Locale.ROOT) + "_ocarina"), flute);
+    private static <T extends Item> T register(String id, T item) {
+        return Registry.register(Registry.ITEM, new Identifier(SummonMounts.MOD_ID, id.toLowerCase(Locale.ROOT)), item);
     }
 
     public static OcarinaItem getOcarinaFromEnum(OcarinaTypes item) {
