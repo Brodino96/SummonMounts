@@ -2,7 +2,7 @@ package dev.brodino.summonmounts.mixin;
 
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
-import dev.brodino.summonmounts.items.OcarinaManager;
+import dev.brodino.summonmounts.items.OcarinaItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
@@ -25,7 +25,7 @@ public class ItemMoveMixin {
         }
 
         ItemStack stack = screenHandler.slots.get(slotIndex).getStack();
-        if (!OcarinaManager.isOcarina(stack.getItem())) {
+        if (!(stack.getItem() instanceof OcarinaItem)) {
             return;
         }
 

@@ -2,7 +2,7 @@ package dev.brodino.summonmounts.mixin;
 
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
-import dev.brodino.summonmounts.items.OcarinaManager;
+import dev.brodino.summonmounts.items.OcarinaItem;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
@@ -23,7 +23,7 @@ public class DropItemMixin {
         PlayerInventory inventory = player.getInventory();
         ItemStack stack = inventory.getMainHandStack();
 
-        if (!OcarinaManager.isOcarina(stack.getItem())) {
+        if (!(stack.getItem() instanceof OcarinaItem)) {
             return;
         }
 

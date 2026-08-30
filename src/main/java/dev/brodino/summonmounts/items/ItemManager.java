@@ -8,7 +8,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.Locale;
 
-public class OcarinaManager {
+public class ItemManager {
 
     public static final OcarinaItem COPPER_OCARINA = register(OcarinaTypes.COPPER.toString(), new CopperOcarina());
     public static final OcarinaItem IRON_OCARINA = register(OcarinaTypes.IRON.toString(), new IronOcarina());
@@ -25,7 +25,7 @@ public class OcarinaManager {
         return Registry.register(Registry.ITEM, new Identifier(SummonMounts.MOD_ID, id.toLowerCase(Locale.ROOT) + "_ocarina"), flute);
     }
 
-    public static OcarinaItem getItemFromEnum(OcarinaTypes item) {
+    public static OcarinaItem getOcarinaFromEnum(OcarinaTypes item) {
         return switch (item) {
             case COPPER -> COPPER_OCARINA;
             case IRON -> IRON_OCARINA;
