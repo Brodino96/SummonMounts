@@ -4,6 +4,7 @@ import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.items.OcarinaItem;
 import dev.brodino.summonmounts.network.NetworkManager;
+import dev.brodino.summonmounts.network.Packets;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -67,7 +68,7 @@ public class Mount implements PositionHelper {
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound
-        NetworkManager.sendSummonParticlesPacket((ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner), this);
+        NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner), this);
     }
 
     public void recall(RecallReason reason) {
@@ -75,7 +76,7 @@ public class Mount implements PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         this.entity.discard();
-        NetworkManager.sendRecallParticlesPacket((ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner), this);
+        NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner), this);
     }
 
     private void dropInventory() {
@@ -166,6 +167,7 @@ public class Mount implements PositionHelper {
     public PlayerEntity getSummoner() { return this.summoner; }
     public UUID getUuid() { return this.entity.getUuid(); }
     public OcarinaItem getItem() { return (OcarinaItem) this.stack.getItem(); }
+    public boolean isMountable() { return this.stack.getMaxDamage() - this.stack.getDamage() > 1; }
 
     public RecallReason tick() {
         this.aliveTicks++;
