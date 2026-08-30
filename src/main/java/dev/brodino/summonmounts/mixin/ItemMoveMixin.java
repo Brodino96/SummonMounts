@@ -25,10 +25,6 @@ public class ItemMoveMixin {
         }
 
         ItemStack stack = screenHandler.slots.get(slotIndex).getStack();
-        if (stack.isEmpty()) {
-            return;
-        }
-
         if (!OcarinaManager.isOcarina(stack.getItem())) {
             return;
         }
