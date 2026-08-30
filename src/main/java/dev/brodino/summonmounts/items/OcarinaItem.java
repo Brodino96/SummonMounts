@@ -112,11 +112,6 @@ public class OcarinaItem extends Item {
     public static boolean containsMount(NbtCompound nbt) { return nbt != null && nbt.contains(SummonMounts.MOD_ID); }
     public static boolean containsMount(ItemStack stack) { return containsMount(stack.getNbt()); }
 
-    public static NbtCompound getMountData(ItemStack stack) {
-        final NbtCompound nbt = stack.getNbt();
-        return !containsMount(nbt) ? null : nbt.getCompound(SummonMounts.MOD_ID);
-    }
-
     /**
      * Saves the {@link Mount} inside the {@link OcarinaItem}
      * @param stack {@link ItemStack} of the {@link OcarinaItem}
