@@ -1,6 +1,8 @@
 package dev.brodino.summonmounts.mixin;
 
+import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.config.data.mounts.MountEntry;
 import dev.brodino.summonmounts.items.ItemManager;
 import dev.brodino.summonmounts.items.OcarinaItem;
@@ -8,10 +10,12 @@ import dev.brodino.summonmounts.mount.Mount;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
@@ -45,5 +49,20 @@ public abstract class AbstractHorseEntityMixin {
         ItemStack stack = new ItemStack(item);
         Mount.fromEntity(player, entity, stack);
         player.giveItemStack(stack);
+    }
+
+    @Inject(method = "putPlayerOnBack", at = @At("HEAD"), cancellable = true)
+    public void putPlayerOnBack(PlayerEntity player, CallbackInfo ci) {
+        AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
+
+        Optional<Mount> mount = MountManager.getMountFromEntity(entity);
+        if (mount.isEmpty()) {
+            return;
+        }
+
+        if (!mount.get().isMountable()) {
+            Utils.notifyPlayer(player, Text.translatable("mount.summonmounts.feedback.cannot_mount"));
+            ci.cancel();
+        }
     }
 }

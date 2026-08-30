@@ -9,6 +9,7 @@
   "recall.summonmounts.feedback.disconnected": "Your mount has been recalled",
   "recall.summonmounts.feedback.dimension_change": "Your mount has been recalled",
   "summon.summonmounts.feedback": "You summoned your mount",
+  "mount.summonmounts.feedback.cannot_mount": "Feed your mount to be able to mount it",
 
   "item.summonmounts.copper_ocarina": "Copper Ocarina",
   "item.summonmounts.iron_ocarina": "Iron Ocarina",

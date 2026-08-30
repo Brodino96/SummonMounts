@@ -55,10 +55,6 @@ public class OcarinaItem extends SummonMountsItem {
     }
 
     private TypedActionResult<ItemStack> summon(PlayerEntity player, ItemStack stack) {
-        if (this.getDurability(stack) <= 1) {
-            return TypedActionResult.fail(stack);
-        }
-
         if (Utils.combatLogCheck(player)) {
             return TypedActionResult.fail(stack);
         }
@@ -69,9 +65,11 @@ public class OcarinaItem extends SummonMountsItem {
         }
 
         if (MountManager.summon(player, mount.get())) {
-            final int newDamage = stack.getDamage() + 1;
-            Criteria.ITEM_DURABILITY_CHANGED.trigger((ServerPlayerEntity) player, stack, newDamage);
-            stack.setDamage(newDamage);
+            if (this.getDurability(stack) > 1) {
+                final int newDamage = stack.getDamage() + 1;
+                Criteria.ITEM_DURABILITY_CHANGED.trigger((ServerPlayerEntity) player, stack, newDamage);
+                stack.setDamage(newDamage);
+            }
         }
 
         this.setCooldown(player);
