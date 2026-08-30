@@ -1,6 +1,7 @@
 {
-  "parent": "item/handheld",
+  "parent": "summonmounts:item/ocarina_base",
   "textures": {
-    "layer0": "summonmounts:item/emerald_ocarina"
+    "0": "summonmounts:item/emerald_ocarina_base",
+    "particle": "summonmounts:item/emerald_ocarina_base"
   }
 }
