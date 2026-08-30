@@ -23,8 +23,8 @@ public class ItemManager {
         return Registry.register(Registry.ITEM, new Identifier(SummonMounts.MOD_ID, id.toLowerCase(Locale.ROOT)), item);
     }
 
-    public static OcarinaItem getOcarinaFromEnum(OcarinaTypes item) {
-        return switch (item) {
+    public static OcarinaItem getOcarinaFromEnum(OcarinaTypes type) {
+        return switch (type) {
             case COPPER -> COPPER_OCARINA;
             case IRON -> IRON_OCARINA;
             case GOLD -> GOLD_OCARINA;

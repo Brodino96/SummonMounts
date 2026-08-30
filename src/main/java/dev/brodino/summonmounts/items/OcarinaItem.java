@@ -7,7 +7,6 @@ import dev.brodino.summonmounts.mount.Mount;
 import dev.brodino.summonmounts.mount.RecallReason;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public class OcarinaItem extends Item {
+public class OcarinaItem extends SummonMountsItem {
 
     public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.TOOLS)
@@ -28,7 +27,7 @@ public class OcarinaItem extends Item {
             .maxCount(1)
             .maxDamage(32);
 
-    public OcarinaItem(Settings settings) { super(settings); }
+    public OcarinaItem(Settings settings, OcarinaTypes type) { super(settings, type); }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
