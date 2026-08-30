@@ -57,9 +57,6 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "maven.modrinth:cloth-config:${project.cloth_config_version}"
-    modImplementation "maven.modrinth:adventurez:${project.adventurez_version}"
-
     compileOnly "maven.modrinth:combatlog:${project.combat_log_version}"
 
 }
