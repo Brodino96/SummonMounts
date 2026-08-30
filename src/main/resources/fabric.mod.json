@@ -19,7 +19,6 @@
   "mixins": [
     "summonmounts.mixins.json"
   ],
-  "accessWidener": "SummonMounts.accesswidener",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
