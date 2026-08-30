@@ -29,9 +29,12 @@ public class OcarinaItem extends Item {
     public OcarinaItem(Settings settings) { super(settings); }
 
     @Override
-    @Environment(EnvType.SERVER)
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
+        if (world.isClient()) {
+            return TypedActionResult.pass(stack);
+        }
+
         if (!containsMount(stack)) {
             return TypedActionResult.fail(stack);
         }
