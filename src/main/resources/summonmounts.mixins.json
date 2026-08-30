@@ -4,9 +4,9 @@
   "package": "dev.brodino.summonmounts.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractHorseEntityMixin",
     "DropItemMixin",
-    "ItemMoveMixin",
-    "TameEntityMixin"
+    "ItemMoveMixin"
   ],
   "client": [
   ],

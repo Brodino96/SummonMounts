@@ -1,17 +1,18 @@
 package dev.brodino.summonmounts.mixin;
 
+import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.config.data.mounts.MountEntry;
-import dev.brodino.summonmounts.items.OcarinaManager;
 import dev.brodino.summonmounts.items.OcarinaItem;
+import dev.brodino.summonmounts.items.OcarinaManager;
 import dev.brodino.summonmounts.mount.Mount;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -19,9 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 @Mixin(AbstractHorseEntity.class)
-public abstract class TameEntityMixin {
+public abstract class AbstractHorseEntityMixin {
 
-    @Environment(EnvType.SERVER)
     @Inject(method = "bondWithPlayer", at = @At("TAIL"))
     private void summonmounts$bondWithPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
 
@@ -48,6 +48,30 @@ public abstract class TameEntityMixin {
         ItemStack stack = new ItemStack(item);
         Mount.fromEntity(player, entity, stack);
         player.giveItemStack(stack);
+    }
 
+    /**
+     * @author Brodino
+     * @reason New feature
+     */
+    @Overwrite
+    public boolean receiveFood(PlayerEntity player, ItemStack stack) {
+        if (stack.isEmpty()) {
+            return false;
+        }
+
+        Optional<Mount> mount = MountManager.getMountFromEntity((AbstractHorseEntity) (Object) this);
+        if (mount.isEmpty()) {
+            return false;
+        }
+
+        Item item = stack.getItem();
+        String itemId = Registry.ITEM.getId(item).toString();
+        Float repair = SummonMounts.CONFIG.getFoodRepair(itemId);
+        if (repair == null) {
+            return false;
+        }
+
+        return mount.get().repairItem(repair);
     }
 }

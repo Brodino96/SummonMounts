@@ -84,4 +84,5 @@ public class Config {
     public int getMountAliveTicks() { return this.data.mountAliveSeconds * 20; }
     public int getMountIdleTicks() { return this.data.mountIdleSeconds * 20; }
     public int getMountAirborneTicks() { return this.data.mountAirborneSeconds * 20; }
+    public Float getFoodRepair(String id) { return this.data.foodRepair.get(id); }
 }

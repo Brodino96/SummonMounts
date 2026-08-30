@@ -18,7 +18,7 @@ public class MountManager {
 
     public static boolean hasActiveMount(PlayerEntity player) { return MOUNTS.containsKey(player.getUuid()); }
     public static Mount getActiveMount(PlayerEntity player) { return MOUNTS.get(player.getUuid()); }
-    private static Optional<Mount> getMountFromEntity(LivingEntity entity) {
+    public static Optional<Mount> getMountFromEntity(LivingEntity entity) {
         return MOUNTS.values().stream().filter(mount -> mount.getUuid().equals(entity.getUuid())).findFirst();
     }
 

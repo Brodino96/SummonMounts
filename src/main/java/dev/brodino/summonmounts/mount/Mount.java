@@ -30,6 +30,7 @@ public class Mount implements PositionHelper {
     private double aliveTicks = 0;
     private double idleTicks = 0;
     private double airborneTicks = 0;
+    private double repair = 0;
 
     private Mount(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         this.summoner = summoner;
@@ -67,7 +68,7 @@ public class Mount implements PositionHelper {
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound
-        NetworkManager.sendSummonParticlesPacket((ServerPlayerEntity) this.summoner, ParticleTypes.ENCHANT, this);
+        NetworkManager.sendSummonParticlesPacket((ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner), this);
     }
 
     public void recall(RecallReason reason) {
@@ -75,7 +76,7 @@ public class Mount implements PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         this.entity.discard();
-        NetworkManager.sendRecallParticlesPacket((ServerPlayerEntity) this.summoner, ParticleTypes.COMPOSTER, this);
+        NetworkManager.sendRecallParticlesPacket((ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner), this);
     }
 
     private void dropInventory() {
@@ -137,6 +138,25 @@ public class Mount implements PositionHelper {
         if (stackNbt.contains("Owner")) mountNbt.putUuid("Owner", stackNbt.getUuid("Owner"));
 
         entity.readNbt(mountNbt);
+    }
+
+    public boolean repairItem(double value) {
+        int currentDamage = this.stack.getDamage();
+        if (currentDamage == 0) {
+            return false;
+        }
+
+        this.repair += value;
+
+        int repairAmount = (int) this.repair;
+
+        if (repairAmount > currentDamage) {
+            repairAmount = currentDamage;
+        }
+
+        this.stack.setDamage(currentDamage - repairAmount);
+        this.repair -= repairAmount;
+        return true;
     }
 
     // Getters
