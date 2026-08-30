@@ -3,8 +3,7 @@ package dev.brodino.summonmounts.mount;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.items.OcarinaItem;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import dev.brodino.summonmounts.network.NetworkManager;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,7 +11,8 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -21,8 +21,7 @@ import net.minecraft.util.registry.Registry;
 import java.util.Optional;
 import java.util.UUID;
 
-@Environment(EnvType.SERVER)
-public class Mount implements ParticleHelper, PositionHelper {
+public class Mount implements PositionHelper {
 
     private final PlayerEntity summoner;
     private final AbstractHorseEntity entity;
@@ -68,7 +67,7 @@ public class Mount implements ParticleHelper, PositionHelper {
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound
-        this.summonParticles((ServerWorld) this.entity.getWorld(), this);
+        NetworkManager.sendSummonParticlesPacket((ServerPlayerEntity) this.summoner, ParticleTypes.ENCHANT, this);
     }
 
     public void recall(RecallReason reason) {
@@ -76,7 +75,7 @@ public class Mount implements ParticleHelper, PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         this.entity.discard();
-        this.recallParticles((ServerWorld) this.entity.getWorld(), this);
+        NetworkManager.sendRecallParticlesPacket((ServerPlayerEntity) this.summoner, ParticleTypes.COMPOSTER, this);
     }
 
     private void dropInventory() {
