@@ -1,22 +1,28 @@
 package dev.brodino.summonmounts.items;
 
+import com.google.gson.JsonParseException;
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.mount.Mount;
 import dev.brodino.summonmounts.mount.RecallReason;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.*;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.Optional;
 
 public class OcarinaItem extends SummonMountsItem {
@@ -89,6 +95,39 @@ public class OcarinaItem extends SummonMountsItem {
     private void setCooldown(PlayerEntity player) { player.getItemCooldownManager().set(this, SummonMounts.CONFIG.getOcarinaCooldown() * 20); }
 
     @Override
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+
+        if (!containsMount(stack)) {
+            return;
+        }
+
+        NbtCompound mountNbt = stack.getNbt().getCompound(SummonMounts.MOD_ID);
+        getMountName(mountNbt).ifPresent(name ->
+                tooltip.add(Text.translatable("tooltip.summonmounts.contains", name).setStyle(Style.EMPTY.withColor(Formatting.DARK_PURPLE))));
+    }
+
+    private static Optional<Text> getMountName(NbtCompound mountNbt) {
+        if (mountNbt.contains("CustomName", NbtElement.STRING_TYPE)) {
+            try {
+                Text customName = Text.Serializer.fromJson(mountNbt.getString("CustomName"));
+                if (customName != null) {
+                    return Optional.of(customName);
+                }
+            } catch (JsonParseException ignored) {
+                // Falls back to the code below
+            }
+        }
+
+        Identifier typeId = Identifier.tryParse(mountNbt.getString("type"));
+        if (typeId == null) {
+            return Optional.empty();
+        }
+
+        return Registry.ENTITY_TYPE.getOrEmpty(typeId).map(EntityType::getName);
+    }
+
+    @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         final PlayerEntity player = context.getPlayer();
         if (player == null) return ActionResult.FAIL;
@@ -109,7 +148,6 @@ public class OcarinaItem extends SummonMountsItem {
     public static void saveMount(ItemStack stack, Mount mount) {
         NbtCompound mountData = mount.getSavableNbt();
         stack.getOrCreateNbt().put(SummonMounts.MOD_ID, mountData);
-        // ItemLore
     }
 
 }
