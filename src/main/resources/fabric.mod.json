@@ -31,6 +31,7 @@
     }
   ],
   "contact": {
+    "homepage": "https://modrinth.com/mod/summonmounts",
     "sources": "https://github.com/Brodino96/SummonMounts",
     "issues": "https://github.com/Brodino96/SummonMounts/issues"
   },
@@ -51,5 +52,13 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "suggets": {
+    "modmenu": ">${modmenu_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "update_checker": true
+    }
   }
 }

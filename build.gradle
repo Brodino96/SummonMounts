@@ -33,7 +33,10 @@ repositories {
         }
     }
 
+    // Mod Menu
     maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
     }
 }
 
@@ -47,6 +50,7 @@ dependencies {
 
     compileOnly "maven.modrinth:combatlog:${project.combat_log_version}"
 
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
@@ -58,7 +62,8 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "loader_version": project.loader_version,
+                "modmenu_version": project.modmenu_version
     }
 }
 
