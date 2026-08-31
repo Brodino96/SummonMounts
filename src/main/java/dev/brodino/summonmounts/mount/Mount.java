@@ -63,7 +63,7 @@ public class Mount implements PositionHelper {
     }
 
     public void summon() {
-        Utils.notifyPlayer(this.summoner, Text.translatable("summon.summonmounts.feedback"));
+        Utils.notifyPlayer(this.summoner, Text.translatable("feedback.summonmounts.summon.manual"));
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound

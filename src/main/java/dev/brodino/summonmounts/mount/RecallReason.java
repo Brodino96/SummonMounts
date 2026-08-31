@@ -18,7 +18,7 @@ public enum RecallReason {
 
     RecallReason(String log) {
         this.log = log;
-        this.reason = "recall.summonmounts.feedback." + this.name().toLowerCase(Locale.ROOT);
+        this.reason = "feedback.summonmounts.recall." + this.name().toLowerCase(Locale.ROOT);
     }
 
     public String getLog() { return this.log; }

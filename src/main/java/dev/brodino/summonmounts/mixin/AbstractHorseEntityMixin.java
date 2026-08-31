@@ -61,7 +61,7 @@ public abstract class AbstractHorseEntityMixin {
         }
 
         if (!mount.get().isMountable()) {
-            Utils.notifyPlayer(player, Text.translatable("mount.summonmounts.feedback.cannot_mount"));
+            Utils.notifyPlayer(player, Text.translatable("feedback.summonmounts.mount.cannot_mount"));
             ci.cancel();
         }
     }
