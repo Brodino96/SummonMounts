@@ -1,11 +1,23 @@
 package dev.brodino.summonmounts.client;
 
+import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.network.NetworkManager;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 
 public class SummonMountsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         NetworkManager.registerClientPacketReceivers();
+
+        ResourceManagerHelper.registerBuiltinResourcePack(
+                new Identifier(SummonMounts.MOD_ID, "alternative_ocarinas"),
+                FabricLoader.getInstance().getModContainer(SummonMounts.MOD_ID).orElseThrow(),
+                "Alternative Ocarinas",
+                ResourcePackActivationType.NORMAL
+        );
     }
 }

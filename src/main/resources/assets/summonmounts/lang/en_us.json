@@ -20,5 +20,7 @@
   "item.summonmounts.lesser_feed": "Lesser Feed",
   "item.summonmounts.medium_feed": "Medium Feed",
   "item.summonmounts.greater_feed": "Greater Feed",
-  "item.summonmounts.superior_feed": "Superior Feed"
+  "item.summonmounts.superior_feed": "Superior Feed",
+
+  "resourcepack.summonmounts.alternative_ocarinas.description": "2D item models for Ocarinas"
 }
