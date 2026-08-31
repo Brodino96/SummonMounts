@@ -74,12 +74,9 @@ public class OcarinaItem extends SummonMountsItem {
 
         this.setCooldown(player);
         return TypedActionResult.success(stack);
-
     }
 
-    private int getDurability(ItemStack stack) {
-        return stack.getMaxDamage() - stack.getDamage();
-    }
+    private int getDurability(ItemStack stack) { return stack.getMaxDamage() - stack.getDamage(); }
 
     private TypedActionResult<ItemStack> recall(PlayerEntity player, ItemStack stack, Mount mount) {
         if (!mount.getStack().equals(stack)) {
@@ -103,19 +100,12 @@ public class OcarinaItem extends SummonMountsItem {
 
     // Nbt stuff
 
-    /**
-     * Checks if the {@link NbtCompound} is linked to a {@link Mount}
-     * @param nbt The {@link NbtCompound} to check
-     * @return true if it finds data linked to a {@link Mount}
-     */
-    public static boolean containsMount(NbtCompound nbt) { return nbt != null && nbt.contains(SummonMounts.MOD_ID); }
-    public static boolean containsMount(ItemStack stack) { return containsMount(stack.getNbt()); }
+    public static boolean containsMount(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        return nbt != null && nbt.contains(SummonMounts.MOD_ID);
+    }
 
-    /**
-     * Saves the {@link Mount} inside the {@link OcarinaItem}
-     * @param stack {@link ItemStack} of the {@link OcarinaItem}
-     * @param mount The {@link Mount}
-     */
+
     public static void saveMount(ItemStack stack, Mount mount) {
         NbtCompound mountData = mount.getSavableNbt();
         stack.getOrCreateNbt().put(SummonMounts.MOD_ID, mountData);
