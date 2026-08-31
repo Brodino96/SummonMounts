@@ -184,9 +184,7 @@ public class Mount implements PositionHelper {
             }
         }
 
-        if (this.entity.isOnGround() || this.entity.isTouchingWater()) {
-            this.airborneTicks = 0;
-        } else {
+        if (!this.entity.isOnGround() && this.entity.isTouchingWater()) {
             this.airborneTicks++;
             if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks()) {
                 return RecallReason.AIRBORNE;
