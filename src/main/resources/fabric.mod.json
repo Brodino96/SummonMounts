@@ -4,6 +4,7 @@
   "version": "${version}",
   "name": "SummonMounts",
   "description": "Tame your mounts and summon/recall them when needed",
+  "icon": "assets/summonmounts/icon.png",
   "authors": [
     {
       "name": "Brodino",
