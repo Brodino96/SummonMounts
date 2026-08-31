@@ -11,7 +11,7 @@ public class SummonMounts implements ModInitializer {
 
     public static final String MOD_ID = "summonmounts";
     public static final Logger LOGGER = LoggerFactory.getLogger(SummonMounts.MOD_ID);
-    public static final Config CONFIG = new Config(MOD_ID + "new", LOGGER);
+    public static final Config CONFIG = new Config(MOD_ID, LOGGER);
     public static final boolean COMBATLOG_PRESENT = FabricLoader.getInstance().isModLoaded("combatlog");
 
     @Override
