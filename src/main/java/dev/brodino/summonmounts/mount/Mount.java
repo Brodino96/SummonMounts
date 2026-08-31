@@ -116,7 +116,7 @@ public class Mount implements PositionHelper {
 
         if (mountNbt.contains("CustomName")) { nbt.putString("CustomName", mountNbt.getString("CustomName")); }
         if (mountNbt.contains("Owner")) { nbt.putUuid("Owner", mountNbt.getUuid("Owner")); }
-        if (mountNbt.contains("Variant")) { nbt.putInt("Variant", mountNbt.getInt("Variant")); }
+        if (mountNbt.contains("Variant")) { nbt.put("Variant", mountNbt.get("Variant")); }
         if (mountNbt.contains("Tame")) { nbt.putBoolean("Tame", mountNbt.getBoolean("Tame")); }
 
         nbt.putString("type", this.id.toString());
@@ -132,7 +132,7 @@ public class Mount implements PositionHelper {
         if (stackNbt.contains("SaddleItem")) mountNbt.put("SaddleItem", stackNbt.get("SaddleItem"));
         if (stackNbt.contains("DecorItem")) mountNbt.put("DecorItem", stackNbt.get("DecorItem"));
         if (stackNbt.contains("CustomName")) mountNbt.putString("CustomName", stackNbt.getString("CustomName"));
-        if (stackNbt.contains("Variant")) mountNbt.putInt("Variant", stackNbt.getInt("Variant"));
+        if (stackNbt.contains("Variant")) mountNbt.put("Variant", stackNbt.get("Variant"));
         if (stackNbt.contains("Tame")) mountNbt.putBoolean("Tame", stackNbt.getBoolean("Tame"));
         if (stackNbt.contains("Owner")) mountNbt.putUuid("Owner", stackNbt.getUuid("Owner"));
 
