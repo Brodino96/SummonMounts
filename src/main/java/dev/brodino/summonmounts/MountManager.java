@@ -39,6 +39,11 @@ public class MountManager {
     // Events
 
     public static boolean onMountDeath(LivingEntity entity, DamageSource source, float amount) {
+        if (entity instanceof PlayerEntity player) {
+            recall(player, RecallReason.MANUAL);
+            return true;
+        }
+
         Optional<Mount> mountOptional = getMountFromEntity(entity);
         if (mountOptional.isEmpty()) {
             return true;

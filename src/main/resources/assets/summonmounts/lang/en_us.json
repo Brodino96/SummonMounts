@@ -8,6 +8,7 @@
   "feedback.summonmounts.recall.airborne": "Your mount reached its flight limit and returned",
   "feedback.summonmounts.recall.disconnected": "Your mount has been recalled",
   "feedback.summonmounts.recall.dimension_change": "Your mount has been recalled",
+  "feedback.summonmounts.recall.player_death": "Your mount has returned to your side",
   "feedback.summonmounts.summon.manual": "You summoned your mount",
   "feedback.summonmounts.mount.cannot_mount": "Feed your mount to be able to mount it",
 
