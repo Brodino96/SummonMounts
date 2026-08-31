@@ -5,6 +5,7 @@ import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.items.OcarinaItem;
 import dev.brodino.summonmounts.network.NetworkManager;
 import dev.brodino.summonmounts.network.Packets;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -156,6 +157,7 @@ public class Mount implements PositionHelper {
 
         this.stack.setDamage(currentDamage - repairAmount);
         this.repair -= repairAmount;
+        Criteria.ITEM_DURABILITY_CHANGED.trigger((ServerPlayerEntity) this.summoner, stack, this.stack.getDamage());
         return true;
     }
 
