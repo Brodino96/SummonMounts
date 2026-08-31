@@ -11,17 +11,17 @@ import java.util.Locale;
 
 public class ItemManager {
 
-    public static final OcarinaItem COPPER_OCARINA  = register(OcarinaTypes.COPPER   + "_ocarina",   new CopperOcarina());
-    public static final OcarinaItem IRON_OCARINA    = register(OcarinaTypes.IRON     + "_ocarina",   new IronOcarina());
-    public static final OcarinaItem GOLD_OCARINA    = register(OcarinaTypes.GOLD     + "_ocarina",   new GoldOcarina());
-    public static final OcarinaItem DIAMOND_OCARINA = register(OcarinaTypes.DIAMOND  + "_ocarina",   new DiamondOcarina());
-    public static final OcarinaItem EMERALD_OCARINA = register(OcarinaTypes.EMERALD  + "_ocarina",   new EmeraldOcarina());
+    public static final OcarinaItem INFERIOR_OCARINA = register(OcarinaTypes.INFERIOR + "_ocarina", new InferiorOcarina());
+    public static final OcarinaItem LESSER_OCARINA = register(OcarinaTypes.LESSER + "_ocarina", new LesserOcarina());
+    public static final OcarinaItem MEDIUM_OCARINA = register(OcarinaTypes.MEDIUM + "_ocarina", new MediumOcarina());
+    public static final OcarinaItem GREATER_OCARINA = register(OcarinaTypes.GREATER + "_ocarina", new GreaterOcarina());
+    public static final OcarinaItem SUPERIOR_OCARINA = register(OcarinaTypes.SUPERIOR + "_ocarina", new SuperiorOcarina());
 
-    public static final RationItem COPPER_RATION    = register(OcarinaTypes.COPPER    + "_ration",    new CopperRation());
-    public static final RationItem IRON_RATION      = register(OcarinaTypes.IRON      + "_ration",    new IronRation());
-    public static final RationItem GOLD_RATION      = register(OcarinaTypes.GOLD      + "_ration",    new GoldRation());
-    public static final RationItem DIAMOND_RATION   = register(OcarinaTypes.DIAMOND   + "_ration",    new DiamondRation());
-    public static final RationItem EMERALD_RATION   = register(OcarinaTypes.EMERALD   + "_ration",    new EmeraldRation());
+    public static final FeedItem INFERIOR_FEED = register(OcarinaTypes.INFERIOR + "_feed", new InferiorFeed());
+    public static final FeedItem LESSER_FEED = register(OcarinaTypes.LESSER + "_feed", new LesserFeed());
+    public static final FeedItem MEDIUM_FEED = register(OcarinaTypes.MEDIUM + "_feed", new MediumFeed());
+    public static final FeedItem GREATER_FEED = register(OcarinaTypes.GREATER + "_feed", new GreaterFeed());
+    public static final FeedItem SUPERIOR_FEED = register(OcarinaTypes.SUPERIOR + "_feed", new SuperiorFeed());
 
     public static void initialize() { SummonMounts.LOGGER.info("Initializing ocarina"); }
 
@@ -31,21 +31,11 @@ public class ItemManager {
 
     public static OcarinaItem getOcarinaFromEnum(OcarinaTypes type) {
         return switch (type) {
-            case COPPER -> COPPER_OCARINA;
-            case IRON -> IRON_OCARINA;
-            case GOLD -> GOLD_OCARINA;
-            case DIAMOND -> DIAMOND_OCARINA;
-            case EMERALD -> EMERALD_OCARINA;
-        };
-    }
-
-    public static RationItem getRationFromEnum(OcarinaTypes type) {
-        return switch (type) {
-            case COPPER -> COPPER_RATION;
-            case IRON -> IRON_RATION;
-            case GOLD -> GOLD_RATION;
-            case DIAMOND -> DIAMOND_RATION;
-            case EMERALD -> EMERALD_RATION;
+            case INFERIOR -> INFERIOR_OCARINA;
+            case LESSER -> LESSER_OCARINA;
+            case MEDIUM -> MEDIUM_OCARINA;
+            case GREATER -> GREATER_OCARINA;
+            case SUPERIOR -> SUPERIOR_OCARINA;
         };
     }
 }

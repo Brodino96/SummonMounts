@@ -5,9 +5,9 @@ import dev.brodino.summonmounts.items.OcarinaTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Rarity;
 
-public class GoldOcarina extends OcarinaItem {
+public class MediumOcarina extends OcarinaItem {
 
-    public GoldOcarina() { super(OcarinaItem.BASE_SETTINGS, OcarinaTypes.GOLD); }
+    public MediumOcarina() { super(OcarinaItem.BASE_SETTINGS, OcarinaTypes.MEDIUM); }
 
     @Override
     public Rarity getRarity(ItemStack stack) { return Rarity.RARE; }

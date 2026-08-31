@@ -5,10 +5,10 @@ import dev.brodino.summonmounts.items.OcarinaTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Rarity;
 
-public class DiamondOcarina extends OcarinaItem {
+public class LesserOcarina extends OcarinaItem {
 
-    public DiamondOcarina() { super(OcarinaItem.BASE_SETTINGS, OcarinaTypes.DIAMOND); }
+    public LesserOcarina() { super(OcarinaItem.BASE_SETTINGS, OcarinaTypes.LESSER); }
 
     @Override
-    public Rarity getRarity(ItemStack stack) { return Rarity.EPIC; }
+    public Rarity getRarity(ItemStack stack) { return Rarity.UNCOMMON; }
 }

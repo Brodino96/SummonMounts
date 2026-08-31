@@ -13,13 +13,13 @@ import net.minecraft.util.Hand;
 
 import java.util.Optional;
 
-public class RationItem extends SummonMountsItem {
+public class FeedItem extends SummonMountsItem {
 
     public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.FOOD)
             .maxCount(64);
 
-    public RationItem(Settings settings, OcarinaTypes type) { super(settings, type); }
+    public FeedItem(Settings settings, OcarinaTypes type) { super(settings, type); }
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity player, LivingEntity entity, Hand hand) {
@@ -42,17 +42,17 @@ public class RationItem extends SummonMountsItem {
         }
         Mount mount = mountOptional.get();
 
-        if (!(stack.getItem() instanceof RationItem rationItem)) {
+        if (!(stack.getItem() instanceof FeedItem feedItem)) {
             SummonMounts.LOGGER.info("Item is not a ration item");
             return ActionResult.PASS;
         }
 
-        if (!rationItem.getType().equals(mount.getItem().getType())) {
+        if (!feedItem.getType().equals(mount.getItem().getType())) {
             SummonMounts.LOGGER.info("Ration item is not same tier as ocarina");
             return ActionResult.PASS;
         }
 
-        Float repair = SummonMounts.CONFIG.getFoodRepair(rationItem.getType());
+        Float repair = SummonMounts.CONFIG.getFoodRepair(feedItem.getType());
         if (repair == null) {
             SummonMounts.LOGGER.info("Repair is null");
             return ActionResult.PASS;

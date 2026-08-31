@@ -1,0 +1,7 @@
+{
+  "parent": "summonmounts:item/ocarina",
+  "textures": {
+    "0": "summonmounts:item/lesser_ocarina",
+    "particle": "summonmounts:item/lesser_ocarina"
+  }
+}

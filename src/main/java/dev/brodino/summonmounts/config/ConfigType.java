@@ -14,15 +14,15 @@ public class ConfigType {
     public int mountIdleSeconds = 30;
     public int mountAirborneSeconds = 2 * 60;
     public HashMap<OcarinaTypes, Float> foodRepair = new HashMap<>(){{
-        put(OcarinaTypes.COPPER, 1.0F);
-        put(OcarinaTypes.IRON, 1.0F);
-        put(OcarinaTypes.GOLD, 1.0F);
-        put(OcarinaTypes.DIAMOND, 1.0F);
-        put(OcarinaTypes.EMERALD, 1.0F);
+        put(OcarinaTypes.INFERIOR, 1.0F);
+        put(OcarinaTypes.LESSER, 1.0F);
+        put(OcarinaTypes.MEDIUM, 1.0F);
+        put(OcarinaTypes.GREATER, 1.0F);
+        put(OcarinaTypes.SUPERIOR, 1.0F);
     }};
     public List<MountEntry> mounts = List.of(
-            new MountEntry("minecraft:donkey", OcarinaTypes.COPPER),
-            new MountEntry("minecraft:mule", OcarinaTypes.IRON),
-            new MountEntry("minecraft:horse", OcarinaTypes.GOLD)
+            new MountEntry("minecraft:donkey", OcarinaTypes.INFERIOR),
+            new MountEntry("minecraft:mule", OcarinaTypes.LESSER),
+            new MountEntry("minecraft:horse", OcarinaTypes.MEDIUM)
     );
 }

@@ -11,9 +11,14 @@
   "summon.summonmounts.feedback": "You summoned your mount",
   "mount.summonmounts.feedback.cannot_mount": "Feed your mount to be able to mount it",
 
-  "item.summonmounts.copper_ocarina": "Copper Ocarina",
-  "item.summonmounts.iron_ocarina": "Iron Ocarina",
-  "item.summonmounts.gold_ocarina": "Gold Ocarina",
-  "item.summonmounts.diamond_ocarina": "Diamond Ocarina",
-  "item.summonmounts.emerald_ocarina": "Emerald Ocarina"
+  "item.summonmounts.inferior_ocarina": "Inferior Ocarina",
+  "item.summonmounts.lesser_ocarina": "Lesser Ocarina",
+  "item.summonmounts.medium_ocarina": "Medium Ocarina",
+  "item.summonmounts.greater_ocarina": "Greater Ocarina",
+  "item.summonmounts.superior_ocarina": "Superior Ocarina",
+  "item.summonmounts.inferior_feed": "Inferior Feed",
+  "item.summonmounts.lesser_feed": "Lesser Feed",
+  "item.summonmounts.medium_feed": "Medium Feed",
+  "item.summonmounts.greater_feed": "Greater Feed",
+  "item.summonmounts.superior_feed": "Superior Feed"
 }

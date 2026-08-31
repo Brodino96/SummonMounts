@@ -1,7 +1,0 @@
-{
-  "parent": "summonmounts:item/ocarina_base",
-  "textures": {
-    "0": "summonmounts:item/iron_ocarina_base",
-    "particle": "summonmounts:item/iron_ocarina_base"
-  }
-}

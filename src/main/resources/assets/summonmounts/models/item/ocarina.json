@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "summonmounts:item/ocarina_base",
-		"particle": "summonmounts:item/ocarina_base"
+		"0": "summonmounts:item/ocarina",
+		"particle": "summonmounts:item/ocarina"
 	},
 	"elements": [
 		{
