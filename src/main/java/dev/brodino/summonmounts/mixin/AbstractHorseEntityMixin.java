@@ -3,7 +3,7 @@ package dev.brodino.summonmounts.mixin;
 import dev.brodino.summonmounts.MountManager;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
-import dev.brodino.summonmounts.config.data.mounts.MountEntry;
+import dev.brodino.summonmounts.config.data.MountEntry;
 import dev.brodino.summonmounts.items.ItemManager;
 import dev.brodino.summonmounts.items.OcarinaItem;
 import dev.brodino.summonmounts.mount.Mount;

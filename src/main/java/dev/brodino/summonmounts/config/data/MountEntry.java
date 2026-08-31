@@ -1,4 +1,4 @@
-package dev.brodino.summonmounts.config.data.mounts;
+package dev.brodino.summonmounts.config.data;
 
 import dev.brodino.summonmounts.items.OcarinaTypes;
 

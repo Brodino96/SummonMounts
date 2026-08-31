@@ -78,9 +78,9 @@ public class Config {
 
     public ConfigType getData() { return this.data; }
     public List<String> getAllowedDimensions() { return this.data.allowedDimensions; }
-    public int getOcarinaCooldown() { return this.data.ocarinasCooldownSeconds; }
-    public int getMountAliveTicks() { return this.data.mountAliveSeconds * 20; }
-    public int getMountIdleTicks() { return this.data.mountIdleSeconds * 20; }
-    public int getMountAirborneTicks() { return this.data.mountAirborneSeconds * 20; }
+    public int getOcarinaCooldown() { return this.data.time.ocarinasCooldownSeconds; }
+    public int getMountAliveTicks() { return this.data.time.mountAliveSeconds * 20; }
+    public int getMountIdleTicks() { return this.data.time.mountIdleSeconds * 20; }
+    public int getMountAirborneTicks() { return this.data.time.mountAirborneSeconds * 20; }
     public Float getFoodRepair(OcarinaTypes types) { return this.data.foodRepair.get(types); }
 }
