@@ -3,7 +3,7 @@
   "id": "summonmounts",
   "version": "${version}",
   "name": "SummonMounts",
-  "description": "Summon your mount with a click of an item",
+  "description": "Tame your mounts and summon/recall them when needed",
   "authors": [
     {
       "name": "Brodino",
