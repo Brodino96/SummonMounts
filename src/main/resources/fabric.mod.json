@@ -4,8 +4,36 @@
   "version": "${version}",
   "name": "SummonMounts",
   "description": "Summon your mount with a click of an item",
-  "authors": [ "Brodino" ],
-  "contact": {},
+  "authors": [
+    {
+      "name": "Brodino",
+      "contact": {
+        "email": "brodino96@gmail.com",
+        "homepage": "https://brodino.dev",
+        "github": "https://github.com/Brodino96",
+        "modrinth": "https://modrinth.com/user/brodino",
+        "curse": "https://www.curseforge.com/members/brodino/projects"
+      }
+    }
+  ],
+  "contributors": [
+    {
+      "name": "ArgoSeven",
+      "contact": {
+        "github": "https://github.com/ArgoSeven/"
+      }
+    },
+    {
+      "name": "FapTobi_",
+      "contact": {
+        "curse": "https://www.curseforge.com/members/faptobi_/projects"
+      }
+    }
+  ],
+  "contact": {
+    "sources": "https://github.com/Brodino96/SummonMounts",
+    "issues": "https://github.com/Brodino96/SummonMounts/issues"
+  },
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
