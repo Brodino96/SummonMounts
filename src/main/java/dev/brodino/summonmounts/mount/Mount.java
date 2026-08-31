@@ -6,7 +6,6 @@ import dev.brodino.summonmounts.items.OcarinaItem;
 import dev.brodino.summonmounts.network.NetworkManager;
 import dev.brodino.summonmounts.network.Packets;
 import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -43,7 +42,6 @@ public class Mount implements PositionHelper {
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
         mount.recall(RecallReason.TAMED);
-        stack.addEnchantment(Enchantments.LOYALTY, 1);
     }
 
     public static Optional<Mount> fromStack(PlayerEntity player, ItemStack stack) {
