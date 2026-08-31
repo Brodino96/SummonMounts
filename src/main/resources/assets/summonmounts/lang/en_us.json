@@ -1,7 +1,7 @@
 {
   "recall.summonmounts.feedback.none": "Your mount has been recalled",
   "recall.summonmounts.feedback.tamed": "You tamed a mount",
-  "recall.summonmounts.feedback.manual": "Your mount has been recalled",
+  "recall.summonmounts.feedback.manual": "You recalled your mount",
   "recall.summonmounts.feedback.death": "Your mount has died and recalled",
   "recall.summonmounts.feedback.idle": "Your mount was idle for too long and returned to rest",
   "recall.summonmounts.feedback.alive": "The energy sustaining your mount has faded",
