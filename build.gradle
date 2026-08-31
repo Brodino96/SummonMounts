@@ -33,6 +33,18 @@ repositories {
         }
     }
 
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "CurseForge"
+                url = "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
+    }
+
     // Mod Menu
     maven {
         name = "Terraformers"
@@ -51,6 +63,8 @@ dependencies {
     compileOnly "maven.modrinth:combatlog:${project.combat_log_version}"
 
     compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+    compileOnly "curse.maven:catalogue-fabric-667377:${project.catalogue_file_id}"
 }
 
 processResources {
@@ -63,7 +77,8 @@ processResources {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
                 "loader_version": project.loader_version,
-                "modmenu_version": project.modmenu_version
+                "modmenu_version": project.modmenu_version,
+                "catalogue_version": project.catalogue_version
     }
 }
 

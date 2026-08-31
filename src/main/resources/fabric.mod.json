@@ -55,11 +55,16 @@
     "minecraft": "${minecraft_version}"
   },
   "suggets": {
-    "modmenu": ">${modmenu_version}"
+    "modmenu": ">=${modmenu_version}",
+    "catalogue": ">=${catalogue_version}"
   },
   "custom": {
     "modmenu": {
       "update_checker": true
+    },
+    "catalogue": {
+      "icon": "assets/summonmounts/icon.png",
+      "background": "assets/summonmounts/background.png"
     }
   }
 }
