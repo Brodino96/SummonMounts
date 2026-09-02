@@ -71,7 +71,7 @@ public class ColorOverrideRecipe extends ShapelessRecipe {
         result.setCount(1);
 
         NbtCompound nbt = result.getOrCreateNbt();
-        nbt.putString("Color", Registry.ITEM.getId(dyeItem).toString());
+        nbt.putInt("Color", dyeItem.getColor().getFireworkColor());
 
         return result;
     }

@@ -105,27 +105,16 @@ public class OcarinaItem extends SummonMountsItem {
 
         NbtCompound mountNbt = stack.getNbt().getCompound(SummonMounts.MOD_ID);
         getMountName(mountNbt).ifPresent(name ->
-                tooltip.add(Text.translatable("tooltip.summonmounts.contains", name).setStyle(Style.EMPTY.withColor(Formatting.DARK_PURPLE))));
-    }
+                tooltip.add(Text.translatable("tooltip.summonmounts.contains", (Text.empty().append(name)
+                        .setStyle(Style.EMPTY.withBold(true)))))
+        );
 
-    private static Optional<Text> getMountName(NbtCompound mountNbt) {
-        if (mountNbt.contains("CustomName", NbtElement.STRING_TYPE)) {
-            try {
-                Text customName = Text.Serializer.fromJson(mountNbt.getString("CustomName"));
-                if (customName != null) {
-                    return Optional.of(customName);
-                }
-            } catch (JsonParseException ignored) {
-                // Falls back to the code below
-            }
-        }
-
-        Identifier typeId = Identifier.tryParse(mountNbt.getString("type"));
-        if (typeId == null) {
-            return Optional.empty();
-        }
-
-        return Registry.ENTITY_TYPE.getOrEmpty(typeId).map(EntityType::getName);
+        getOcarinaColor(stack).ifPresent(color -> tooltip.add(
+                Text.translatable("tooltip.summonmounts.color",
+                Text.literal(color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1))
+                        .setStyle(Style.EMPTY.withColor(color.getFireworkColor()).withBold(true)))
+                )
+        );
     }
 
     @Override
@@ -149,6 +138,36 @@ public class OcarinaItem extends SummonMountsItem {
     public static void saveMount(ItemStack stack, Mount mount) {
         NbtCompound mountData = mount.getSavableNbt();
         stack.getOrCreateNbt().put(SummonMounts.MOD_ID, mountData);
+    }
+
+    private static Optional<Text> getMountName(NbtCompound mountNbt) {
+        if (mountNbt.contains("CustomName", NbtElement.STRING_TYPE)) {
+            try {
+                Text customName = Text.Serializer.fromJson(mountNbt.getString("CustomName"));
+                if (customName != null) {
+                    return Optional.of(customName);
+                }
+            } catch (JsonParseException ignored) {
+                // Falls back to the code below
+            }
+        }
+
+        Identifier typeId = Identifier.tryParse(mountNbt.getString("type"));
+        if (typeId == null) {
+            return Optional.empty();
+        }
+
+        return Registry.ENTITY_TYPE.getOrEmpty(typeId).map(EntityType::getName);
+    }
+
+    private static Optional<DyeColor> getOcarinaColor(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        if (nbt == null || !nbt.contains("Color")) return Optional.empty();
+
+        DyeColor color = DyeColor.byFireworkColor(nbt.getInt("Color"));
+        if (color == null) return Optional.empty();
+
+        return Optional.of(color);
     }
 
 }
