@@ -36,6 +36,13 @@ public class MountManager {
         MOUNTS.remove(player.getUuid());
     }
 
+    public static void recallAllMounts(MinecraftServer server) {
+        for (Mount mount : MOUNTS.values()) {
+            mount.recall(RecallReason.NONE);
+        }
+        MOUNTS.clear();
+    }
+
     // Events
 
     public static boolean onMountDeath(LivingEntity entity, DamageSource source, float amount) {

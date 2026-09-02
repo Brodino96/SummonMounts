@@ -12,6 +12,7 @@ public enum RecallReason {
     AIRBORNE("Recalling {}'s mount because it's stayed airborne for too long"),
     DISCONNECT("Recalling {}'s mount because player disconnected"),
     DIMENSION_CHANGE("Recalling {}'s mount because player changed dimension"),
+    SERVER_STOPPING("Recalling {}'s mount because server is stopping"),
     PLAYER_DEATH("Recalling {}'s mount because player died");
 
     private final String log;
