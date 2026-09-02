@@ -31,6 +31,7 @@ public class Mount implements PositionHelper {
     private double idleTicks = 0;
     private double airborneTicks = 0;
     private double repair = 0;
+    private boolean airborneRecall = false;
 
     private Mount(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         this.summoner = summoner;
@@ -168,6 +169,7 @@ public class Mount implements PositionHelper {
     public UUID getUuid() { return this.entity.getUuid(); }
     public OcarinaItem getItem() { return (OcarinaItem) this.stack.getItem(); }
     public boolean isMountable() { return this.stack.getMaxDamage() - this.stack.getDamage() > 1; }
+    public boolean shouldBeRecalled() { return this.airborneRecall; }
 
     public RecallReason tick() {
         this.aliveTicks++;
@@ -184,10 +186,10 @@ public class Mount implements PositionHelper {
             }
         }
 
-        if (!this.entity.isOnGround() && this.entity.isTouchingWater()) {
+        if (!this.entity.isOnGround() && !this.entity.isTouchingWater()) {
             this.airborneTicks++;
-            if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks()) {
-                return RecallReason.AIRBORNE;
+            if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks() && !airborneRecall) {
+                this.airborneRecall = true;
             }
         }
 
