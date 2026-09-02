@@ -62,6 +62,7 @@ public class OcarinaItem extends SummonMountsItem {
 
     private TypedActionResult<ItemStack> summon(PlayerEntity player, ItemStack stack) {
         if (Utils.combatLogCheck(player)) {
+            Utils.notifyPlayer(player, Text.translatable("feedback.summonmounts.summon.combat_log"));
             return TypedActionResult.fail(stack);
         }
 
