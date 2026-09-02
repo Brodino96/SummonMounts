@@ -1,8 +1,11 @@
 package dev.brodino.summonmounts.client;
 
+import dev.brodino.summonmounts.ParticleRegistry;
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.client.particle.FeedParticle;
 import dev.brodino.summonmounts.network.NetworkManager;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -19,5 +22,6 @@ public class SummonMountsClient implements ClientModInitializer {
                 "Alternative Ocarinas",
                 ResourcePackActivationType.NORMAL
         );
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.FEED_PARTICLE, FeedParticle.Factory::new);
     }
 }

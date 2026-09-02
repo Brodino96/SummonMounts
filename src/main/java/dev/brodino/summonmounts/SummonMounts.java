@@ -20,6 +20,7 @@ public class SummonMounts implements ModInitializer {
         
         // Register event handlers
         EventHandlers.initialize();
+        ParticleRegistry.initialize();
         ItemManager.initialize();
     }
 }

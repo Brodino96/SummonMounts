@@ -1,6 +1,7 @@
 package dev.brodino.summonmounts.items;
 
 import dev.brodino.summonmounts.MountManager;
+import dev.brodino.summonmounts.ParticleRegistry;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.mount.Mount;
 import net.minecraft.entity.LivingEntity;
@@ -8,6 +9,8 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
@@ -53,13 +56,19 @@ public class FeedItem extends SummonMountsItem {
         }
 
         Float repair = SummonMounts.CONFIG.getFoodRepair(feedItem.getType());
-        if (repair == null) {
+            if (repair == null) {
             SummonMounts.LOGGER.info("Repair is null");
             return ActionResult.PASS;
         }
 
         if (mountOptional.get().repairItem(repair)) {
             stack.decrement(1);
+            horseEntity.setPitch(30f);
+            if (player.getWorld() instanceof ServerWorld serverWorld) {
+                int entityWidth = (int) (entity.getWidth());
+                serverWorld.spawnParticles(ParticleRegistry.FEED_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), (int) (entityWidth * 10), entityWidth * 0.5, entity.getHeight() * 0.5,  entityWidth * 0.5, 0.5);
+                entity.playSound(SoundEvents.ENTITY_HORSE_EAT, 1,1);
+            }
             return ActionResult.CONSUME;
         }
 
