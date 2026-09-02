@@ -1,15 +1,23 @@
 package dev.brodino.summonmounts.items;
 
 import dev.brodino.summonmounts.SummonMounts;
+import dev.brodino.summonmounts.items.craftings.ColorOverrideRecipe;
 import dev.brodino.summonmounts.items.food.*;
 import dev.brodino.summonmounts.items.ocarinas.*;
 import net.minecraft.item.Item;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Locale;
 
 public class ItemManager {
+
+    public static final RecipeSerializer<ColorOverrideRecipe> COLOR_OVERRIDE = Registry.register(
+            Registry.RECIPE_SERIALIZER,
+            new Identifier(SummonMounts.MOD_ID, "color_override"),
+            new ColorOverrideRecipe.Serializer()
+    );
 
     public static final OcarinaItem INFERIOR_OCARINA = register(OcarinaTypes.INFERIOR + "_ocarina", new InferiorOcarina());
     public static final OcarinaItem LESSER_OCARINA = register(OcarinaTypes.LESSER + "_ocarina", new LesserOcarina());

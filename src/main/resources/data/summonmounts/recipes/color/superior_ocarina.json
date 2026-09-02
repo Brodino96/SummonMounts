@@ -1,0 +1,15 @@
+{
+  "type": "summonmounts:color_override",
+  "ingredients": [
+    {
+      "item": "summonmounts:superior_ocarina"
+    },
+    {
+      "tag": "c:dyes"
+    }
+  ],
+  "result": {
+    "item": "summonmounts:superior_ocarina",
+    "count": 1
+  }
+}
