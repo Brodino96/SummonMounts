@@ -30,48 +30,46 @@ public class FeedItem extends SummonMountsItem {
             return ActionResult.PASS;
         }
 
-        if (!(entity instanceof AbstractHorseEntity horseEntity)) {
-            return super.useOnEntity(stack, player, entity, hand);
-        }
+        final String playerName = player.getName().getString();
+        SummonMounts.LOGGER.info("{} is trying to use a feed item", playerName);
 
-        if (stack.isEmpty()) {
-            return ActionResult.PASS;
+        if (!(entity instanceof AbstractHorseEntity horseEntity)) {
+            SummonMounts.LOGGER.info("{} try failed because entity isn't allowed", playerName);
+            return super.useOnEntity(stack, player, entity, hand);
         }
 
         Optional<Mount> mountOptional = MountManager.getMountFromEntity(horseEntity);
         if (mountOptional.isEmpty()) {
-            SummonMounts.LOGGER.info("Mount is null");
+            SummonMounts.LOGGER.info("{} try failed because entity is not a mount", playerName);
             return ActionResult.PASS;
         }
-        Mount mount = mountOptional.get();
 
-        if (!(stack.getItem() instanceof FeedItem feedItem)) {
-            SummonMounts.LOGGER.info("Item is not a ration item");
-            return ActionResult.PASS;
-        }
+        Mount mount = mountOptional.get();
+        FeedItem feedItem = (FeedItem) stack.getItem();
 
         if (!feedItem.getType().equals(mount.getItem().getType())) {
-            SummonMounts.LOGGER.info("Ration item is not same tier as ocarina");
+            SummonMounts.LOGGER.info("{} try failed because feed item is not same tier as mount", playerName);
             return ActionResult.PASS;
         }
 
         Float repair = SummonMounts.CONFIG.getFoodRepair(feedItem.getType());
-            if (repair == null) {
-            SummonMounts.LOGGER.info("Repair is null");
+        if (repair == null) {
+            SummonMounts.LOGGER.error("{} try failed because is missing config amount, item: {}", playerName, feedItem.getName().getString());
             return ActionResult.PASS;
         }
 
-        if (mountOptional.get().repairItem(repair)) {
-            stack.decrement(1);
-            horseEntity.setPitch(30f);
-            if (player.getWorld() instanceof ServerWorld serverWorld) {
-                int entityWidth = (int) (entity.getWidth());
-                serverWorld.spawnParticles(ParticleRegistry.FEED_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), (int) (entityWidth * 10), entityWidth * 0.5, entity.getHeight() * 0.5,  entityWidth * 0.5, 0.5);
-                entity.playSound(SoundEvents.ENTITY_HORSE_EAT, 1,1);
-            }
-            return ActionResult.CONSUME;
+        if (!mountOptional.get().feedMount(repair)) {
+            SummonMounts.LOGGER.info("{} try failed", playerName);
+            return ActionResult.PASS;
         }
 
-        return ActionResult.PASS;
+        stack.decrement(1);
+        horseEntity.setPitch(30f);
+        if (player.getWorld() instanceof ServerWorld serverWorld) {
+            int entityWidth = (int) (entity.getWidth());
+            serverWorld.spawnParticles(ParticleRegistry.FEED_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), (int) (entityWidth * 10), entityWidth * 0.5, entity.getHeight() * 0.5,  entityWidth * 0.5, 0.5);
+            entity.playSound(SoundEvents.ENTITY_HORSE_EAT, 1,1);
+        }
+        return ActionResult.CONSUME;
     }
 }

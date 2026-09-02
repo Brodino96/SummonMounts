@@ -140,9 +140,11 @@ public class Mount implements PositionHelper {
         entity.readNbt(mountNbt);
     }
 
-    public boolean repairItem(double value) {
+    public boolean feedMount(double value) {
         int currentDamage = this.stack.getDamage();
+        SummonMounts.LOGGER.info("Current damage is {}", currentDamage);
         if (currentDamage == 0) {
+            SummonMounts.LOGGER.info("Interrupting feeding because damage is 0");
             return false;
         }
 
