@@ -1,5 +1,6 @@
 package dev.brodino.summonmounts;
 
+import dev.brodino.summonmounts.commands.CommandHandler;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;

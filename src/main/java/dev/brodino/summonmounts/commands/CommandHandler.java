@@ -1,7 +1,8 @@
-package dev.brodino.summonmounts;
+package dev.brodino.summonmounts.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import dev.brodino.summonmounts.SummonMounts;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;

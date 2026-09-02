@@ -1,4 +1,4 @@
-package dev.brodino.summonmounts;
+package dev.brodino.summonmounts.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
