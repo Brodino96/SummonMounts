@@ -61,15 +61,6 @@ public class Config {
         }
     }
 
-    public boolean save() {
-        try {
-            this.saveToFile();
-            return true;
-        } catch (IOException ignored) {
-            return false;
-        }
-    }
-
     private void saveToFile() throws IOException {
         try (Writer writer = Files.newBufferedWriter(this.configPath)) {
             GSON.toJson(this.data, writer);
