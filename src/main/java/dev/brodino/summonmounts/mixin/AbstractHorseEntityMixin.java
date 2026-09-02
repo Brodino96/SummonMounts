@@ -52,7 +52,7 @@ public abstract class AbstractHorseEntityMixin {
     }
 
     @Inject(method = "putPlayerOnBack", at = @At("HEAD"), cancellable = true)
-    public void putPlayerOnBack(PlayerEntity player, CallbackInfo ci) {
+    public void summonmounts$putPlayerOnBack(PlayerEntity player, CallbackInfo ci) {
         AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
 
         Optional<Mount> mount = MountManager.getMountFromEntity(entity);
