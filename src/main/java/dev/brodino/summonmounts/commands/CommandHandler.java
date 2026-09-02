@@ -16,9 +16,8 @@ public class CommandHandler {
         dispatcher.register(CommandManager.literal("mount")
                 .requires(src -> src.hasPermissionLevel(2))
                 .then(getReloadCommand())
+                .then(SummonCommand.getCommand())
         );
-
-        MountCommand.register(dispatcher);
     }
 
     private static LiteralArgumentBuilder<ServerCommandSource> getReloadCommand() {
