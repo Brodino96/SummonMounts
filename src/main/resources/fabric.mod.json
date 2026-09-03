@@ -56,7 +56,8 @@
   },
   "suggets": {
     "modmenu": ">=${modmenu_version}",
-    "catalogue": ">=${catalogue_version}"
+    "catalogue": ">=${catalogue_version}",
+    "mythicmounts": "${mythicmounts_version}"
   },
   "custom": {
     "modmenu": {

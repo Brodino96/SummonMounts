@@ -7,13 +7,10 @@ import dev.brodino.summonmounts.config.data.MountEntry;
 import dev.brodino.summonmounts.items.ItemManager;
 import dev.brodino.summonmounts.items.OcarinaItem;
 import dev.brodino.summonmounts.mount.Mount;
-import dev.brodino.summonmounts.mount.RecallReason;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -67,33 +64,5 @@ public abstract class AbstractHorseEntityMixin {
             Utils.notifyPlayer(player, Text.translatable("feedback.summonmounts.mount.cannot_mount"));
             ci.cancel();
         }
-    }
-
-    @Inject(method = "tickMovement", at = @At("HEAD"), cancellable = true)
-    public void summonmounts$tickMovement(CallbackInfo ci) {
-        AbstractHorseEntity entity = (AbstractHorseEntity) (Object) this;
-        Optional<Mount> mountOptional = MountManager.getMountFromEntity(entity);
-        if (mountOptional.isEmpty()) {
-            return;
-        }
-
-        Mount mount = mountOptional.get();
-
-        if (!mount.shouldBeRecalled()) {
-            return;
-        }
-
-        if (entity.isOnGround()) {
-            MountManager.recall(mount.getSummoner(), RecallReason.AIRBORNE);
-            return;
-        }
-
-        Vec3d velocity = entity.getVelocity();
-
-        entity.setVelocity(velocity.x,-1, velocity.z);
-        entity.move(MovementType.SELF, entity.getVelocity());
-        entity.fallDistance = 0;
-
-        ci.cancel();
     }
 }

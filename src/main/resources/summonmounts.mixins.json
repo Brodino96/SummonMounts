@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractHorseEntityMixin",
     "DropItemMixin",
+    "FlyingMountEntityMixin",
     "ItemMoveMixin"
   ],
   "client": [
