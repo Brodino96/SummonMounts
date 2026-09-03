@@ -73,6 +73,13 @@ dependencies {
 
     modImplementation "me.fallenbreath:conditional-mixin-fabric:${project.conditional_mixins_version}"
     include "me.fallenbreath:conditional-mixin-fabric:${project.conditional_mixins_version}"
+
+    // I'm going to kick Lucko in the nuts
+    modImplementation("me.lucko:fabric-permissions-api:0.3.1") {
+        exclude group: "net.fabricmc.fabric-api",
+                module: "fabric-api-bom"
+    }
+
 }
 
 processResources {

@@ -2,6 +2,7 @@ package dev.brodino.summonmounts;
 
 import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
 import fabric.me.toastymop.combatlog.util.TagData;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -30,7 +31,9 @@ public class Utils {
     }
 
     public static ParticleType<?> getPlayerParticles(PlayerEntity player, ItemStack stack) {
-        if (!player.isCreative()) return DEFAULT_PARTICLES;
+        if (!Permissions.check(player, "summonmounts.custom_paricles", 2)) {
+            return DEFAULT_PARTICLES;
+        }
 
         NbtCompound nbt = stack.getOrCreateNbt();
         if (!nbt.contains("Color")) return DEFAULT_PARTICLES;
