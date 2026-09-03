@@ -2,14 +2,14 @@
   "type": "summonmounts:color_override",
   "ingredients": [
     {
-      "item": "summonmounts:inferior_ocarina"
+      "tag": "summonmounts:ocarinas"
     },
     {
       "tag": "c:dyes"
     }
   ],
   "result": {
-    "item": "summonmounts:inferior_ocarina",
+    "item": "summonmounts:greater_ocarina",
     "count": 1
   }
 }
