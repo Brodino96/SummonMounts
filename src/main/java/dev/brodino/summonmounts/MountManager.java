@@ -15,27 +15,27 @@ import java.util.*;
 public class MountManager {
 
     private static final HashMap<UUID, Mount> MOUNTS = new HashMap<>();
+    private static final HashMap<UUID, Mount> MOUNTS_BY_ENTITY = new HashMap<>();
 
     public static boolean hasActiveMount(PlayerEntity player) { return MOUNTS.containsKey(player.getUuid()); }
     public static Mount getActiveMount(PlayerEntity player) { return MOUNTS.get(player.getUuid()); }
     public static Optional<Mount> getMountFromEntity(LivingEntity entity) {
-        return MOUNTS.values().stream()
-                .filter(mount -> mount.getUuid().equals(entity.getUuid()))
-                .findFirst();
+        return Optional.ofNullable(MOUNTS_BY_ENTITY.get(entity.getUuid()));
     }
 
     public static boolean summon(PlayerEntity player, Mount mount) {
         if (hasActiveMount(player)) return false;
         mount.summon();
         MOUNTS.put(player.getUuid(), mount);
+        MOUNTS_BY_ENTITY.put(mount.getUuid(), mount);
         return true;
     }
 
     public static void recall(PlayerEntity player, RecallReason reason) {
-        Mount mount = getActiveMount(player);
+        Mount mount = MOUNTS.remove(player.getUuid());
         if (mount == null) return;
+        MOUNTS_BY_ENTITY.remove(mount.getUuid());
         mount.recall(reason);
-        MOUNTS.remove(player.getUuid());
     }
 
     public static void recallAllMounts(MinecraftServer server) {
@@ -43,6 +43,7 @@ public class MountManager {
             mount.recall(RecallReason.NONE);
         }
         MOUNTS.clear();
+        MOUNTS_BY_ENTITY.clear();
     }
 
     // Events
@@ -83,6 +84,7 @@ public class MountManager {
             if (reason != RecallReason.NONE) {
                 mount.recall(reason);
                 iterator.remove();
+                MOUNTS_BY_ENTITY.remove(mount.getUuid());
             }
         }
     }
