@@ -75,6 +75,7 @@ public class Mount implements PositionHelper {
         Utils.notifyPlayer(this.summoner, reason.getReason());
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
+        NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), false);
         this.entity.discard();
         NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner, this.stack), this);
     }
@@ -192,6 +193,7 @@ public class Mount implements PositionHelper {
             this.airborneTicks++;
             if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks() && !airborneRecall) {
                 this.airborneRecall = true;
+                NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), true);
             }
         }
 
