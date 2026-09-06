@@ -16,6 +16,8 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
@@ -26,6 +28,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class OcarinaItem extends SummonMountsItem {
+
+    private static final SoundEvent OCARINA_SOUND = Registry.register(
+            Registry.SOUND_EVENT,
+            new Identifier(SummonMounts.MOD_ID, "ocarina"),
+            new SoundEvent(new Identifier(SummonMounts.MOD_ID, "ocarina"))
+    );
 
     public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.TOOLS)
@@ -79,6 +87,7 @@ public class OcarinaItem extends SummonMountsItem {
             }
         }
 
+        player.getWorld().playSound(null, player.getBlockPos(), OCARINA_SOUND, SoundCategory.PLAYERS, 1.0F, player.getWorld().random.nextFloat() * 0.2F + 0.9F);
         this.setCooldown(player);
         return TypedActionResult.success(stack);
     }
@@ -90,6 +99,7 @@ public class OcarinaItem extends SummonMountsItem {
             return TypedActionResult.fail(stack);
         }
         MountManager.recall(player, RecallReason.MANUAL);
+        player.getWorld().playSound(null, player.getBlockPos(), OCARINA_SOUND, SoundCategory.PLAYERS, 1.0F, player.getWorld().random.nextFloat() * 0.2F + 0.9F);
         return TypedActionResult.success(stack);
     }
 
