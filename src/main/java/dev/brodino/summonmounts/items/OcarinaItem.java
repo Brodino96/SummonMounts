@@ -38,8 +38,7 @@ public class OcarinaItem extends SummonMountsItem {
     public static final Settings BASE_SETTINGS = new Settings()
             .group(ItemGroup.TOOLS)
             .fireproof()
-            .maxCount(1)
-            .maxDamage(32);
+            .maxCount(1);
 
     public OcarinaItem(Settings settings, OcarinaTypes type) { super(settings, type); }
 
@@ -180,4 +179,8 @@ public class OcarinaItem extends SummonMountsItem {
         return Optional.of(color);
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
+    }
 }

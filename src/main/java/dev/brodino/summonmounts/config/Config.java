@@ -74,4 +74,5 @@ public class Config {
     public int getMountIdleTicks() { return this.data.time.mountIdleSeconds * 20; }
     public int getMountAirborneTicks() { return this.data.time.mountAirborneSeconds * 20; }
     public Float getFoodRepair(OcarinaTypes types) { return this.data.foodRepair.get(types); }
+    public int getOcarinaDurability(OcarinaTypes type) { return this.data.durability.get(type); }
 }

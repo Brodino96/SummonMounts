@@ -11,6 +11,13 @@ public class ConfigType {
 
     public List<String> allowedDimensions = List.of("minecraft:overworld");
     public TimingConfig time = new TimingConfig();
+    public HashMap<OcarinaTypes, Integer> durability = new HashMap<>(){{
+        put(OcarinaTypes.INFERIOR, 32);
+        put(OcarinaTypes.LESSER, 32);
+        put(OcarinaTypes.MEDIUM, 32);
+        put(OcarinaTypes.GREATER, 32);
+        put(OcarinaTypes.SUPERIOR, 32);
+    }};
     public HashMap<OcarinaTypes, Float> foodRepair = new HashMap<>(){{
         put(OcarinaTypes.INFERIOR, 1.0F);
         put(OcarinaTypes.LESSER, 1.0F);
