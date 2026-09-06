@@ -7,11 +7,11 @@
     "AbstractHorseEntityMixin",
     "DropItemMixin",
     "ItemMoveMixin",
-    "repair.AnvilRepairMixin",
-    "repair.RepairItemRecipeMixin",
     "mythicmounts.AbstractHorseEntityAccessor",
     "mythicmounts.FlyingMountEntityInvoker",
-    "mythicmounts.FlyingMountEntityMixin"
+    "mythicmounts.FlyingMountEntityMixin",
+    "repair.AnvilRepairMixin",
+    "repair.RepairItemRecipeMixin"
   ],
   "client": [
   ],
