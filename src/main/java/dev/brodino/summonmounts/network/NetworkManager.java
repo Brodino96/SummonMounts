@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -22,9 +21,9 @@ public class NetworkManager {
 
     public static final Identifier FORCE_LAND = new Identifier(SummonMounts.MOD_ID, "force_land");
 
-    public static void sendParticlePacket(Packets packet, ServerPlayerEntity player, ParticleType<?> particle, Mount mount) {
+    public static void sendParticlePacket(Packets packet, ServerPlayerEntity player, int color, Mount mount) {
         for (final ServerPlayerEntity target : Utils.getNearbyPlayers(player, mount.getPos())) {
-            ServerPlayNetworking.send(target, packet.getIdentifier(), ParticleHolder.fromMount(particle, mount, packet.getIdentifier()).getBuf());
+            ServerPlayNetworking.send(target, packet.getIdentifier(), ParticleHolder.fromMount(color, mount, packet.getIdentifier()).getBuf());
         }
     }
 
@@ -45,7 +44,7 @@ public class NetworkManager {
     private static void handleParticlePacket(MinecraftClient client, ClientPlayNetworkHandler h, PacketByteBuf buf, PacketSender s) {
         ParticleHolder holder = ParticleHolder.fromBuf(buf);
         client.execute(() -> {
-            ParticleHelper.requestParticles(holder.packet(), holder.particle(), client.world, new Vec3d(holder.x(), holder.y(), holder.z()), holder.radius(), holder.height());
+            ParticleHelper.requestParticles(holder.packet(), holder.color(), client.world, new Vec3d(holder.x(), holder.y(), holder.z()), holder.id());
         });
     }
 

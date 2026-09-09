@@ -68,7 +68,7 @@ public class Mount implements PositionHelper {
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
         // Play sound
-        NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner, this.stack), this);
+        NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this);
     }
 
     public void recall(RecallReason reason) {
@@ -76,8 +76,8 @@ public class Mount implements PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), false);
+        NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this);
         this.entity.discard();
-        NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticles(this.summoner, this.stack), this);
     }
 
     private void dropInventory() {
@@ -173,6 +173,7 @@ public class Mount implements PositionHelper {
     public OcarinaItem getItem() { return (OcarinaItem) this.stack.getItem(); }
     public boolean isMountable() { return this.stack.getMaxDamage() - this.stack.getDamage() > 1; }
     public boolean shouldBeRecalled() { return this.airborneRecall; }
+    public int getId() { return this.entity.getId(); }
 
     public RecallReason tick() {
         this.aliveTicks++;

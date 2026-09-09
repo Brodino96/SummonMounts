@@ -3,10 +3,12 @@ package dev.brodino.summonmounts.client;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.network.Packets;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.math.Vec3f;
 
 import java.util.Map;
 
@@ -20,35 +22,36 @@ public class ParticleHelper {
 
     @FunctionalInterface
     private interface ParticleAction {
-        void run(ParticleEffect particle, ClientWorld world, Vec3d pos, double radius, double height);
+        void run(ParticleEffect particle, ClientWorld world, Vec3d pos, int entityId);
     }
 
-    public static void requestParticles(Identifier packet, Identifier particle, ClientWorld world, Vec3d pos, double radius, double height) {
-        ParticleEffect particleEffect = (ParticleEffect) Registry.PARTICLE_TYPE.get(particle);
-        if (particleEffect == null) {
-            SummonMounts.LOGGER.error("Failed to handle packet [{}] because particle was null", packet.toString());
-            return;
-        }
+    public static void requestParticles(Identifier packet, int color, ClientWorld world, Vec3d pos, int entityId) {
         ParticleAction action = PACKET_HANDLERS.get(packet);
         if (action == null) {
             SummonMounts.LOGGER.error("Failed to handle packet [{}] because action was null", packet.toString());
             return;
         }
-        action.run(particleEffect, world, pos, radius, height);
+        Vec3f rgb = new Vec3f(Vec3d.unpackRgb(color));
+        action.run(new DustParticleEffect(rgb, 1), world, pos, entityId);
     }
 
 
-    public static void recallParticles(ParticleEffect particleEffect, ClientWorld world, Vec3d pos, double radius, double height) {
-        drawSpiralParticle(pos, radius, height, 2, 20, world, particleEffect);
+    public static void recallParticles(ParticleEffect particleEffect, ClientWorld world, Vec3d pos, int entityId) {
+        Entity entity = world.getEntityById(entityId);
+        if (entity == null) return;
+        final double radius = entity.getBoundingBox().getAverageSideLength();
+        drawSpiralParticle(pos, radius, entity.getHeight(), 2, 20, world, particleEffect);
         drawCircleParticle(pos, radius, world, particleEffect);
         spawnParticlePlatform(pos, radius, 30, 0.3, world, particleEffect);
     }
 
-    public static void summonParticles(ParticleEffect particleEffect, ClientWorld world, Vec3d pos, double radius, double height) {
-        drawConicalSpiralParticle(pos, radius, height, 2, 20, world, particleEffect);
+    public static void summonParticles(ParticleEffect particleEffect, ClientWorld world, Vec3d pos, int entityId) {
+        Entity entity = world.getEntityById(entityId);
+        if (entity == null) return;
+        drawConicalSpiralParticle(pos, entity.getBoundingBox().getAverageSideLength(), entity.getHeight(), 2, 20, world, particleEffect);
     }
 
-    public static void feedParticles(ParticleEffect particleEffect, ClientWorld world, Vec3d pos, double radius, double height) {
+    public static void feedParticles(ParticleEffect particleEffect, ClientWorld world, Vec3d pos, int entityId) {
         // @ArgoSeven do this
     }
 

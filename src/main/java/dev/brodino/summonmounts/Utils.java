@@ -6,8 +6,6 @@ import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -17,7 +15,7 @@ import java.util.List;
 
 public class Utils {
 
-    private static final ParticleType<?> DEFAULT_PARTICLES = ParticleTypes.WITCH;
+    private static final int DEFAULT_COLOR = DyeColor.PURPLE.getFireworkColor();
 
     public static boolean combatLogCheck(PlayerEntity player) {
         return SummonMounts.COMBATLOG_PRESENT && TagData.getCombat((IEntityDataSaver) player);
@@ -30,20 +28,14 @@ public class Utils {
         return player.getWorld().getPlayers(p -> p.squaredDistanceTo(pos) < (32 * 32)); // Same distance as world.spawnParticles
     }
 
-    public static ParticleType<?> getPlayerParticles(PlayerEntity player, ItemStack stack) {
-        if (!Permissions.check(player, "summonmounts.custom_paricles", 2)) {
-            return DEFAULT_PARTICLES;
+    public static int getPlayerParticleColor(PlayerEntity player, ItemStack stack) {
+        if (!Permissions.check(player, "summonmounts.custom_particles", 2)) {
+            return DEFAULT_COLOR;
         }
 
         NbtCompound nbt = stack.getOrCreateNbt();
-        if (!nbt.contains("Color")) return DEFAULT_PARTICLES;
+        if (!nbt.contains("Color")) return DEFAULT_COLOR;
 
-        DyeColor color = DyeColor.byFireworkColor(nbt.getInt("Color"));
-        if (color == null) return DEFAULT_PARTICLES;
-
-        return switch (color) {
-            case PURPLE -> ParticleTypes.WITCH;
-            default -> DEFAULT_PARTICLES;
-        };
+        return nbt.getInt("Color");
     }
 }
