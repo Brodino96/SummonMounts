@@ -10,6 +10,7 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeableItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -20,14 +21,17 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
 
-public class OcarinaItem extends SummonMountsItem {
+public class OcarinaItem extends SummonMountsItem implements DyeableItem {
 
     private static final SoundEvent OCARINA_SOUND = Registry.register(
             Registry.SOUND_EVENT,
@@ -107,7 +111,6 @@ public class OcarinaItem extends SummonMountsItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-
         if (!containsMount(stack)) {
             return;
         }
@@ -119,10 +122,7 @@ public class OcarinaItem extends SummonMountsItem {
         );
 
         getOcarinaColor(stack).ifPresent(color -> tooltip.add(
-                Text.translatable("tooltip.summonmounts.color",
-                Text.literal(color.getName().substring(0, 1).toUpperCase() + color.getName().substring(1))
-                        .setStyle(Style.EMPTY.withColor(color.getFireworkColor()).withBold(true)))
-                )
+                Text.translatable("tooltip.summonmounts.color").setStyle(Style.EMPTY.withColor(color).withBold(true)))
         );
     }
 
@@ -169,18 +169,14 @@ public class OcarinaItem extends SummonMountsItem {
         return Registry.ENTITY_TYPE.getOrEmpty(typeId).map(EntityType::getName);
     }
 
-    private static Optional<DyeColor> getOcarinaColor(ItemStack stack) {
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null || !nbt.contains("Color")) return Optional.empty();
+    private static Optional<Integer> getOcarinaColor(ItemStack stack) {
+        if (stack.getItem() instanceof DyeableItem item) {
+            return Optional.of(item.getColor(stack));
+        }
 
-        DyeColor color = DyeColor.byFireworkColor(nbt.getInt("Color"));
-        if (color == null) return Optional.empty();
-
-        return Optional.of(color);
+        return Optional.empty();
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
-    }
+    public boolean isEnchantable(ItemStack stack) { return false; }
 }

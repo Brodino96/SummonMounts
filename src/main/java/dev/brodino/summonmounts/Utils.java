@@ -4,8 +4,8 @@ import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
 import fabric.me.toastymop.combatlog.util.TagData;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeableItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -33,9 +33,10 @@ public class Utils {
             return DEFAULT_COLOR;
         }
 
-        NbtCompound nbt = stack.getOrCreateNbt();
-        if (!nbt.contains("Color")) return DEFAULT_COLOR;
+        if (stack.getItem() instanceof DyeableItem item) {
+            return item.getColor(stack);
+        }
 
-        return nbt.getInt("Color");
+        return DEFAULT_COLOR;
     }
 }
