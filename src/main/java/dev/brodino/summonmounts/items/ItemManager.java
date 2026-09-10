@@ -3,6 +3,8 @@ package dev.brodino.summonmounts.items;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.items.food.*;
 import dev.brodino.summonmounts.items.ocarinas.*;
+import net.minecraft.block.cauldron.CauldronBehavior;
+import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -26,7 +28,11 @@ public class ItemManager {
     public static void initialize() { SummonMounts.LOGGER.info("Initializing ocarina"); }
 
     private static <T extends Item> T register(String id, T item) {
-        return Registry.register(Registry.ITEM, new Identifier(SummonMounts.MOD_ID, id.toLowerCase(Locale.ROOT)), item);
+        T registered = Registry.register(Registry.ITEM, new Identifier(SummonMounts.MOD_ID, id.toLowerCase(Locale.ROOT)), item);
+        if (registered instanceof DyeableItem) {
+            CauldronBehavior.WATER_CAULDRON_BEHAVIOR.put(registered, CauldronBehavior.CLEAN_DYEABLE_ITEM);
+        }
+        return registered;
     }
 
     public static OcarinaItem getOcarinaFromEnum(OcarinaTypes type) {
