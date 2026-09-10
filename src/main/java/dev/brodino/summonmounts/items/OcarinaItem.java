@@ -169,9 +169,11 @@ public class OcarinaItem extends SummonMountsItem implements DyeableItem {
         return Registry.ENTITY_TYPE.getOrEmpty(typeId).map(EntityType::getName);
     }
 
-    private static Optional<Integer> getOcarinaColor(ItemStack stack) {
+    public static Optional<Integer> getOcarinaColor(ItemStack stack) {
         if (stack.getItem() instanceof DyeableItem item) {
-            return Optional.of(item.getColor(stack));
+            if (item.hasColor(stack)) {
+                return Optional.of(item.getColor(stack));
+            }
         }
 
         return Optional.empty();

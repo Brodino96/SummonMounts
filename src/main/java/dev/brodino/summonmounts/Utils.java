@@ -1,10 +1,10 @@
 package dev.brodino.summonmounts;
 
+import dev.brodino.summonmounts.items.OcarinaItem;
 import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
 import fabric.me.toastymop.combatlog.util.TagData;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeableItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -12,6 +12,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Utils {
 
@@ -33,8 +34,9 @@ public class Utils {
             return DEFAULT_COLOR;
         }
 
-        if (stack.getItem() instanceof DyeableItem item) {
-            return item.getColor(stack);
+        if (stack.getItem() instanceof OcarinaItem) {
+            Optional<Integer> color = OcarinaItem.getOcarinaColor(stack);
+            return color.orElse(DEFAULT_COLOR);
         }
 
         return DEFAULT_COLOR;
