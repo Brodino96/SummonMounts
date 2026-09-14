@@ -3,6 +3,7 @@ package dev.brodino.summonmounts.client;
 import dev.brodino.summonmounts.ParticleRegistry;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.client.particle.FeedParticle;
+import dev.brodino.summonmounts.client.particle.TintWitchParticle;
 import dev.brodino.summonmounts.network.ForceLandTracker;
 import dev.brodino.summonmounts.network.NetworkManager;
 import net.fabricmc.api.ClientModInitializer;
@@ -26,5 +27,6 @@ public class SummonMountsClient implements ClientModInitializer {
                 ResourcePackActivationType.NORMAL
         );
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.FEED_PARTICLE, FeedParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.WITCH_PARTICLE, TintWitchParticle.Factory::new);
     }
 }

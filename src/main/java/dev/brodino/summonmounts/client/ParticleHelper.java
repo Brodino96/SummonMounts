@@ -2,6 +2,7 @@ package dev.brodino.summonmounts.client;
 
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.network.Packets;
+import dev.brodino.summonmounts.particle.TintWitchParticleEffect;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.DustParticleEffect;
@@ -32,7 +33,7 @@ public class ParticleHelper {
             return;
         }
         Vec3f rgb = new Vec3f(Vec3d.unpackRgb(color));
-        action.run(new DustParticleEffect(rgb, 1), world, pos, entityId);
+        action.run(new TintWitchParticleEffect(rgb, 1), world, pos, entityId);
     }
 
 
