@@ -2,6 +2,7 @@ package dev.brodino.summonmounts;
 
 import dev.brodino.summonmounts.config.Config;
 import dev.brodino.summonmounts.items.ItemManager;
+import dev.brodino.summonmounts.particle.ParticlesManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class SummonMounts implements ModInitializer {
         
         // Register event handlers
         EventHandlers.initialize();
-        ParticleRegistry.initialize();
+        ParticlesManager.initialize();
         ItemManager.initialize();
     }
 }

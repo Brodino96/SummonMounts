@@ -15,9 +15,8 @@ import java.util.Locale;
 import java.util.function.BiFunction;
 
 public abstract class TintableParticleEffect extends AbstractDustParticleEffect {
-    protected TintableParticleEffect(Vec3f color, float scale) {
-        super(color, scale);
-    }
+
+    protected TintableParticleEffect(Vec3f color, float scale) { super(color, scale); }
 
     protected static <T extends TintableParticleEffect> Codec<T> createCodec(BiFunction<Vec3f, Float, T> factory) {
         return RecordCodecBuilder.create((instance) -> instance.group(

@@ -1,9 +1,9 @@
 package dev.brodino.summonmounts.items;
 
 import dev.brodino.summonmounts.MountManager;
-import dev.brodino.summonmounts.ParticleRegistry;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.mount.Mount;
+import dev.brodino.summonmounts.particle.ParticlesManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -67,7 +67,7 @@ public class FeedItem extends SummonMountsItem {
         horseEntity.setPitch(30f);
         if (player.getWorld() instanceof ServerWorld serverWorld) {
             int entityWidth = (int) (entity.getWidth());
-            serverWorld.spawnParticles(ParticleRegistry.FEED_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), (int) (entityWidth * 10), entityWidth * 0.5, entity.getHeight() * 0.5,  entityWidth * 0.5, 0.5);
+            serverWorld.spawnParticles(ParticlesManager.FEED_PARTICLE, entity.getX(), entity.getY() + 0.5, entity.getZ(), (int) (entityWidth * 10), entityWidth * 0.5, entity.getHeight() * 0.5,  entityWidth * 0.5, 0.5);
             entity.playSound(SoundEvents.ENTITY_HORSE_EAT, 1,1);
         }
         return ActionResult.CONSUME;
