@@ -12,6 +12,11 @@
   "feedback.summonmounts.summon.manual": "You summoned your mount",
   "feedback.summonmounts.summon.combat_log": "You can't summon your mount during combat",
   "feedback.summonmounts.mount.cannot_mount": "Feed your mount to be able to mount it",
+  "commands.summonmounts.convert.player_only": "This command can only be used by a player",
+  "commands.summonmounts.convert.no_item": "Hold a legacy mount item in your main hand",
+  "commands.summonmounts.convert.already_converted": "This item has already been converted and must be reset by an administrator",
+  "commands.summonmounts.convert.invalid_item": "The held item does not contain valid legacy mount data",
+  "commands.summonmounts.convert.success": "Created %s from the legacy mount item",
 
   "item.summonmounts.inferior_ocarina": "Inferior Ocarina",
   "item.summonmounts.lesser_ocarina": "Lesser Ocarina",

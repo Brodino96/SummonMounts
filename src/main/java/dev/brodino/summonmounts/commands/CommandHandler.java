@@ -14,9 +14,9 @@ public class CommandHandler {
 
     public static void initialize(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess _ra, CommandManager.RegistrationEnvironment _re) {
         dispatcher.register(CommandManager.literal("mount")
-                .requires(src -> src.hasPermissionLevel(2))
-                .then(getReloadCommand())
-                .then(SummonCommand.getCommand())
+                .then(getReloadCommand().requires(src -> src.hasPermissionLevel(2)))
+                .then(SummonCommand.getCommand().requires(src -> src.hasPermissionLevel(2)))
+                .then(ConvertCommand.getCommand())
         );
     }
 

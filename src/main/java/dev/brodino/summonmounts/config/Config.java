@@ -10,6 +10,7 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
 public class Config {
 
@@ -75,4 +76,10 @@ public class Config {
     public int getMountAirborneTicks() { return this.data.time.mountAirborneSeconds * 20; }
     public Float getFoodRepair(OcarinaTypes types) { return this.data.foodRepair.get(types); }
     public int getOcarinaDurability(OcarinaTypes type) { return this.data.durability.get(type); }
+    public Optional<OcarinaTypes> getOcarinaType(String mountId) {
+        return this.data.mounts.stream()
+                .filter(entry -> mountId.equals(entry.id))
+                .map(entry -> entry.ocarina)
+                .findFirst();
+    }
 }
