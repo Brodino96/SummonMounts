@@ -1,0 +1,91 @@
+package dev.brodino.summonmounts;
+
+import dev.brodino.summonmounts.mount.Mount;
+import dev.brodino.summonmounts.mount.RecallReason;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+
+import java.util.*;
+
+public class MountManager {
+
+    private static final HashMap<UUID, Mount> MOUNTS = new HashMap<>();
+    private static final HashMap<UUID, Mount> MOUNTS_BY_ENTITY = new HashMap<>();
+
+    public static boolean hasActiveMount(PlayerEntity player) { return MOUNTS.containsKey(player.getUuid()); }
+    public static Mount getActiveMount(PlayerEntity player) { return MOUNTS.get(player.getUuid()); }
+    public static Optional<Mount> getMountFromEntity(LivingEntity entity) {
+        return Optional.ofNullable(MOUNTS_BY_ENTITY.get(entity.getUuid()));
+    }
+
+    public static boolean summon(PlayerEntity player, Mount mount) {
+        if (hasActiveMount(player)) return false;
+        mount.summon();
+        MOUNTS.put(player.getUuid(), mount);
+        MOUNTS_BY_ENTITY.put(mount.getUuid(), mount);
+        return true;
+    }
+
+    public static void recall(PlayerEntity player, RecallReason reason) {
+        Mount mount = MOUNTS.remove(player.getUuid());
+        if (mount == null) return;
+        MOUNTS_BY_ENTITY.remove(mount.getUuid());
+        mount.recall(reason);
+    }
+
+    public static void recallAllMounts(MinecraftServer server) {
+        for (Mount mount : MOUNTS.values()) {
+            mount.recall(RecallReason.NONE);
+        }
+        MOUNTS.clear();
+        MOUNTS_BY_ENTITY.clear();
+    }
+
+    // Events
+
+    public static boolean onMountDeath(LivingEntity entity, DamageSource source, float amount) {
+        if (entity instanceof PlayerEntity player) {
+            recall(player, RecallReason.MANUAL);
+            return true;
+        }
+
+        Optional<Mount> mountOptional = getMountFromEntity(entity);
+        if (mountOptional.isEmpty()) {
+            return true;
+        }
+
+        Mount mount = mountOptional.get();
+        recall(mount.getSummoner(), RecallReason.DEATH);
+        return false;
+    }
+
+    public static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
+        recall(handler.player, RecallReason.DISCONNECT);
+    }
+
+    public static void onDimensionChange(ServerPlayerEntity player, ServerWorld from, ServerWorld to) {
+        if (from.equals(to)) return;
+        recall(player, RecallReason.DIMENSION_CHANGE);
+    }
+
+    public static void tick(MinecraftServer server) {
+        Iterator<Map.Entry<UUID, Mount>> iterator = MOUNTS.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, Mount> entry = iterator.next();
+
+            Mount mount = entry.getValue();
+            RecallReason reason = mount.tick();
+            if (reason != RecallReason.NONE) {
+                mount.recall(reason);
+                iterator.remove();
+                MOUNTS_BY_ENTITY.remove(mount.getUuid());
+            }
+        }
+    }
+}

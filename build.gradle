@@ -18,8 +18,7 @@ fabricApi {
 }
 
 repositories {
-    // Owolib
-    maven { url 'https://maven.wispforest.io' }
+    mavenCentral()
 
     // Modrinth
     exclusiveContent {
@@ -34,19 +33,26 @@ repositories {
         }
     }
 
-    // CurseForge
-    maven { url "https://cursemaven.com" }
-
-    // Cardinal components api
-    maven {
-        name = "Ladysnake Mods"
-        url = 'https://maven.ladysnake.org/releases'
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "CurseForge"
+                url = "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
     }
-    mavenCentral()
-}
 
-loom {
-    accessWidenerPath = file("src/main/resources/SummonMounts.accesswidener")
+    // Mod Menu
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+
+    // Conditional Mixins
+    maven { url 'https://maven.fallenbreath.me/releases' }
 }
 
 dependencies {
@@ -57,13 +63,22 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "maven.modrinth:cloth-config:${project.cloth_config_version}"
-    modImplementation "maven.modrinth:adventurez:${project.adventurez_version}"
+    compileOnly "maven.modrinth:combatlog:${project.combat_log_version}"
 
-    implementation "com.electronwill.night-config:core:3.6.4"
-    implementation "com.electronwill.night-config:toml:3.6.4"
-    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_api_version}"
-    modImplementation "maven.modrinth:combatlog:${project.combat_log_version}"
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+    compileOnly "curse.maven:catalogue-fabric-667377:${project.catalogue_file_id}"
+
+    modCompileOnly "maven.modrinth:mythic-mounts:${project.mythicmounts_version}"
+
+    modImplementation "me.fallenbreath:conditional-mixin-fabric:${project.conditional_mixins_version}"
+    include "me.fallenbreath:conditional-mixin-fabric:${project.conditional_mixins_version}"
+
+    // I'm going to kick Lucko in the nuts
+    include(modImplementation("me.lucko:fabric-permissions-api:0.3.1")) {
+        exclude group: "net.fabricmc.fabric-api",
+                module: "fabric-api-bom"
+    }
 
 }
 
@@ -76,7 +91,10 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,
                 "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+                "loader_version": project.loader_version,
+                "modmenu_version": project.modmenu_version,
+                "catalogue_version": project.catalogue_version,
+                "mythicmounts_version": project.mythicmounts_version
     }
 }
 

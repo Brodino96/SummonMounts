@@ -1,0 +1,6 @@
+{
+  "parent": "summonmounts:item/ocarina",
+  "textures": {
+    "layer0": "summonmounts:item/medium_ocarina"
+  }
+}
