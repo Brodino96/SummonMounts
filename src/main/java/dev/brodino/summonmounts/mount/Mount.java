@@ -114,6 +114,7 @@ public class Mount implements PositionHelper {
             if (mountNbt.contains("ArmorItem")) { nbt.put("ArmorItem", mountNbt.get("ArmorItem")); }
             if (mountNbt.contains("SaddleItem")) { nbt.put("SaddleItem", mountNbt.get("SaddleItem")); }
             if (mountNbt.contains("DecorItem")) { nbt.put("DecorItem", mountNbt.get("DecorItem")); }
+            if (mountNbt.contains("ActiveEffects")) { nbt.put("ActiveEffects", mountNbt.get("ActiveEffects")); }
         }
 
         if (mountNbt.contains("CustomName")) { nbt.putString("CustomName", mountNbt.getString("CustomName")); }
@@ -133,6 +134,7 @@ public class Mount implements PositionHelper {
         if (stackNbt.contains("ArmorItem")) mountNbt.put("ArmorItem", stackNbt.get("ArmorItem"));
         if (stackNbt.contains("SaddleItem")) mountNbt.put("SaddleItem", stackNbt.get("SaddleItem"));
         if (stackNbt.contains("DecorItem")) mountNbt.put("DecorItem", stackNbt.get("DecorItem"));
+        if (stackNbt.contains("ActiveEffects")) { mountNbt.put("ActiveEffects", stackNbt.get("ActiveEffects")); }
         if (stackNbt.contains("CustomName")) mountNbt.putString("CustomName", stackNbt.getString("CustomName"));
         if (stackNbt.contains("Variant")) mountNbt.put("Variant", stackNbt.get("Variant"));
         if (stackNbt.contains("Tame")) mountNbt.putBoolean("Tame", stackNbt.getBoolean("Tame"));
