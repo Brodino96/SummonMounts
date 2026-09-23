@@ -11,12 +11,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Utils {
 
     private static final int DEFAULT_COLOR = DyeColor.PURPLE.getFireworkColor();
+    private static final List<ScheduledTask> TASKS = new ArrayList<>();
 
     public static boolean combatLogCheck(PlayerEntity player) {
         return SummonMounts.COMBATLOG_PRESENT && TagData.getCombat((IEntityDataSaver) player);
@@ -40,5 +42,34 @@ public class Utils {
         }
 
         return DEFAULT_COLOR;
+    }
+
+    public static void schedule(int ticks, Runnable task) {
+        TASKS.add(new ScheduledTask(ticks, task));
+    }
+
+    public static void tickTasks() {
+        List<Runnable> toRun = new ArrayList<>();
+        TASKS.removeIf(task -> {
+            task.ticksRemaining--;
+            if (task.ticksRemaining <= 0) {
+                toRun.add(task.runnable);
+                return true;
+            }
+            return false;
+        });
+        for (Runnable runnable : toRun) {
+            runnable.run();
+        }
+    }
+
+    private static class ScheduledTask {
+        int ticksRemaining;
+        final Runnable runnable;
+
+        ScheduledTask(int delayTicks, Runnable runnable) {
+            this.ticksRemaining = delayTicks;
+            this.runnable = runnable;
+        }
     }
 }

@@ -73,7 +73,7 @@ public class MountManager {
         recall(player, RecallReason.DIMENSION_CHANGE);
     }
 
-    public static void tick(MinecraftServer server) {
+    public static void tick() {
         Iterator<Map.Entry<UUID, Mount>> iterator = MOUNTS.entrySet().iterator();
 
         while (iterator.hasNext()) {

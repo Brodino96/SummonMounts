@@ -67,8 +67,7 @@ public class Mount implements PositionHelper {
         Utils.notifyPlayer(this.summoner, Text.translatable("feedback.summonmounts.summon.manual"));
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
-        // Play sound
-        NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this);
+        Utils.schedule(1, () -> NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this));
     }
 
     public void recall(RecallReason reason) {

@@ -11,7 +11,10 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 public class EventHandlers {
 
     public static void initialize() {
-        ServerTickEvents.END_SERVER_TICK.register(MountManager::tick);
+        ServerTickEvents.END_SERVER_TICK.register((server) -> {
+            MountManager.tick();
+            Utils.tickTasks();
+        });
 
         ServerPlayConnectionEvents.DISCONNECT.register(MountManager::onPlayerDisconnect);
 
