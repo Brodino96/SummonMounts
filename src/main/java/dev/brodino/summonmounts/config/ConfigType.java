@@ -13,18 +13,18 @@ public class ConfigType {
     public TimingConfig time = new TimingConfig();
     public int heightLimit = 256;
     public HashMap<OcarinaTypes, Integer> durability = new HashMap<>(){{
-        put(OcarinaTypes.INFERIOR, 32);
-        put(OcarinaTypes.LESSER, 32);
-        put(OcarinaTypes.MEDIUM, 32);
-        put(OcarinaTypes.GREATER, 32);
-        put(OcarinaTypes.SUPERIOR, 32);
+        put(OcarinaTypes.INFERIOR, 64);
+        put(OcarinaTypes.LESSER, 64);
+        put(OcarinaTypes.MEDIUM, 64);
+        put(OcarinaTypes.GREATER, 64);
+        put(OcarinaTypes.SUPERIOR, 64);
     }};
     public HashMap<OcarinaTypes, Float> foodRepair = new HashMap<>(){{
-        put(OcarinaTypes.INFERIOR, 1.0F);
-        put(OcarinaTypes.LESSER, 1.0F);
-        put(OcarinaTypes.MEDIUM, 1.0F);
-        put(OcarinaTypes.GREATER, 1.0F);
-        put(OcarinaTypes.SUPERIOR, 1.0F);
+        put(OcarinaTypes.INFERIOR, 8.0F);
+        put(OcarinaTypes.LESSER, 8.0F);
+        put(OcarinaTypes.MEDIUM, 8.0F);
+        put(OcarinaTypes.GREATER, 8.0F);
+        put(OcarinaTypes.SUPERIOR, 8.0F);
     }};
     public List<MountEntry> mounts = List.of(
             new MountEntry("minecraft:donkey", OcarinaTypes.INFERIOR),
