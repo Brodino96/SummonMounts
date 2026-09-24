@@ -27,9 +27,13 @@ public class Mount implements PositionHelper {
     private final AbstractHorseEntity entity;
     private final ItemStack stack;
     private final Identifier id;
-    private double aliveTicks = 0;
-    private double idleTicks = 0;
-    private double airborneTicks = 0;
+
+    private int aliveTicks = 0;
+    private int idleTicks = 0;
+    private int airborneTicks = 0;
+    private int lastCountdown = -1;
+    private CountdownType lastCountdownType;
+
     private double repair = 0;
     private boolean airborneRecall = false;
 
@@ -178,27 +182,87 @@ public class Mount implements PositionHelper {
 
     public RecallReason tick() {
         this.aliveTicks++;
-        if (this.aliveTicks >= SummonMounts.CONFIG.getMountAliveTicks()) {
-            return RecallReason.ALIVE;
-        }
 
         if (this.entity.hasPassengers()) {
             this.idleTicks = 0;
         } else {
             this.idleTicks++;
-            if (this.idleTicks >= SummonMounts.CONFIG.getMountIdleTicks()) {
-                return RecallReason.IDLE;
-            }
         }
 
         if (!this.entity.isOnGround() && !this.entity.isTouchingWater()) {
             this.airborneTicks++;
-            if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks() && !airborneRecall) {
-                this.airborneRecall = true;
-                NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), true);
-            }
+        }
+
+        this.sendCountdownIfNeeded(this.getLowestCountdown());
+
+        if (this.aliveTicks >= SummonMounts.CONFIG.getMountAliveTicks()) {
+            return RecallReason.ALIVE;
+        }
+
+        if (this.idleTicks >= SummonMounts.CONFIG.getMountIdleTicks()) {
+            return RecallReason.IDLE;
+        }
+
+        if (this.airborneTicks >= SummonMounts.CONFIG.getMountAirborneTicks() && !airborneRecall) {
+            this.airborneRecall = true;
+            NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), true);
         }
 
         return RecallReason.NONE;
     }
+
+    private Countdown getLowestCountdown() {
+        if (this.airborneRecall) {
+            return new Countdown(CountdownType.AIRBORNE, 0);
+        }
+
+        Countdown countdown = new Countdown(CountdownType.ALIVE, SummonMounts.CONFIG.getMountAliveTicks() - this.aliveTicks);
+
+        if (!this.entity.hasPassengers()) {
+            countdown = this.getLowestCountdown(countdown, new Countdown(CountdownType.IDLE, SummonMounts.CONFIG.getMountIdleTicks() - this.idleTicks));
+        }
+
+        boolean airborne = !this.entity.isOnGround() && !this.entity.isTouchingWater();
+        if (airborne) {
+            countdown = this.getLowestCountdown(countdown, new Countdown(CountdownType.AIRBORNE, SummonMounts.CONFIG.getMountAirborneTicks() - this.airborneTicks));
+        }
+
+        return countdown;
+    }
+
+    private Countdown getLowestCountdown(Countdown first, Countdown second) {
+        return second.remainingTicks() < first.remainingTicks() ? second : first;
+    }
+
+    private void sendCountdownIfNeeded(Countdown countdown) {
+        int remainingTicks = countdown.remainingTicks();
+        if (remainingTicks > 30 * 20 || remainingTicks < 0) {
+            this.lastCountdown = -1;
+            this.lastCountdownType = null;
+            return;
+        }
+
+        int seconds = (remainingTicks + 19) / 20;
+
+        if (seconds != this.lastCountdown || countdown.type() != this.lastCountdownType) {
+            this.summoner.sendMessage(Text.translatable(countdown.type().messageKey, seconds), true);
+        }
+
+        this.lastCountdown = seconds;
+        this.lastCountdownType = countdown.type();
+    }
+
+    private enum CountdownType {
+        ALIVE("feedback.summonmounts.countdown.alive"),
+        IDLE("feedback.summonmounts.countdown.idle"),
+        AIRBORNE("feedback.summonmounts.countdown.airborne");
+
+        private final String messageKey;
+
+        CountdownType(String messageKey) {
+            this.messageKey = messageKey;
+        }
+    }
+
+    private record Countdown(CountdownType type, int remainingTicks) {}
 }
