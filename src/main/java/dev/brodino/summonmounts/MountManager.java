@@ -2,6 +2,7 @@ package dev.brodino.summonmounts;
 
 import dev.brodino.summonmounts.mount.Mount;
 import dev.brodino.summonmounts.mount.RecallReason;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,6 +22,15 @@ public class MountManager {
     public static Mount getActiveMount(PlayerEntity player) { return MOUNTS.get(player.getUuid()); }
     public static Optional<Mount> getMountFromEntity(LivingEntity entity) {
         return Optional.ofNullable(MOUNTS_BY_ENTITY.get(entity.getUuid()));
+    }
+
+    public static boolean isAboveHeightLimit(PlayerEntity player) {
+        if (!SummonMounts.CONFIG.isHeightLimitEnabled()) return false;
+        if (player.getY() < SummonMounts.CONFIG.getHeightLimit()) return false;
+
+        Mount mount = MOUNTS.get(player.getUuid());
+        Entity vehicle = player.getVehicle();
+        return mount != null && vehicle != null && vehicle.getUuid().equals(mount.getUuid());
     }
 
     public static boolean summon(PlayerEntity player, Mount mount) {

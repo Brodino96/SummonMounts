@@ -82,4 +82,6 @@ public class Config {
                 .map(entry -> entry.ocarina)
                 .findFirst();
     }
+    public int getHeightLimit() { return this.data.heightLimit; }
+    public boolean isHeightLimitEnabled() { return this.data.heightLimit != -1; }
 }
