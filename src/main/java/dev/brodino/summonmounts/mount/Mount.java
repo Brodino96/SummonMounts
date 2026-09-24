@@ -27,9 +27,14 @@ public class Mount implements PositionHelper {
     private final AbstractHorseEntity entity;
     private final ItemStack stack;
     private final Identifier id;
-    private double aliveTicks = 0;
-    private double idleTicks = 0;
-    private double airborneTicks = 0;
+
+    private int aliveTicks = 0;
+    private int lastAliveCountdown = -1;
+    private int idleTicks = 0;
+    private int lastIdleCountdown = -1;
+    private int airborneTicks = 0;
+    private int lastAirborneCountdown = -1;
+
     private double repair = 0;
     private boolean airborneRecall = false;
 
@@ -178,6 +183,12 @@ public class Mount implements PositionHelper {
 
     public RecallReason tick() {
         this.aliveTicks++;
+
+        this.lastAliveCountdown = this.sendCountdownIfNeeded(
+            SummonMounts.CONFIG.getMountAliveTicks() - this.aliveTicks,
+            this.lastAliveCountdown
+        );
+
         if (this.aliveTicks >= SummonMounts.CONFIG.getMountAliveTicks()) {
             return RecallReason.ALIVE;
         }
@@ -200,5 +211,19 @@ public class Mount implements PositionHelper {
         }
 
         return RecallReason.NONE;
+    }
+
+    private int sendCountdownIfNeeded(int remainingTicks, int lastCountdown) {
+        if (remainingTicks > 30 * 20 || remainingTicks < 0) {
+            return lastCountdown;
+        }
+
+        int seconds = (int) ((remainingTicks + 19) / 20);
+
+        if (seconds != lastCountdown) {
+            this.summoner.sendMessage(Text.literal("Missing " + seconds + " seconds"), true);
+        }
+
+        return seconds;
     }
 }
