@@ -150,17 +150,6 @@ public class OcarinaItem extends SummonMountsItem implements DyeableItem {
     }
 
     private static Optional<Text> getMountName(NbtCompound mountNbt) {
-        if (mountNbt.contains("CustomName", NbtElement.STRING_TYPE)) {
-            try {
-                Text customName = Text.Serializer.fromJson(mountNbt.getString("CustomName"));
-                if (customName != null) {
-                    return Optional.of(customName);
-                }
-            } catch (JsonParseException ignored) {
-                // Falls back to the code below
-            }
-        }
-
         Identifier typeId = Identifier.tryParse(mountNbt.getString("type"));
         if (typeId == null) {
             return Optional.empty();
