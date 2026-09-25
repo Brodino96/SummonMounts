@@ -80,6 +80,7 @@ dependencies {
                 module: "fabric-api-bom"
     }
 
+    modCompileOnly files("libs/ledger-1.2.5.jar")
 }
 
 processResources {

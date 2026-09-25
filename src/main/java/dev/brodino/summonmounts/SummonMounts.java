@@ -1,5 +1,7 @@
 package dev.brodino.summonmounts;
 
+import com.github.quiltservertools.ledger.Ledger;
+import com.github.quiltservertools.ledger.api.LedgerApi;
 import dev.brodino.summonmounts.config.Config;
 import dev.brodino.summonmounts.items.ItemManager;
 import dev.brodino.summonmounts.particle.ParticlesManager;
@@ -14,6 +16,9 @@ public class SummonMounts implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(SummonMounts.MOD_ID);
     public static final Config CONFIG = new Config(MOD_ID, LOGGER);
     public static final boolean COMBATLOG_PRESENT = FabricLoader.getInstance().isModLoaded("combatlog");
+    public static final LedgerApi LEDGER_API = FabricLoader.getInstance().isModLoaded("ledger")
+        ? Ledger.getApi()
+        : null;
 
     @Override
     public void onInitialize() {
