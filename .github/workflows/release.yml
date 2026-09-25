@@ -35,7 +35,7 @@ jobs:
         run: gradle build
 
       - name: Publish release
-        uses: Kira-NT/mc-publish@latest
+        uses: Kira-NT/mc-publish@v3.3.1
         with:
           files: build/libs/!(*-@(dev|sources|javadoc)).jar
           name: SummonMounts ${{ steps.version.outputs.version }}
