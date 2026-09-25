@@ -80,6 +80,7 @@ dependencies {
                 module: "fabric-api-bom"
     }
 
+    compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
     modCompileOnly files("libs/ledger-1.2.5.jar")
 }
 

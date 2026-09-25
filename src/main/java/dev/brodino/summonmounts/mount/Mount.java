@@ -3,6 +3,7 @@ package dev.brodino.summonmounts.mount;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.items.OcarinaItem;
+import dev.brodino.summonmounts.ledger.LedgerManager;
 import dev.brodino.summonmounts.network.NetworkManager;
 import dev.brodino.summonmounts.network.Packets;
 import net.minecraft.advancement.criterion.Criteria;
@@ -71,6 +72,7 @@ public class Mount implements PositionHelper {
         Utils.notifyPlayer(this.summoner, Text.translatable("feedback.summonmounts.summon.manual"));
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
+        LedgerManager.logSummon(this);
         Utils.schedule(1, () -> NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this));
     }
 
@@ -177,6 +179,7 @@ public class Mount implements PositionHelper {
     public boolean isMountable() { return this.stack.getMaxDamage() - this.stack.getDamage() > 1; }
     public boolean shouldBeRecalled() { return this.airborneRecall; }
     public int getId() { return this.entity.getId(); }
+    public Identifier getIdentifier() { return Registry.ENTITY_TYPE.getId(this.entity.getType()); }
 
     public RecallReason tick() {
         if (this.summoner.hasPermissionLevel(2)) {

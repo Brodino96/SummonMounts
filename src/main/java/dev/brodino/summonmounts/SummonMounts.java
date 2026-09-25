@@ -4,8 +4,10 @@ import com.github.quiltservertools.ledger.Ledger;
 import com.github.quiltservertools.ledger.api.LedgerApi;
 import dev.brodino.summonmounts.config.Config;
 import dev.brodino.summonmounts.items.ItemManager;
+import dev.brodino.summonmounts.ledger.LedgerManager;
 import dev.brodino.summonmounts.particle.ParticlesManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,5 +30,6 @@ public class SummonMounts implements ModInitializer {
         EventHandlers.initialize();
         ParticlesManager.initialize();
         ItemManager.initialize();
+        ServerLifecycleEvents.SERVER_STARTED.register(LedgerManager::initialize);
     }
 }
