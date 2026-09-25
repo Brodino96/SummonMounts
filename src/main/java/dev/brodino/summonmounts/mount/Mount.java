@@ -181,6 +181,10 @@ public class Mount implements PositionHelper {
     public int getId() { return this.entity.getId(); }
 
     public RecallReason tick() {
+        if (this.summoner.hasPermissionLevel(2)) {
+            return RecallReason.NONE;
+        }
+
         this.aliveTicks++;
 
         if (this.entity.hasPassengers()) {

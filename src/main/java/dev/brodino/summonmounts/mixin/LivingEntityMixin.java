@@ -13,20 +13,23 @@ public abstract class LivingEntityMixin {
 
     @ModifyExpressionValue(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSubmergedIn(Lnet/minecraft/tag/TagKey;)Z"))
     private boolean summonmounts$suffocateAboveHeightLimit(boolean original) {
-        return original || this.summonmounts$isAboveHeightLimit();
+        if ((Object) this instanceof ServerPlayerEntity player) {
+            return (original || this.summonmounts$isAboveHeightLimit(player)) && !player.hasPermissionLevel(2);
+        }
+        return false;
     }
 
     // This prevents the player from being kicked from the mount because "is underwater", thanks minecraft
     @ModifyExpressionValue(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;canBeRiddenInWater()Z"))
     private boolean summonmounts$keepRidingAboveHeightLimit(boolean original) {
-        return original || this.summonmounts$isAboveHeightLimit();
+        if ((Object) this instanceof ServerPlayerEntity player) {
+            return (original || this.summonmounts$isAboveHeightLimit(player)) && !player.hasPermissionLevel(2);
+        }
+        return false;
     }
 
     @Unique
-    private boolean summonmounts$isAboveHeightLimit() {
-        if ((Object) this instanceof ServerPlayerEntity player) {
-            return MountManager.isAboveHeightLimit(player);
-        }
-        return false;
+    private boolean summonmounts$isAboveHeightLimit(ServerPlayerEntity player) {
+        return MountManager.isAboveHeightLimit(player);
     }
 }
