@@ -63,7 +63,7 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    compileOnly "maven.modrinth:combatlog:${project.combat_log_version}"
+    compileOnly "maven.modrinth:combatlog:${project.combatlog_version}"
 
     compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
@@ -94,7 +94,8 @@ processResources {
                 "loader_version": project.loader_version,
                 "modmenu_version": project.modmenu_version,
                 "catalogue_version": project.catalogue_version,
-                "mythicmounts_version": project.mythicmounts_version
+                "mythicmounts_version": project.mythicmounts_version,
+                "combatlog_version": project.combatlog_version
     }
 }
 

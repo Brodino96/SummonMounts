@@ -58,7 +58,8 @@
   "suggests": {
     "modmenu": ">=${modmenu_version}",
     "catalogue": ">=${catalogue_version}",
-    "mythicmounts": "${mythicmounts_version}"
+    "mythicmounts": "${mythicmounts_version}",
+    "combatlog": "${combatlog_version}"
   },
   "custom": {
     "modmenu": {
