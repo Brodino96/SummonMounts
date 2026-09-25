@@ -9,18 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@latest
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
 
       - name: Setup Java
-        uses: actions/setup-java@latest
+        uses: actions/setup-java@v6.0.1
         with:
           java-version: "17"
           distribution: "temurin"
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@latest
+        uses: gradle/actions/setup-gradle@v6.3.0
         with:
           gradle-version: "8.12"
 
@@ -28,7 +28,7 @@ jobs:
         run: gradle build
 
       - name: Archive Artifacts
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: Artifacts
           path: ./build/libs
