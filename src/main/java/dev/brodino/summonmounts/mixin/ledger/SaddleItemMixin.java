@@ -1,4 +1,4 @@
-package dev.brodino.summonmounts.mixin;
+package dev.brodino.summonmounts.mixin.ledger;
 
 import dev.brodino.summonmounts.ledger.LedgerManager;
 import net.minecraft.entity.LivingEntity;
@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SaddleItem;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,6 +18,6 @@ public class SaddleItemMixin {
 
 	@Inject(method = "useOnEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Saddleable;saddle(Lnet/minecraft/sound/SoundCategory;)V"))
 	public void summonmounts$useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		LedgerManager.logSaddle(user, true, entity);
+		LedgerManager.logGear(user, true, entity, Registry.ITEM.getId(stack.getItem()));
 	}
 }

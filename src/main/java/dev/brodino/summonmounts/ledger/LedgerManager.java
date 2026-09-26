@@ -5,6 +5,7 @@ import dev.brodino.summonmounts.mount.Mount;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
 
 public class LedgerManager {
 
@@ -28,8 +29,8 @@ public class LedgerManager {
 		LedgerHook.logTame(mount);
 	}
 
-	public static void logSaddle(PlayerEntity player, boolean saddled, LivingEntity target) {
+	public static void logGear(PlayerEntity player, boolean saddled, LivingEntity target, Identifier itemId) {
 		if (!SummonMounts.LEDGER_PRESENT) return;
-		LedgerHook.logSaddle(player, saddled, target);
+		LedgerHook.logGear(player, saddled, target, itemId);
 	}
 }
