@@ -47,6 +47,7 @@ public class Mount implements PositionHelper {
 
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
+        LedgerManager.logTame(mount);
         mount.recall(RecallReason.TAMED);
     }
 
@@ -81,6 +82,7 @@ public class Mount implements PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), false);
+        LedgerManager.logRecall(this, reason.getLedger());
         NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this);
         this.entity.discard();
     }

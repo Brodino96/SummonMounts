@@ -1,33 +1,28 @@
 package dev.brodino.summonmounts.ledger;
 
-import com.github.quiltservertools.ledger.Ledger;
-import com.github.quiltservertools.ledger.api.LedgerApi;
-import com.github.quiltservertools.ledger.registry.ActionRegistry;
-import dev.brodino.summonmounts.ledger.actions.SummonActionType;
+import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.mount.Mount;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 
 public class LedgerManager {
 
-	private static final LedgerApi LEDGER_API = FabricLoader.getInstance().isModLoaded("ledger") ? Ledger.getApi() : null;
-
 	public static void initialize(MinecraftServer server) {
-		ActionRegistry.INSTANCE.registerActionType(SummonActionType::new);
+		if (!SummonMounts.LEDGER_PRESENT) return;
+		LedgerHook.initialize();
 	}
 
 	public static void logSummon(Mount mount) {
-		if (LEDGER_API != null) {
-			LEDGER_API.logAction(getSummonAction(mount));
-		}
+		if (!SummonMounts.LEDGER_PRESENT) return;
+		LedgerHook.logSummon(mount);
 	}
 
-	private static SummonActionType getSummonAction(Mount mount) {
-		SummonActionType action = new SummonActionType();
-		action.setSourceProfile(mount.getSummoner().getGameProfile());
-		action.setPos(new BlockPos(mount.getPos()));
-		action.setObjectIdentifier(mount.getIdentifier());
-		return action;
+	public static void logRecall(Mount mount, String reason) {
+		if (!SummonMounts.LEDGER_PRESENT) return;
+		LedgerHook.logRecall(mount, reason);
+	}
+
+	public static void logTame(Mount mount) {
+		if (!SummonMounts.LEDGER_PRESENT) return;
+		LedgerHook.logTame(mount);
 	}
 }

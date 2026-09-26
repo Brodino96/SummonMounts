@@ -17,12 +17,15 @@ public enum RecallReason {
 
     private final String log;
     private final String reason;
+    private final String ledger;
 
     RecallReason(String log) {
         this.log = log;
         this.reason = "feedback.summonmounts.recall." + this.name().toLowerCase(Locale.ROOT);
+        this.ledger = "ledger.summonmounts.recall." + this.name().toLowerCase(Locale.ROOT);
     }
 
     public String getLog() { return this.log; }
     public String getReason() { return this.reason; }
+    public String getLedger() { return this.ledger; }
 }
