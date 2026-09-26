@@ -37,7 +37,7 @@ public class LedgerHook {
 	}
 
 	public static void logSaddle(PlayerEntity player, boolean saddled, LivingEntity target) {
-		LEDGER_API.logAction(SaddledActionType.getInstance(player, saddled, target));
+		LEDGER_API.logAction(SaddledActionType.create(player, saddled, target));
 	}
 
 	private static ActionType getAction(Mount mount, ActionType action) {
