@@ -5,9 +5,12 @@ import com.github.quiltservertools.ledger.actions.ActionType;
 import com.github.quiltservertools.ledger.api.LedgerApi;
 import com.github.quiltservertools.ledger.registry.ActionRegistry;
 import dev.brodino.summonmounts.ledger.actions.RecallActionType;
+import dev.brodino.summonmounts.ledger.actions.SaddledActionType;
 import dev.brodino.summonmounts.ledger.actions.SummonActionType;
 import dev.brodino.summonmounts.ledger.actions.TamedActionType;
 import dev.brodino.summonmounts.mount.Mount;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class LedgerHook {
@@ -18,6 +21,7 @@ public class LedgerHook {
 		ActionRegistry.INSTANCE.registerActionType(SummonActionType::new);
 		ActionRegistry.INSTANCE.registerActionType(RecallActionType::new);
 		ActionRegistry.INSTANCE.registerActionType(TamedActionType::new);
+		ActionRegistry.INSTANCE.registerActionType(SaddledActionType::new);
 	}
 
 	public static void logSummon(Mount mount) {
@@ -30,6 +34,10 @@ public class LedgerHook {
 
 	public static void logTame(Mount mount) {
 		LEDGER_API.logAction(getAction(mount, new TamedActionType()));
+	}
+
+	public static void logSaddle(PlayerEntity player, boolean saddled, LivingEntity target) {
+		LEDGER_API.logAction(SaddledActionType.getInstance(player, saddled, target));
 	}
 
 	private static ActionType getAction(Mount mount, ActionType action) {

@@ -53,5 +53,7 @@
   "ledger.summonmounts.recall.airborne": "(airborne) ",
   "ledger.summonmounts.recall.disconnected": "(disconnected) ",
   "ledger.summonmounts.recall.dimension_change": "(dimension change) ",
-  "ledger.summonmounts.recall.player_death": "(player death) "
+  "ledger.summonmounts.recall.player_death": "(player death) ",
+  "ledger.summonmounts.saddled": "saddled",
+  "ledger.summonmounts.unsaddled": "unsaddled"
 }

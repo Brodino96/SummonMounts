@@ -2,6 +2,8 @@ package dev.brodino.summonmounts.ledger;
 
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.mount.Mount;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 
 public class LedgerManager {
@@ -24,5 +26,10 @@ public class LedgerManager {
 	public static void logTame(Mount mount) {
 		if (!SummonMounts.LEDGER_PRESENT) return;
 		LedgerHook.logTame(mount);
+	}
+
+	public static void logSaddle(PlayerEntity player, boolean saddled, LivingEntity target) {
+		if (!SummonMounts.LEDGER_PRESENT) return;
+		LedgerHook.logSaddle(player, saddled, target);
 	}
 }
