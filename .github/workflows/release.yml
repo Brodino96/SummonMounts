@@ -51,7 +51,7 @@ jobs:
             catalogue@1.7.0-1.19.2{curseforge:667377}
             mythicmounts@1.19.2-7.2(optional){modrinth:xP7vOoRA}{curseforge:517650}
             combatlog@2.0(optional){modrinth:nNnLt4Jb}{curseforge:665758}
-            
+            ledger@1.2.5(optional){modrinth:LVN9ygNV}{curseforge:491137}
 
           github-tag: v${{ steps.version.outputs.version }}
           github-generate-changelog: true
