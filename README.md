@@ -13,7 +13,13 @@ SummonMounts is a Fabric mod for Minecraft that lets you store a tamed mount in 
 - Dye ocarinas to change particle colors (enabled via LuckPerms permission `summonmounts.custom_particles`)
 - Included alternative 2D ocarina resource pack
 
-Mythic Mounts is optional, but its mounts are included in the default configuration. Mod Menu and Catalogue are also optional integrations
+## Integrations
+- Combatlog ([modrinth](https://modrinth.com/mod/combatlog|https://modrinth.com/mod/combatlog) | [curseforge](https://www.curseforge.com/minecraft/mc-mods/combatlog))
+  - Stops players from summoning any mount while in combat
+- Mythic Mounts ([modrinth](https://modrinth.com/mod/mythic-mounts) | [curseforge](https://www.curseforge.com/minecraft/mc-mods/mythic-mounts))
+  - All mounts are pre configured to work with the mod
+- Ledger ([modrinth](https://modrinth.com/mod/ledger) | [curseforge](https://www.curseforge.com/minecraft/mc-mods/ledger))
+  - Logs summon, recall, tame and gear changes
 
 ## How to use
 
