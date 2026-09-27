@@ -1,6 +1,7 @@
 package dev.brodino.summonmounts.ledger.actions;
 
 import com.github.quiltservertools.ledger.actions.AbstractActionType;
+import com.github.quiltservertools.ledger.utility.Sources;
 import com.github.quiltservertools.ledger.utility.TextColorPallet;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +25,7 @@ public class MountGearChangeType extends AbstractActionType {
 	public static MountGearChangeType create(PlayerEntity player, boolean saddled, LivingEntity target, Identifier itemId) {
 		MountGearChangeType action = new MountGearChangeType();
 		action.setSourceProfile(player.getGameProfile());
-		action.setSourceName(player.getName().getString());
+		action.setSourceName(Sources.PLAYER);
 		action.setPos(target.getBlockPos());
 		action.setOldObjectIdentifier(itemId);
 		action.setObjectIdentifier(Registry.ENTITY_TYPE.getId(target.getType()));

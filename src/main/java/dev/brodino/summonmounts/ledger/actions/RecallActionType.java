@@ -1,6 +1,7 @@
 package dev.brodino.summonmounts.ledger.actions;
 
 import com.github.quiltservertools.ledger.actions.AbstractActionType;
+import com.github.quiltservertools.ledger.utility.Sources;
 import dev.brodino.summonmounts.mount.Mount;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +25,7 @@ public class RecallActionType extends AbstractActionType {
 	public static RecallActionType create(Mount mount, String reason) {
 		RecallActionType action = new RecallActionType();
 		action.setSourceProfile(mount.getSummoner().getGameProfile());
-		action.setSourceName(mount.getSummoner().getName().getString());
+		action.setSourceName(Sources.PLAYER);
 		action.setPos(new BlockPos(mount.getPos()));
 		action.setObjectIdentifier(mount.getIdentifier());
 		action.setExtraData(reason);
