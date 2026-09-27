@@ -80,8 +80,9 @@ dependencies {
                 module: "fabric-api-bom"
     }
 
+    // Had some issue with the ledger maven so directly imported jar
     compileOnly "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
-    modCompileOnly files("libs/ledger-1.2.5.jar")
+    modCompileOnly files("libs/ledger-${project.ledger_version}.jar")
 }
 
 processResources {
@@ -97,7 +98,8 @@ processResources {
                 "modmenu_version": project.modmenu_version,
                 "catalogue_version": project.catalogue_version,
                 "mythicmounts_version": project.mythicmounts_version,
-                "combatlog_version": project.combatlog_version
+                "combatlog_version": project.combatlog_version,
+                "ledger_version": project.ledger_version
     }
 }
 
