@@ -10,6 +10,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(FlyingMountEntity.class)
 public interface FlyingMountEntityInvoker {
 
-    @Invoker("setFlyingParams")
+    @Invoker(value = "setFlyingParams", remap = false)
     void summonmounts$setFlyingParams(boolean flying);
 }
