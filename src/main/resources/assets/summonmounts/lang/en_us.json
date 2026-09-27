@@ -56,5 +56,5 @@
   "ledger.summonmounts.recall.player_death": "(player death) ",
 
   "ledger.summonmounts.gear.add": "added %s to",
-  "ledger.summonmounts.gear.remove": "removed %s to"
+  "ledger.summonmounts.gear.remove": "removed %s from"
 }
