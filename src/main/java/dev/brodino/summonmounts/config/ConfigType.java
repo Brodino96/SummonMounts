@@ -1,5 +1,6 @@
 package dev.brodino.summonmounts.config;
 
+import dev.brodino.summonmounts.config.data.IntegrationConfig;
 import dev.brodino.summonmounts.config.data.MountEntry;
 import dev.brodino.summonmounts.config.data.TimingConfig;
 import dev.brodino.summonmounts.items.OcarinaTypes;
@@ -50,4 +51,5 @@ public class ConfigType {
             new MountEntry("mythicmounts:moth", OcarinaTypes.SUPERIOR),
             new MountEntry("mythicmounts:netherbat", OcarinaTypes.SUPERIOR)
     );
+    public IntegrationConfig integrations = new IntegrationConfig();
 }

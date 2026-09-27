@@ -70,7 +70,7 @@ public class OcarinaItem extends SummonMountsItem implements DyeableItem {
     }
 
     private TypedActionResult<ItemStack> summon(PlayerEntity player, ItemStack stack) {
-        if (Utils.combatLogCheck(player)) {
+        if (SummonMounts.CONFIG.getCombatLogConfig().combatBlockSummon && Utils.combatLogCheck(player)) {
             Utils.notifyPlayer(player, Text.translatable("feedback.summonmounts.summon.combat_log"));
             return TypedActionResult.fail(stack);
         }
