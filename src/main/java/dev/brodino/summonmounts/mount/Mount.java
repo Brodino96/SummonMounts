@@ -3,6 +3,7 @@ package dev.brodino.summonmounts.mount;
 import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.Utils;
 import dev.brodino.summonmounts.items.OcarinaItem;
+import dev.brodino.summonmounts.ledger.LedgerManager;
 import dev.brodino.summonmounts.network.NetworkManager;
 import dev.brodino.summonmounts.network.Packets;
 import net.minecraft.advancement.criterion.Criteria;
@@ -46,6 +47,7 @@ public class Mount implements PositionHelper {
 
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
+        LedgerManager.logTame(mount);
         mount.recall(RecallReason.TAMED);
     }
 
@@ -71,6 +73,7 @@ public class Mount implements PositionHelper {
         Utils.notifyPlayer(this.summoner, Text.translatable("feedback.summonmounts.summon.manual"));
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
+        LedgerManager.logSummon(this);
         Utils.schedule(1, () -> NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this));
     }
 
@@ -79,6 +82,7 @@ public class Mount implements PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), false);
+        LedgerManager.logRecall(this, reason.getLedger());
         NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this);
         this.entity.discard();
     }
@@ -177,6 +181,7 @@ public class Mount implements PositionHelper {
     public boolean isMountable() { return this.stack.getMaxDamage() - this.stack.getDamage() > 1; }
     public boolean shouldBeRecalled() { return this.airborneRecall; }
     public int getId() { return this.entity.getId(); }
+    public Identifier getIdentifier() { return Registry.ENTITY_TYPE.getId(this.entity.getType()); }
 
     public RecallReason tick() {
         if (this.summoner.hasPermissionLevel(2)) {
