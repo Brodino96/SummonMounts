@@ -22,17 +22,6 @@ public class MountGearChangeType extends AbstractActionType {
 	@Override
 	public @NotNull String getTranslationType() { return "entity"; }
 
-	public static MountGearChangeType create(PlayerEntity player, boolean saddled, LivingEntity target, Identifier itemId) {
-		MountGearChangeType action = new MountGearChangeType();
-		action.setSourceProfile(player.getGameProfile());
-		action.setSourceName(Sources.PLAYER);
-		action.setPos(target.getBlockPos());
-		action.setOldObjectIdentifier(itemId);
-		action.setObjectIdentifier(Registry.ENTITY_TYPE.getId(target.getType()));
-		action.setExtraData(String.valueOf(saddled));
-		return action;
-	}
-
 	@Override
 	public @NotNull Text getActionMessage() {
         Item item = Registry.ITEM.get(this.getOldObjectIdentifier());
@@ -47,5 +36,16 @@ public class MountGearChangeType extends AbstractActionType {
 				? Text.translatable("ledger.summonmounts.gear.add", itemText)
 				: Text.translatable("ledger.summonmounts.gear.remove", itemText);
 
+	}
+
+	public static MountGearChangeType create(PlayerEntity player, boolean saddled, LivingEntity target, Identifier itemId) {
+		MountGearChangeType action = new MountGearChangeType();
+		action.setSourceProfile(player.getGameProfile());
+		action.setSourceName(Sources.PLAYER);
+		action.setPos(target.getBlockPos());
+		action.setOldObjectIdentifier(itemId);
+		action.setObjectIdentifier(Registry.ENTITY_TYPE.getId(target.getType()));
+		action.setExtraData(String.valueOf(saddled));
+		return action;
 	}
 }

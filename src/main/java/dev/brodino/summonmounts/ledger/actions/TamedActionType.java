@@ -9,15 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class TamedActionType extends AbstractActionType {
 
-	public static TamedActionType create(Mount mount) {
-		TamedActionType action = new TamedActionType();
-		action.setSourceProfile(mount.getSummoner().getGameProfile());
-		action.setSourceName(Sources.PLAYER);
-		action.setPos(new BlockPos(mount.getPos()));
-		action.setObjectIdentifier(mount.getIdentifier());
-		return action;
-	}
-
 	@Override
 	public @NotNull String getIdentifier() { return "mount-tamed"; }
 
@@ -26,4 +17,13 @@ public class TamedActionType extends AbstractActionType {
 
 	@Override
 	public @NotNull Text getActionMessage() { return Text.translatable("ledger.summonmounts.tamed"); }
+
+	public static TamedActionType create(Mount mount) {
+		TamedActionType action = new TamedActionType();
+		action.setSourceProfile(mount.getSummoner().getGameProfile());
+		action.setSourceName(Sources.PLAYER);
+		action.setPos(new BlockPos(mount.getPos()));
+		action.setObjectIdentifier(mount.getIdentifier());
+		return action;
+	}
 }
