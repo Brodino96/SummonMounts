@@ -13,7 +13,8 @@ public enum RecallReason {
     DISCONNECT("Recalling {}'s mount because player disconnected"),
     DIMENSION_CHANGE("Recalling {}'s mount because player changed dimension"),
     SERVER_STOPPING("Recalling {}'s mount because server is stopping"),
-    PLAYER_DEATH("Recalling {}'s mount because player died");
+    PLAYER_DEATH("Recalling {}'s mount because player died"),
+    DISTANCE_LIMIT("Recalling {}'s mount because it was too far");
 
     private final String log;
     private final String reason;

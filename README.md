@@ -63,6 +63,7 @@ The generated `config/summonmounts.json` controls:
 - `time.mountIdleSeconds`: time an unmounted mount can remain idle
 - `time.mountAirborneSeconds`: time a mount can remain airborne before being forced to land
 - `heightLimit`: flight height limit, set to `-1` to disable it
+- `distanceLimit`: distance limit between summoner and mount (when mount is not being ridden), let to `-1` to disabled it
 - `durability`: durability for each ocarina tier
 - `foodRepair`: durability repaired by one matching feed item
 - `mounts`: entity IDs and their required ocarina tiers

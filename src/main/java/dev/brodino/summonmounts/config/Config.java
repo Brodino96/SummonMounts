@@ -83,5 +83,6 @@ public class Config {
                 .findFirst();
     }
     public int getHeightLimit() { return this.data.heightLimit; }
+    public int getDistanceLimit() { return this.data.distanceLimit; }
     public boolean isHeightLimitEnabled() { return this.data.heightLimit != -1; }
 }

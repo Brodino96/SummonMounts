@@ -12,6 +12,7 @@ public class ConfigType {
     public List<String> allowedDimensions = List.of("minecraft:overworld");
     public TimingConfig time = new TimingConfig();
     public int heightLimit = 256;
+    public int distanceLimit = 64;
     public HashMap<OcarinaTypes, Integer> durability = new HashMap<>(){{
         put(OcarinaTypes.INFERIOR, 64);
         put(OcarinaTypes.LESSER, 64);

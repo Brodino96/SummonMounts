@@ -194,6 +194,9 @@ public class Mount implements PositionHelper {
             this.idleTicks = 0;
         } else {
             this.idleTicks++;
+            if (SummonMounts.CONFIG.getDistanceLimit() > -1 && this.entity.distanceTo(this.summoner) > SummonMounts.CONFIG.getDistanceLimit()) {
+                return RecallReason.DISTANCE_LIMIT;
+            }
         }
 
         if (!this.entity.isOnGround() && !this.entity.isTouchingWater()) {
