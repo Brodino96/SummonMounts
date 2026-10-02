@@ -75,7 +75,7 @@ public class MountManager {
     }
 
     public static void onPlayerDisconnect(ServerPlayNetworkHandler handler, MinecraftServer server) {
-        recall(handler.player, RecallReason.DISCONNECT);
+        recall(handler.player, RecallReason.DISCONNECTED);
     }
 
     public static void onDimensionChange(ServerPlayerEntity player, ServerWorld from, ServerWorld to) {

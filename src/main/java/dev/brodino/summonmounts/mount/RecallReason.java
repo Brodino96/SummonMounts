@@ -10,7 +10,7 @@ public enum RecallReason {
     IDLE("Recalling {}'s mount because it was idle for too long"),
     ALIVE("Recalling {}'s mount because it was alive for too long"),
     AIRBORNE("Recalling {}'s mount because it's stayed airborne for too long"),
-    DISCONNECT("Recalling {}'s mount because player disconnected"),
+    DISCONNECTED("Recalling {}'s mount because player disconnected"),
     DIMENSION_CHANGE("Recalling {}'s mount because player changed dimension"),
     SERVER_STOPPING("Recalling {}'s mount because server is stopping"),
     PLAYER_DEATH("Recalling {}'s mount because player died"),
