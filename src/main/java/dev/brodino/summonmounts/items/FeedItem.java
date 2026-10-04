@@ -28,8 +28,6 @@ public class FeedItem extends SummonMountsItem {
 
     public static ActionResult onUseEntity(PlayerEntity player, World world, Hand hand, Entity entity, EntityHitResult hitResult) {
         if (player.world.isClient || hitResult != null) return ActionResult.PASS; // Change to success or consume for future releases
-        SummonMounts.LOGGER.info("Source: Event");
-        SummonMounts.LOGGER.info("Hand: {}", hand);
 
         ItemStack stack = player.getStackInHand(hand);
         if (!(stack.getItem() instanceof FeedItem feedItem)) return ActionResult.PASS;
