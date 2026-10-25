@@ -10,27 +10,31 @@ import net.minecraft.util.Identifier;
 public class LedgerManager {
 
 	public static void initialize(MinecraftServer server) {
-		if (!SummonMounts.LEDGER_PRESENT) return;
+		if (areLogsDisabled()) return;
 		LedgerHook.initialize();
 	}
 
 	public static void logSummon(Mount mount) {
-		if (!SummonMounts.LEDGER_PRESENT) return;
+		if (areLogsDisabled()) return;
 		LedgerHook.logSummon(mount);
 	}
 
 	public static void logRecall(Mount mount, String reason) {
-		if (!SummonMounts.LEDGER_PRESENT) return;
+		if (areLogsDisabled()) return;
 		LedgerHook.logRecall(mount, reason);
 	}
 
 	public static void logTame(Mount mount) {
-		if (!SummonMounts.LEDGER_PRESENT) return;
+		if (areLogsDisabled()) return;
 		LedgerHook.logTame(mount);
 	}
 
 	public static void logGear(PlayerEntity player, boolean saddled, LivingEntity target, Identifier itemId) {
-		if (!SummonMounts.LEDGER_PRESENT) return;
+		if (areLogsDisabled()) return;
 		LedgerHook.logGear(player, saddled, target, itemId);
+	}
+	
+	private static boolean areLogsDisabled() {
+		return !SummonMounts.LEDGER_PRESENT || !SummonMounts.CONFIG.getLedgerConfig().logsEnabled;
 	}
 }

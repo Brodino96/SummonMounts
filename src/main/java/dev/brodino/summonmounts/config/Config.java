@@ -2,6 +2,8 @@ package dev.brodino.summonmounts.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.brodino.summonmounts.config.data.integration.CombatLogConfig;
+import dev.brodino.summonmounts.config.data.integration.LedgerConfig;
 import dev.brodino.summonmounts.items.OcarinaTypes;
 import org.slf4j.Logger;
 import java.io.IOException;
@@ -85,4 +87,6 @@ public class Config {
     public int getHeightLimit() { return this.data.heightLimit; }
     public int getDistanceLimit() { return this.data.distanceLimit; }
     public boolean isHeightLimitEnabled() { return this.data.heightLimit != -1; }
+    public CombatLogConfig getCombatLogConfig() { return this.data.integrations.combatlog; }
+    public LedgerConfig getLedgerConfig() { return this.data.integrations.ledger; }
 }
