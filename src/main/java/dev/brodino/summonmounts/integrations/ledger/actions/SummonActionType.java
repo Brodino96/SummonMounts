@@ -1,4 +1,4 @@
-package dev.brodino.summonmounts.ledger.actions;
+package dev.brodino.summonmounts.integrations.ledger.actions;
 
 import com.github.quiltservertools.ledger.actions.AbstractActionType;
 import com.github.quiltservertools.ledger.utility.Sources;
@@ -7,23 +7,24 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
-public class TamedActionType extends AbstractActionType {
+public class SummonActionType extends AbstractActionType {
 
 	@Override
-	public @NotNull String getIdentifier() { return "mount-tamed"; }
+	public @NotNull String getIdentifier() { return "mount-summon"; }
 
 	@Override
 	public @NotNull String getTranslationType() { return "entity"; }
 
 	@Override
-	public @NotNull Text getActionMessage() { return Text.translatable("ledger.summonmounts.tamed"); }
+	public @NotNull Text getActionMessage() { return Text.translatable("ledger.summonmounts.summoned"); }
 
-	public static TamedActionType create(Mount mount) {
-		TamedActionType action = new TamedActionType();
+	public static SummonActionType create(Mount mount) {
+		SummonActionType action = new SummonActionType();
 		action.setSourceProfile(mount.getSummoner().getGameProfile());
 		action.setSourceName(Sources.PLAYER);
 		action.setPos(new BlockPos(mount.getPos()));
 		action.setObjectIdentifier(mount.getIdentifier());
 		return action;
 	}
+
 }

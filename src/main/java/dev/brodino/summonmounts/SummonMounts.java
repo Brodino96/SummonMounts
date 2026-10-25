@@ -3,7 +3,6 @@ package dev.brodino.summonmounts;
 import dev.brodino.summonmounts.config.Config;
 import dev.brodino.summonmounts.integrations.IntegrationsManager;
 import dev.brodino.summonmounts.items.ItemManager;
-import dev.brodino.summonmounts.ledger.LedgerManager;
 import dev.brodino.summonmounts.particle.ParticlesManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -28,8 +27,6 @@ public class SummonMounts implements ModInitializer {
         EventHandlers.initialize();
         ParticlesManager.initialize();
         ItemManager.initialize();
-        if (LEDGER_PRESENT) {
-            ServerLifecycleEvents.SERVER_STARTED.register(LedgerManager::initialize);
-        }
+        ServerLifecycleEvents.SERVER_STARTED.register(INTEGRATIONS::initializeLedger);
     }
 }

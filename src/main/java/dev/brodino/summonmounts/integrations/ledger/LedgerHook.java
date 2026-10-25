@@ -1,12 +1,12 @@
-package dev.brodino.summonmounts.ledger;
+package dev.brodino.summonmounts.integrations.ledger;
 
 import com.github.quiltservertools.ledger.Ledger;
 import com.github.quiltservertools.ledger.api.LedgerApi;
 import com.github.quiltservertools.ledger.registry.ActionRegistry;
-import dev.brodino.summonmounts.ledger.actions.MountGearChangeType;
-import dev.brodino.summonmounts.ledger.actions.RecallActionType;
-import dev.brodino.summonmounts.ledger.actions.SummonActionType;
-import dev.brodino.summonmounts.ledger.actions.TamedActionType;
+import dev.brodino.summonmounts.integrations.ledger.actions.MountGearChangeType;
+import dev.brodino.summonmounts.integrations.ledger.actions.RecallActionType;
+import dev.brodino.summonmounts.integrations.ledger.actions.SummonActionType;
+import dev.brodino.summonmounts.integrations.ledger.actions.TamedActionType;
 import dev.brodino.summonmounts.mount.Mount;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
