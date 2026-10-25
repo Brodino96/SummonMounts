@@ -12,11 +12,12 @@ import net.minecraft.util.Identifier;
 
 public class IntegrationsManager {
 
-    private final CombatlogIntegration COMBATLOG = new CombatlogIntegration(FabricLoader.getInstance().getModContainer("combatlog").orElse(null));
-    private final LedgerIntegration LEDGER = new LedgerIntegration(FabricLoader.getInstance().getModContainer("ledger").orElse(null));
+    private final CombatlogIntegration COMBATLOG;
+    private final LedgerIntegration LEDGER;
 
     public IntegrationsManager() {
-
+        COMBATLOG = new CombatlogIntegration(FabricLoader.getInstance().getModContainer("combatlog").orElse(null));
+        LEDGER = new LedgerIntegration(FabricLoader.getInstance().getModContainer("ledger").orElse(null));
     }
 
     public boolean isPlayerInCombat(PlayerEntity player) {
