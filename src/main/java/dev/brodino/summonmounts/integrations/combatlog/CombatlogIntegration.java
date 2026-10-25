@@ -1,5 +1,6 @@
 package dev.brodino.summonmounts.integrations.combatlog;
 
+import dev.brodino.summonmounts.SummonMounts;
 import dev.brodino.summonmounts.integrations.ModIntegration;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,12 +40,14 @@ public class CombatlogIntegration extends ModIntegration {
             final Class<?> entityDataSaverClass = Class.forName(IEntityDataSaver_Class, true, loader);
 
             if (!entityDataSaverClass.isInstance(player)) {
-                throw new IllegalStateException("Player does not implement IEntityDataSaver from CombatLog" + this.getVersion());
+                SummonMounts.LOGGER.error("Player does not implement IEntityDataSaver from CombatLog version [{}]", this.getVersion());
+                return false;
             }
 
             return (boolean) tagDataClass.getMethod("getCombat", entityDataSaverClass).invoke(null, player);
         } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Could not access Combatlog " + this.getVersion(), e);
+            SummonMounts.LOGGER.error("Could not access Combatlog version [{}]. {}", this.getVersion(), e);
+            return false;
         }
     }
 }
