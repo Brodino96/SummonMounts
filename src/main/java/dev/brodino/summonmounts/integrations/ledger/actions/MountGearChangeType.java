@@ -1,4 +1,4 @@
-package dev.brodino.summonmounts.ledger.actions;
+package dev.brodino.summonmounts.integrations.ledger.actions;
 
 import com.github.quiltservertools.ledger.actions.AbstractActionType;
 import com.github.quiltservertools.ledger.utility.Sources;

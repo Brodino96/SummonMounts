@@ -1,6 +1,6 @@
 package dev.brodino.summonmounts.mixin.ledger;
 
-import dev.brodino.summonmounts.ledger.LedgerManager;
+import dev.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -18,6 +18,6 @@ public class SaddleItemMixin {
 
 	@Inject(method = "useOnEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Saddleable;saddle(Lnet/minecraft/sound/SoundCategory;)V"))
 	public void summonmounts$useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		LedgerManager.logGear(user, true, entity, Registry.ITEM.getId(stack.getItem()));
+		SummonMounts.INTEGRATIONS.LEDGER.logGear(user, true, entity, Registry.ITEM.getId(stack.getItem()));
 	}
 }

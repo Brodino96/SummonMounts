@@ -1,6 +1,6 @@
 package dev.brodino.summonmounts.mixin.ledger;
 
-import dev.brodino.summonmounts.ledger.LedgerManager;
+import dev.brodino.summonmounts.SummonMounts;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -45,12 +45,12 @@ public class ScreenHandlerMixin {
 
         if (!oldStack.isEmpty()) {
             Identifier itemId = Registry.ITEM.getId(oldStack.getItem());
-            LedgerManager.logGear(player, false, entity, itemId);
+            SummonMounts.INTEGRATIONS.LEDGER.logGear(player, false, entity, itemId);
         }
 
         if (!newStack.isEmpty()) {
             Identifier itemId = Registry.ITEM.getId(newStack.getItem());
-            LedgerManager.logGear(player, true, entity, itemId);
+            SummonMounts.INTEGRATIONS.LEDGER.logGear(player, true, entity, itemId);
         }
     }
 }
