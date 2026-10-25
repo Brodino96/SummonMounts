@@ -18,6 +18,6 @@ public class SaddleItemMixin {
 
 	@Inject(method = "useOnEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Saddleable;saddle(Lnet/minecraft/sound/SoundCategory;)V"))
 	public void summonmounts$useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		SummonMounts.INTEGRATIONS.logGear(user, true, entity, Registry.ITEM.getId(stack.getItem()));
+		SummonMounts.INTEGRATIONS.LEDGER.logGear(user, true, entity, Registry.ITEM.getId(stack.getItem()));
 	}
 }

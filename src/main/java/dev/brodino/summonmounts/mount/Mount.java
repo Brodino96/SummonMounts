@@ -46,7 +46,7 @@ public class Mount implements PositionHelper {
 
     public static void fromEntity(PlayerEntity summoner, AbstractHorseEntity entity, ItemStack stack) {
         Mount mount = new Mount(summoner, entity, stack);
-        SummonMounts.INTEGRATIONS.logTame(mount);
+        SummonMounts.INTEGRATIONS.LEDGER.logTame(mount);
         mount.recall(RecallReason.TAMED);
     }
 
@@ -72,7 +72,7 @@ public class Mount implements PositionHelper {
         Utils.notifyPlayer(this.summoner, Text.translatable("feedback.summonmounts.summon.manual"));
         this.positionMount(this.entity, this.summoner);
         this.summoner.getWorld().spawnEntity(this.entity);
-        SummonMounts.INTEGRATIONS.logSummon(this);
+        SummonMounts.INTEGRATIONS.LEDGER.logSummon(this);
         Utils.schedule(1, () -> NetworkManager.sendParticlePacket(Packets.SUMMON, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this));
     }
 
@@ -81,7 +81,7 @@ public class Mount implements PositionHelper {
         SummonMounts.LOGGER.info(reason.getLog(), this.summoner.getName().getString());
         OcarinaItem.saveMount(this.stack, this);
         NetworkManager.sendForceLandPacket((ServerPlayerEntity) this.summoner, this.entity.getUuid(), false);
-        SummonMounts.INTEGRATIONS.logRecall(this, reason.getLedger());
+        SummonMounts.INTEGRATIONS.LEDGER.logRecall(this, reason.getLedger());
         NetworkManager.sendParticlePacket(Packets.RECALL, (ServerPlayerEntity) this.summoner, Utils.getPlayerParticleColor(this.summoner, this.stack), this);
         this.entity.discard();
     }

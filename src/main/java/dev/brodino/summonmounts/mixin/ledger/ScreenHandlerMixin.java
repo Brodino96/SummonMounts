@@ -45,12 +45,12 @@ public class ScreenHandlerMixin {
 
         if (!oldStack.isEmpty()) {
             Identifier itemId = Registry.ITEM.getId(oldStack.getItem());
-            SummonMounts.INTEGRATIONS.logGear(player, false, entity, itemId);
+            SummonMounts.INTEGRATIONS.LEDGER.logGear(player, false, entity, itemId);
         }
 
         if (!newStack.isEmpty()) {
             Identifier itemId = Registry.ITEM.getId(newStack.getItem());
-            SummonMounts.INTEGRATIONS.logGear(player, true, entity, itemId);
+            SummonMounts.INTEGRATIONS.LEDGER.logGear(player, true, entity, itemId);
         }
     }
 }

@@ -30,8 +30,9 @@ public class CombatlogIntegration extends ModIntegration {
         };
     }
 
-    public boolean isInCombat(PlayerEntity player) {
+    public boolean isPlayerInCombat(PlayerEntity player) {
         if (!this.isPresent()) return false;
+        if (!SummonMounts.CONFIG.getCombatLogConfig().combatBlockSummon) return false;
         try {
 
             final ClassLoader loader = CombatlogIntegration.class.getClassLoader();

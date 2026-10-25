@@ -25,6 +25,6 @@ public class SummonMounts implements ModInitializer {
         EventHandlers.initialize();
         ParticlesManager.initialize();
         ItemManager.initialize();
-        ServerLifecycleEvents.SERVER_STARTED.register(INTEGRATIONS::initializeLedger);
+        ServerLifecycleEvents.SERVER_STARTED.register(INTEGRATIONS.LEDGER::initialize);
     }
 }

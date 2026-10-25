@@ -6,6 +6,7 @@ import dev.brodino.summonmounts.mount.Mount;
 import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 
 public class LedgerIntegration extends ModIntegration {
@@ -14,7 +15,7 @@ public class LedgerIntegration extends ModIntegration {
         super(ledgerMod);
     }
 
-    public void initialize() {
+    public void initialize(MinecraftServer server) {
         if (!this.isPresent()) return;
         LedgerHook.initialize();
     }
