@@ -67,6 +67,8 @@ The generated `config/summonmounts.json` controls:
 - `durability`: durability for each ocarina tier
 - `foodRepair`: durability repaired by one matching feed item
 - `mounts`: entity IDs and their required ocarina tiers
+- `integrations.combatlog`: all integrations between mods
+- `integrations.ledger`: all integrations between mods
 
 After editing the file, run `/mount reload` or `/reload` as an operator
 
