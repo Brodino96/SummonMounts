@@ -1,8 +1,6 @@
 package dev.brodino.summonmounts;
 
 import dev.brodino.summonmounts.items.OcarinaItem;
-import fabric.me.toastymop.combatlog.util.IEntityDataSaver;
-import fabric.me.toastymop.combatlog.util.TagData;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -19,10 +17,6 @@ public class Utils {
 
     private static final int DEFAULT_COLOR = DyeColor.PURPLE.getFireworkColor();
     private static final List<ScheduledTask> TASKS = new ArrayList<>();
-
-    public static boolean combatLogCheck(PlayerEntity player) {
-        return SummonMounts.COMBATLOG_PRESENT && TagData.getCombat((IEntityDataSaver) player);
-    }
 
     public static void notifyPlayer(PlayerEntity player, Text text) { player.sendMessage(text, true); }
     public static void notifyPlayer(PlayerEntity player, String translatableKey) { notifyPlayer(player, Text.translatable(translatableKey));}
